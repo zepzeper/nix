@@ -3,7 +3,6 @@
 {
   home.packages = with pkgs; [
     # Very cool tools
-    alacritty
     obsidian
     tmux
     ripgrep
