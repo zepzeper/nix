@@ -4,9 +4,9 @@ commonLabels:
   app.kubernetes.io/managed-by: Kustomize
 resources:
   - ./metallb/pool.yaml
-  - ./monitoring/crds/crd-alertmanager.yaml
-  - ./monitoring/crds/crd-prometheus.yaml
-  - ./monitoring/crds/crd-prometheusrule.yaml
-  - ./monitoring/crds/crd-servicemonitor.yaml
-  - ./monitoring/crds/crd-podmonitor.yaml
-  - ./monitoring/crds/crd-probe.yaml
+  # - ./monitoring/crds/crd-alertmanager.yaml
+  # - ./monitoring/crds/crd-prometheus.yaml
+  # - ./monitoring/crds/crd-prometheusrule.yaml
+  # - ./monitoring/crds/crd-servicemonitor.yaml
+  # - ./monitoring/crds/crd-podmonitor.yaml
+  # - ./monitoring/crds/crd-probe.yaml

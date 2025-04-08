@@ -11,8 +11,8 @@ repositories:
     url: https://charts.bitnami.com/bitnami
   # - name: bryopsida
   #   url: https://bryopsida.github.io/wireguard-chart
-  - name: prometheus-community
-    url: https://prometheus-community.github.io/helm-charts
+  # - name: prometheus-community
+  #   url: https://prometheus-community.github.io/helm-charts
 ---
 releases:
   # Distributed storage
@@ -45,8 +45,8 @@ releases:
       - ./values/nginx-internal.values.yaml
 
   # Automatic DNS for pihole
-  - name: externaldns-pihole
-    namespace: pihole-system
+  - name: externaldns
+    namespace: externaldns-system
     chart: bitnami/external-dns
     version: 8.0.1
     values:
@@ -61,13 +61,13 @@ releases:
   #   values:
   #     - ./values/wireguard.values.yaml
 
+  # - name: kube-prometheus-stack
+  #   namespace: monitoring
+  #   chart: prometheus-community/kube-prometheus-stack
+  #   version: 70.4.2 # Check for latest: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+  #   createNamespace: true
+  #   values:
+  #     - ./values/kube-prometheus-stack/grafana.values.yaml
+  #     - ./values/kube-prometheus-stack/prometheus.values.yaml
+  #     - ./values/kube-prometheus-stack/alertmanager.values.yaml
 
-  - name: kube-prometheus-stack
-    namespace: monitoring
-    chart: prometheus-community/kube-prometheus-stack
-    version: 70.4.2 # Check for latest: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
-    createNamespace: true
-    values:
-      - ./values/kube-prometheus-stack/grafana.values.yaml
-      - ./values/kube-prometheus-stack/prometheus.values.yaml
-      - ./values/kube-prometheus-stack/alertmanager.values.yaml
