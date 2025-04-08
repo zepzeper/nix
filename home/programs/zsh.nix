@@ -49,6 +49,9 @@
       # Custom scripts folder
       export PATH="$PATH:$HOME/scripts"
 
+      #Kubectl
+      export KUBECONFIG=$HOME/nix/homelab/.kube/config
+
       # VIMRUNTIME
       VIMRUNTIME=$(dirname $(dirname $(readlink -f $(which nvim))))/share/nvim/runtime
     '';
@@ -71,6 +74,7 @@
       vim = "nvim";
       find = "fd";
       grep = "rg";
+      k = "kubectl";
     };
 
     # Additional zsh initialization

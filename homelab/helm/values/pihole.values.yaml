@@ -1,0 +1,19 @@
+---
+persistentVolumeClaim:
+  enabled: true
+ingress:
+  enabled: true
+  ingressClassName: nginx-internal
+  annotations:
+    external-dns.alpha.kubernetes.io/target: 192.168.68.240
+  hosts:
+    - "pihole.home"
+serviceWeb:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+serviceDns:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: pihole-svc
+  type: LoadBalancer
+replicaCount: 1

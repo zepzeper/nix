@@ -28,7 +28,6 @@
                 modules = [
                     # self for flake root
                     "${self}/services/aerospace.nix"
-                    "${self}/modules/php-dev.nix"
                     # Core darwin configuration
                     ({ pkgs, config, ... }: {
                         # Allow unfree packages
@@ -40,6 +39,7 @@
                             # Only keep essential system packages here
                             coreutils
                             curl
+                            libiconv
                             wget
                             mkalias
                         ];
