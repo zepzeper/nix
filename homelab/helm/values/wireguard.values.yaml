@@ -6,22 +6,24 @@ service:
   #type: LoadBalancer
   #loadBalancerIP: 192.168.68.241
   type: NodePort
-  port: 31820
+  port: 51820
 
 wireguard:
   # Set your own custom network
   serverAddress: 10.13.13.1/24
   serverCidr: 10.13.13.0/24
+
+  port: 51820
   
   # Use your Pi-hole DNS
-  # interfaceOpts:
-  #   DNS: 192.168.68.240
+  interfaceOpts:
+    DNS: 192.168.68.240
 
-peers:
-  - name: iPhone-wouter
-    publicKey: "wvEgoRz/0ZWoRSSPHf2Znc1MURBcTHGBe0W2v/QVOgg="
-    allowedIPs:
-      - 10.13.13.2/32
+  peers:
+    - name: iPhone-wouter
+      publicKey: "wvEgoRz/0ZWoRSSPHf2Znc1MURBcTHGBe0W2v/QVOgg="
+      allowedIPs:
+        - 10.13.13.2/32
 
 securityContext:
   privileged: true

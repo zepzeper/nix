@@ -15,6 +15,27 @@
       # Terminal overrides for color support
       set -ag terminal-overrides ",alacritty:RGB"
       set -ag terminal-overrides ",*:Tc"
+      set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
+      set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+
+      set-option -g window-status-current-format " #I:#W"
+      set-option -g window-status-format " #I:#W"
+      set-option -g window-status-current-style "fg=#CCFF0B,bold"
+      set-option -g window-status-style "fg=grey"
+
+      set-option -g status-position top
+      set-option -g status-bg default
+      set-option -g status-style bg=default
+      set-option -g status-left ""
+      set-option -g status-right "#{session_name} "
+      set-option -g base-index 1
+
+      set -g history-limit 50000
+      set -g display-time 4000
+      set -g status-interval 5
+      set -g status-keys emacs
+      set -g focus-events on
+      set -g aggressive-resize on
 
       # Pane base index and renumbering
       set -g pane-base-index 1

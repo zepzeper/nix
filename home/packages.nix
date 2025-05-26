@@ -9,6 +9,7 @@
     ripgrep
     fd
     git
+    lazygit
     fzf
 
     # Programming tools and languages
