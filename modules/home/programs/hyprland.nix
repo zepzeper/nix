@@ -89,17 +89,17 @@
   };
 
   # Hyprpaper service for wallpapers (only on Linux)
-  # services.hyprpaper = lib.mkIf pkgs.stdenv.isLinux {
-  #   enable = true;
-  #   settings = {
-  #     ipc = "on";
-  #     splash = false;
-  #     preload = [
-  #       "~/Wallpapers/bay.JPG"
-  #     ];
-  #     wallpaper = [
-  #       ",~/Wallpapers/bay.JPG"
-  #     ];
-  #   };
-  # };
+  services.hyprpaper = lib.mkIf pkgs.stdenv.isLinux {
+    enable = true;
+    settings = {
+      ipc = "on";
+      splash = false;
+      preload = [
+        "~/Wallpapers/bay.JPG"
+      ];
+      wallpaper = [
+        ",~/Wallpapers/bay.JPG"
+      ];
+    };
+  };
 }

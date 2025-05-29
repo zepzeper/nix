@@ -70,6 +70,8 @@
       down = "docker compose stop";
       dssh = "docker compose exec web bash";
 
+      drebuild = "sudo nixos-rebuild switch --flake ~/.dotfiles/nix/#desktop --impure";
+
       # Command replacements
       vim = "nvim";
       find = "fd";

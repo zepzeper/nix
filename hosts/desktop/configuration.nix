@@ -9,21 +9,16 @@ in
     ../common.nix
     ../../modules/nixos/default.nix
     ../../modules/common/default.nix
-
-    ./../../modules/home/packages.nix 
-    ./../../modules/home/programs/git.nix
-    ./../../modules/home/programs/zsh.nix
-    ./../../modules/home/programs/tmux.nix
-    ./../../modules/home/programs/alacritty.nix
-    ./../../modules/home/programs/neovim.nix
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    ./programs/aerospace.nix
-  ] ++ lib.optionals pkgs.stdenv.isLinux [
-    ./programs/hyprland.nix
   ];
 
   # ===== HOST IDENTIFICATION =====
   networking.hostName = hostname;
+
+  # Disable display manager that auto-starts Hyprland
+  services.greetd.enable = false;  # if using greetd
+  services.xserver.displayManager.gdm.enable = false;  # if using GDM
+  services.xserver.displayManager.sddm.enable = false;  # if using SDDM
+  services.getty.autologinUser = "zepzeper";
 
   # ===== BOOT & KERNEL CONFIGURATION =====
   boot.loader.grub = {

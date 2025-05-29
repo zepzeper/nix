@@ -21,6 +21,18 @@
     useUserPackages = true;
     backupFileExtension = "backup";
     users.${username} = {pkgs, ...}: {
+      imports = [
+        ../modules/home/packages.nix 
+        ../modules/home/programs/git.nix
+        ../modules/home/programs/zsh.nix
+        ../modules/home/programs/tmux.nix
+        ../modules/home/programs/alacritty.nix
+        ../modules/home/programs/neovim.nix
+        ../modules/home/programs/hyprland.nix
+        # ] ++ lib.optionals pkgs.stdenv.isDarwin [
+        #   ../modules/home/programs/aerospace.nix
+        # ] ++ lib.optionals pkgs.stdenv.isLinux [
+      ];
       # Let Home Manager install and manage itself.
       programs.home-manager.enable = true;
 
