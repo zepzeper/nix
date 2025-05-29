@@ -17,7 +17,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "zsh-users";
           repo = "zsh-autosuggestions";
-          rev = "v.0.7.0";
+          rev = "v0.7.0";
           hash = "sha256-KLUYpUu4DHRumQZ3w59m9aTW6TBKMCXl2UcKi4uMd7w=";
         };
       }
@@ -49,7 +49,7 @@
       # Custom scripts folder
       export PATH="$PATH:$HOME/scripts"
 
-      #Kubectl
+      # Kubectl
       export KUBECONFIG=$HOME/nix/homelab/.kube/config
 
       # VIMRUNTIME
@@ -69,9 +69,6 @@
       dup = "docker compose up -d";
       down = "docker compose stop";
       dssh = "docker compose exec web bash";
-
-      # Nixos
-      drebuild = "sudo nixos-rebuild switch --flake ~/.dotfiles/nix#desktop --impure ";
 
       # Command replacements
       vim = "nvim";
@@ -105,6 +102,5 @@
       # Case sensitive completion
       CASE_SENSITIVE="true"
     '';
-
   };
 }

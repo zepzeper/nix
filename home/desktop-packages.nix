@@ -4,7 +4,8 @@
 {
   home.packages = with pkgs; [
     # Core tools (same as macOS)
-    obsidian
+    neovim
+    alacritty
     firefox
     tmux
     ripgrep
@@ -16,6 +17,7 @@
     # Programming tools and languages
     gcc
     cmake
+    gnumake42
     nodejs
     yarn
     maven
@@ -32,12 +34,10 @@
     zsh-completions
     gtypist
     pwgen
-    helmfile
-    kustomize
+    speedtest-cli
 
     # Development tools
     clang-tools
-    dotnet-sdk
     zig
     ruby
     php84
@@ -76,28 +76,28 @@
     # Linux-specific packages (replacements for macOS tools)
     xclip              # Clipboard (X11)
     wl-clipboard       # Clipboard (Wayland)
-    
+
     # System monitoring and info
     neofetch
     btop               # Better htop
     lshw              # Hardware info
-    
+
     # File management
     ranger            # Terminal file manager
     tree              # Directory tree view
-    
+
     # Media and graphics
     vlc               # Media player
     gimp              # Image editing
-    
+    pavucontrol       # Audio control GUI
+
     # Development extras
     docker-compose    # Docker compose tool
-    
-    # Window management alternatives to AeroSpace
-    # (These are optional - GNOME has its own window management)
-    # i3                # Tiling window manager
-    # rofi              # Application launcher
-    
+
+    rofi              # Application launcher
+    steam
+    discord
+
     # Archive tools
     unzip
     zip

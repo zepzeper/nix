@@ -1,9 +1,10 @@
 {
-  description = "Zepzeper darwin system flake";
+  description = "Zepzeper's NixOS/Darwin Configuration";
 
   inputs = {
     # Core dependencies
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     # Darwin-specific
     nix-darwin = {
@@ -19,24 +20,46 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Hardware support
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    # Hyprland
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, home-manager }:
-    {
-      # Darwin configurations
-      darwinConfigurations."m1-pro" = nix-darwin.lib.darwinSystem {
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, nix-darwin, nix-homebrew, home-manager, nixos-hardware, hyprland }:
+  let
+    # User configuration
+    username = "zepzeper";
+    
+    # Helper function to create shared arguments
+    mkSpecialArgs = hostname: system: {
+      inherit inputs hostname system username;
+      browser = "firefox";
+      terminal = "alacritty";
+    };
+  in
+  {
+    # Darwin configurations
+    darwinConfigurations = {
+      "m1-pro" = nix-darwin.lib.darwinSystem {
+        specialArgs = mkSpecialArgs "m1-pro" "aarch64-darwin";
         modules = [
-          # self for flake root
-          "${self}/services/aerospace.nix"
-          # Core darwin configuration
+          # Your existing service
+          ./services/aerospace.nix
+          
+          # Core darwin configuration (inline for now)
           ({ pkgs, config, ... }: {
             # Allow unfree packages
             nixpkgs.config.allowUnfree = true;
-
+            nixpkgs.hostPlatform = "aarch64-darwin";
 
             # Minimal system packages
             environment.systemPackages = with pkgs; [
-              # Only keep essential system packages here
               coreutils
               curl
               libiconv
@@ -49,21 +72,14 @@
               enable = true;
               onActivation = {
                 autoUpdate = true;
-                cleanup = "zap";  # Removes all unmanaged formulae
+                cleanup = "zap";
               };
-              taps = [
-                "nikitabobko/tap"
-              ];
-              # Install AeroSpace as a cask
-              casks = [
-                "aerospace"
-              ];
+              taps = [ "nikitabobko/tap" ];
+              casks = [ "aerospace" ];
             };
 
             # Fonts configuration
-            fonts.packages = [
-              pkgs.nerd-fonts.jetbrains-mono
-            ];
+            fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
             # Application symlinks
             system.activationScripts.applications.text = let
@@ -74,27 +90,27 @@
               };
             in
               pkgs.lib.mkForce ''
-                                # Set up applications.
-                                echo "setting up /Applications..." >&2
-                                rm -rf /Applications/Nix\ Apps
-                                mkdir -p /Applications/Nix\ Apps
-                                find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-                                while read -r src; do
-                                  app_name=$(basename "$src")
-                                  echo "copying $src" >&2
-                ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-                                done
+                echo "setting up /Applications..." >&2
+                rm -rf /Applications/Nix\ Apps
+                mkdir -p /Applications/Nix\ Apps
+                find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+                while read -r src; do
+                  app_name=$(basename "$src")
+                  echo "copying $src" >&2
+                  ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+                done
               '';
+
             # Nix settings
             nix.settings = {
               experimental-features = "nix-command flakes";
-              trusted-users = [ "root" "zepzeper" ];
+              trusted-users = [ "root" username ];
             };
 
-            # Configure the new user in nix-darwin
-            users.users.zepzeper = {
-              name = "zepzeper";
-              home = "/Users/zepzeper";
+            # Configure the user
+            users.users.${username} = {
+              name = username;
+              home = "/Users/${username}";
               shell = pkgs.zsh;
             };
 
@@ -110,19 +126,15 @@
 
             # Set Git commit hash for darwin-version
             system.configurationRevision = self.rev or self.dirtyRev or null;
-
-            # State version
             system.stateVersion = 6;
-
-            # Platform
-            nixpkgs.hostPlatform = "aarch64-darwin";
           })
 
           # Home Manager module
           home-manager.darwinModules.home-manager {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.zepzeper = import ./home/zepzeper.nix;
+            home-manager.users.${username} = import ./home/zepzeper.nix;
+            home-manager.extraSpecialArgs = mkSpecialArgs "m1-pro" "aarch64-darwin";
           }
 
           # Homebrew module
@@ -130,34 +142,54 @@
             nix-homebrew = {
               enable = true;
               enableRosetta = true;
-              user = "zepzeper";
+              user = username;
               autoMigrate = true;
             };
           }
         ];
       };
+    };
 
-      # NEW: NixOS configurations
-      nixosConfigurations."desktop" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";  # Change to aarch64-linux if ARM
+    # NixOS configurations
+    nixosConfigurations = {
+      "desktop" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = mkSpecialArgs "desktop" "x86_64-linux";
         modules = [
-          # Import the hardware configuration
-          ./nixos/hardware-configuration.nix
-
-          # Main NixOS system configuration
-          ./nixos/configuration.nix
-
-          # Home Manager for NixOS
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.zepzeper = import ./home/zepzeper-nixos.nix;
-          }
+          ./hosts/desktop/configuration.nix
         ];
       };
-
-      # Formatters for both platforms
-      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     };
+
+    # Development shells
+    devShells = {
+      aarch64-darwin.default = nixpkgs.legacyPackages.aarch64-darwin.mkShell {
+        buildInputs = with nixpkgs.legacyPackages.aarch64-darwin; [
+          nixpkgs-fmt
+          statix
+          deadnix
+        ];
+      };
+      
+      x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
+        buildInputs = with nixpkgs.legacyPackages.x86_64-linux; [
+          nixpkgs-fmt
+          statix
+          deadnix
+        ];
+      };
+    };
+
+    # Formatters for both platforms
+    formatter = {
+      aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
+      x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+    };
+
+    # Templates for new configurations
+    templates.default = {
+      path = ./.;
+      description = "Zepzeper's NixOS/Darwin flake template";
+    };
+  };
 }
