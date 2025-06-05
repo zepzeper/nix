@@ -10,7 +10,8 @@
   config,
   options,
   modulesPath,
-  pkgs
+  pkgs,
+  ...
 }: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -28,10 +29,10 @@
         ../modules/home/programs/tmux.nix
         ../modules/home/programs/alacritty.nix
         ../modules/home/programs/neovim.nix
-        ../modules/home/programs/hyprland.nix
-        # ] ++ lib.optionals pkgs.stdenv.isDarwin [
-        #   ../modules/home/programs/aerospace.nix
-        # ] ++ lib.optionals pkgs.stdenv.isLinux [
+         ] ++ lib.optionals pkgs.stdenv.isDarwin [
+           ../modules/home/programs/aerospace.nix
+         ] ++ lib.optionals pkgs.stdenv.isLinux [
+           ../modules/home/programs/hyprland.nix
       ];
       # Let Home Manager install and manage itself.
       programs.home-manager.enable = true;

@@ -2,16 +2,14 @@
 
 {
   imports = [
-    ../../services/aerospace.nix
+    ../../modules/darwin/default.nix
+    ../../modules/common/default.nix
+   # ../common.nix
   ];
 
   # ===== HOST IDENTIFICATION =====
   networking.hostName = hostname;
-
-  # ===== USER CONFIGURATION =====
-  users.users.${username} = {
-    name = username;
-    home = "/Users/${username}";
-    shell = pkgs.zsh;
-  };
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.hostPlatform = "aarch64-darwin";
+  system.stateVersion = 6;
 }

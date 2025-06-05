@@ -1,27 +1,17 @@
-{ config, lib, pkgs, username, ... }:
+{ inputs, pkgs, lib, ... }:
 
 {
-  # Homebrew configuration
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "zap";  # Removes all unmanaged formulae
-    };
-    taps = [
-      "nikitabobko/tap"
-    ];
-    # Install AeroSpace as a cask
-    casks = [
-      "aerospace"
-    ];
-  };
+  imports = [
+    inputs.nix-homebrew.darwinModules.nix-homebrew
+  ];
 
-  # nix-homebrew configuration
-  nix-homebrew = {
-    enable = true;
-    enableRosetta = true;
-    user = username;
-    autoMigrate = true;
+  config = {
+    nix-homebrew = {
+      enable = true;
+      user = "zepzeper";
+      autoMigrate = true;
+      enableRosetta = true;
+    };
   };
 }
+

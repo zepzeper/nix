@@ -8,11 +8,13 @@
 
     # Darwin-specific
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+	    url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+	    inputs.nixpkgs.follows = "nixpkgs";
     };
+
     nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
+	    url = "github:zhaofengli/nix-homebrew";
+	    inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Home Manager
@@ -49,104 +51,8 @@
       "m1-pro" = nix-darwin.lib.darwinSystem {
         specialArgs = mkSpecialArgs "m1-pro" "aarch64-darwin";
         modules = [
-          # Your existing service
-          ./services/aerospace.nix
-          
-          # Core darwin configuration (inline for now)
-          ({ pkgs, config, ... }: {
-            # Allow unfree packages
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.hostPlatform = "aarch64-darwin";
-
-            # Minimal system packages
-            environment.systemPackages = with pkgs; [
-              coreutils
-              curl
-              libiconv
-              wget
-              mkalias
-            ];
-
-            # Homebrew configuration
-            homebrew = {
-              enable = true;
-              onActivation = {
-                autoUpdate = true;
-                cleanup = "zap";
-              };
-              taps = [ "nikitabobko/tap" ];
-              casks = [ "aerospace" ];
-            };
-
-            # Fonts configuration
-            fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
-
-            # Application symlinks
-            system.activationScripts.applications.text = let
-              env = pkgs.buildEnv {
-                name = "system-applications";
-                paths = config.environment.systemPackages;
-                pathsToLink = "/Applications";
-              };
-            in
-              pkgs.lib.mkForce ''
-                echo "setting up /Applications..." >&2
-                rm -rf /Applications/Nix\ Apps
-                mkdir -p /Applications/Nix\ Apps
-                find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-                while read -r src; do
-                  app_name=$(basename "$src")
-                  echo "copying $src" >&2
-                  ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-                done
-              '';
-
-            # Nix settings
-            nix.settings = {
-              experimental-features = "nix-command flakes";
-              trusted-users = [ "root" username ];
-            };
-
-            # Configure the user
-            users.users.${username} = {
-              name = username;
-              home = "/Users/${username}";
-              shell = pkgs.zsh;
-            };
-
-            # macOS system defaults
-            system.defaults = {
-              dock.autohide = true;
-              finder.FXPreferredViewStyle = "clmv";
-              loginwindow.GuestEnabled = false;
-              NSGlobalDomain.AppleICUForce24HourTime = true;
-              NSGlobalDomain.AppleInterfaceStyle = "Dark";
-              NSGlobalDomain.KeyRepeat = 2;
-            };
-
-            # Set Git commit hash for darwin-version
-            system.configurationRevision = self.rev or self.dirtyRev or null;
-            system.stateVersion = 6;
-          })
-
-          # Home Manager module
-          home-manager.darwinModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./home/zepzeper.nix;
-            home-manager.extraSpecialArgs = mkSpecialArgs "m1-pro" "aarch64-darwin";
-          }
-
-          # Homebrew module
-          nix-homebrew.darwinModules.nix-homebrew {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
-              user = username;
-              autoMigrate = true;
-            };
-          }
-        ];
+          ./hosts/m1-pro/configuration.nix
+	];
       };
     };
 
