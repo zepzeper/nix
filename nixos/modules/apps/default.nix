@@ -6,5 +6,7 @@ _: {
 		  ./media
 		  ./notes
 		  ./reader
+./steam
+./rofi
   ];
 }

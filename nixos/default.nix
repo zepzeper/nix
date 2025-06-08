@@ -27,6 +27,7 @@
       ];
       trusted-users = [
         "root"
+	username
       ];
     };
   };
@@ -44,7 +45,7 @@
   services.printing.enable = true;
 
   environment.systemPackages = with pkgs; [
-    vim
+    neovim
     wget
     curl
     blueman

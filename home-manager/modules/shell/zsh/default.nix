@@ -15,6 +15,7 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
+      vim = "nvim";
       c = "clear";
       hms = "home-manager switch";
       ncg = "nix-collect-garbage";

@@ -2,7 +2,7 @@ _: {
   imports = [
 		./hyprland
     ./alacritty
-		# ./neovide
+		 ./neovide
 		# ./texlive
   ];
 }

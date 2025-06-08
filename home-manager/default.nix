@@ -14,7 +14,7 @@
   imports =
     [
       inputs.nixvim.homeManagerModules.default
-      # ./modules/nixvim
+      ./modules/nixvim
       ./modules/shell
       ./modules/cli-tools
       ./modules/fonts

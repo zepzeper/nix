@@ -118,38 +118,12 @@ in
 
       fill.symbol = " ";
 
-      conda = {
-        style = "${colors.blue}";
-        symbol = "";
-        format = "[$environment ]($style)";
-      };
-
-      python = {
-        style = "${colors.lavender}";
-        symbol = "";
-        version_format = "$major.$minor";
-        format = "[($virtualenv) ]($style)";
-        pyenv_version_name = false;
-        pyenv_prefix = "";
-        detect_files = [ ];
-        detect_extensions = [ ];
-      };
-
       nix_shell = {
         disabled = false;
         impure_msg = "[ ](bold ${colors.lavender})";
         pure_msg = "[ ](bold green)";
         unknown_msg = "[ ](bold yellow)";
         format = "$state";
-      };
-
-      custom = {
-        activated_python = {
-          style = "${colors.lavender}";
-          when = "command -v python >/dev/null 2>&1";
-          command = "echo  ";
-          format = "[$output]($style)";
-        };
       };
 
       memory_usage = {

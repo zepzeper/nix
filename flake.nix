@@ -46,14 +46,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # my-nixvim-config = {
-    #   url = "github:codeboyphilo/nixvim-config";
-    #   # url = "path:/home/phil_oh/.config/nixvim"; # local path for testing
-    #
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.nixvim.follows = "nixvim";
-    #   inputs.blink-cmp.follows = "blink-cmp";
-    # };
+     my-nixvim-config = {
+       #url = "github:codeboyphilo/nixvim-config";
+       url = "path:/home/zepzeper/.dotfiles/nixvim"; # local path for testing
+    
+       inputs.nixpkgs.follows = "nixpkgs";
+       inputs.nixvim.follows = "nixvim";
+       inputs.blink-cmp.follows = "blink-cmp";
+     };
 
     sops-nix.url = "github:Mic92/sops-nix";
     hyprland.url = "github:hyprwm/Hyprland";

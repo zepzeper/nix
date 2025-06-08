@@ -9,6 +9,7 @@
     enable = true;
     shell = "${pkgs.zsh}/bin/zsh";
     terminal = "tmux-256color";
+    baseIndex = 1;
     plugins = with pkgs.tmuxPlugins; [
       vim-tmux-navigator
       resurrect
@@ -16,51 +17,89 @@
     ];
 
     extraConfig = ''
-      set-option -g default-shell /run/current-system/sw/bin/zsh
-      # Terminal overrides for color support
-      set -ag terminal-overrides ",alacritty:RGB"
-      set -ag terminal-overrides ",*:Tc"
-      set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
-      set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
+      set -sag terminal-features ",*:RGB"
+      set -sag terminal-features ",*:usstyle"
+      set-option -ga terminal-overrides ",*-256color*:TC"
 
-      set-option -g window-status-current-format " #I:#W"
-      set-option -g window-status-format " #I:#W"
-      set-option -g window-status-current-style "fg=#CCFF0B,bold"
-      set-option -g window-status-style "fg=grey"
+      set -g prefix C-a
+      unbind C-b
+      bind-key C-a send-prefix
 
-      set-option -g status-position top
-      set-option -g status-bg default
-      set-option -g status-style bg=default
-      set-option -g status-left ""
-      set-option -g status-right "#{session_name} "
-      set-option -g base-index 1
-
-      set -g history-limit 50000
-      set -g display-time 4000
-      set -g status-interval 5
-      set -g status-keys emacs
-      set -g focus-events on
-      set -g aggressive-resize on
-
-      # Pane base index and renumbering
-      set -g pane-base-index 1
-      set-option renumber-windows on
-
-      # Focus events
-      set-option -g focus-events on
-
-      # Key bindings for pane navigation
-      bind -r j select-pane -d
-      bind -r k select-pane -u
-      bind -r l select-pane -r
-      bind -r h select-pane -l
-
-      # Window/pane creation
-      bind -r o new-window -c '#{pane_current_path}'
-      bind | split-window -h -c "#{pane_current_path}"
-      bind - split-window -v -c "#{pane_current_path}"
       unbind '"'
       unbind %
+      unbind r
+
+      # Window/pane creation
+      unbind %
+      bind | split-window -h -c "#{pane_current_path}"
+
+      unbind '"'
+      bind - split-window -v -c "#{pane_current_path}"
+
+      bind -r o new-window -c '#{pane_current_path}'
+
+      bind - split-window -v -c "#{pane_current_path}"
+
+      bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
+
+      set -g mouse on
+
+      set -g pane-base-index 1
+      set-window-option -g pane-base-index 1
+      set-option -g renumber-windows on
+
+      set-window-option -g mode-keys vi
+
+      # Copy mode settings
+      bind e copy-mode
+      bind-key -T copy-mode-vi 'v' send -X begin-selection # start selecting text with "v"
+      bind-key -T copy-mode-vi 'y' send -X copy-selection # copy text with "y"
+      bind-key -T copy-mode-vi w send-keys -X select-word
+      unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode after dragging with mouse
+
+# ----- tpipeline configuration -----
+      # Set the status bar at the bottom
+      set -g status-position bottom
+
+      # Set transparent background for tpipeline
+      set -g status-bg default
+      set -g status-style bg=default
+
+      # Provide enough space for vim statusline
+      set -g status-left-length 90
+      set -g status-right-length 90
+
+      # Configure the tmux status line for tpipeline compatibility
+      set -g status-justify absolute-centre
+
+      set -g status-left ""
+      set -g status-right ""
+
+      # Configure status elements - simpler format with only window numbers
+      set -g window-status-format " #I "
+      set -g window-status-style "fg=#565f89,bg=default,dim"
+      set -g window-status-last-style "fg=#565f89,bg=default"
+      set -g window-status-activity-style "fg=#565f89,bg=default,dim"
+      set -g window-status-bell-style "fg=#565f89,bg=default,dim"
+      set -g window-status-separator "│"
+
+      # Active window status format - highlight with green
+      set -g window-status-current-format " #I "
+      set -g window-status-current-style "fg=#9ece6a,bg=default,bold"
+
+      # Pane border look and feel
+      setw -g pane-border-status off
+      setw -g pane-border-format ""
+      setw -g pane-active-border-style "fg=#9ece6a"
+      setw -g pane-border-style "fg=#565f89"
+      setw -g pane-border-lines single
+
+      set -g @resurrect-capture-pane-contents 'on' # allow tmux-ressurect to capture pane contents
+      set -g @continuum-restore 'on' # enable tmux-continuum functionality
+
+      # for image display
+      set-option -g allow-passthrough on
+      set -g visual-activity off
 
       # Custom script bindings
       bind-key f new-window "${config.home.homeDirectory}/scripts/tmux-sessionizer.sh"
@@ -68,11 +107,6 @@
       bind-key i new-window "${config.home.homeDirectory}/scripts/cheat.sh"
       bind-key u new-window "${config.home.homeDirectory}/scripts/snipster.sh"
 
-      # Copy mode settings
-      bind e copy-mode
-      bind-key -T copy-mode-vi y send-keys -X copy-pipe "pbcopy"
-      bind-key -T copy-mode-vi v send-keys -X begin-selection
-      bind-key -T copy-mode-vi w send-keys -X select-word
     '';
   };
 
