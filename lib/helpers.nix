@@ -38,7 +38,7 @@
           username
           stateVersion
           isDarwin
-					isNixOS
+	  isNixOS
           ;
         my-nixvim-config = inputs.my-nixvim-config;
         inherit nixvimSpecialArgs;

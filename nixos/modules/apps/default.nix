@@ -1,12 +1,12 @@
 _: {
-  imports = [
-	  ./browser
-		  ./email
-		  ./gadgets
-		  ./media
-		  ./notes
-		  ./reader
-./steam
-./rofi
-  ];
-}
+		 imports = [
+			 ./browser
+				 ./creative
+				 ./email
+				 ./media
+				 ./notes
+				 ./reader
+				 ./steam
+				 ./rofi
+		 ];
+	 }

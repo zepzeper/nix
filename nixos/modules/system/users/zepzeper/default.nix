@@ -3,6 +3,7 @@
   users.users.zepzeper = {
     isNormalUser = true;
     description = "Wouter";
+		group = "users";
     extraGroups = [
       "networkmanager"
       "wheel"

@@ -90,17 +90,17 @@ in
           {
             on = [
               "g"
-              "D"
+              "w"
             ];
-            run = "cd ~/Desktop/";
-            desc = "Go to Desktop";
+            run = "cd ~/work/";
+            desc = "Go to Work";
           }
           {
             on = [
               "g"
               "N"
             ];
-            run = "cd ~/nix-config/";
+            run = "cd ~/.dotfiles/nix/";
             desc = "Go to Nix-Config dir";
           }
           {
@@ -108,15 +108,15 @@ in
               "g"
               "n"
             ];
-            run = "cd ~/.config/nixvim/";
+            run = "cd ~/.dotfiles/nixvim/";
             desc = "Go to Nixvim Config dir";
           }
           {
             on = [
               "g"
-              "P"
+              "p"
             ];
-            run = "cd ~/Projects/";
+            run = "cd ~/personal/";
             desc = "Go to Projects";
           }
         ];

@@ -3,6 +3,7 @@ _: {
     ./dua
 		./duf
     ./fastfetch
+		./speedtest
     ./git
 		./gping
     ./lsd
@@ -10,5 +11,7 @@ _: {
 		./sops
     ./tmux
     ./yazi
+
+    ./extra
   ];
 }
