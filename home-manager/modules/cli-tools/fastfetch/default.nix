@@ -24,4 +24,10 @@
       ];
     };
   };
+
+  programs.zsh = {
+    shellAliases = {
+      ff = "fastfetch";
+    };
+  };
 }

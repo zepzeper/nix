@@ -3,6 +3,7 @@ _: {
 		./hyprland
     ./alacritty
 		 ./neovide
+		 ./rofi
 		# ./texlive
   ];
 }

@@ -51,13 +51,15 @@
         # App launchers
         "$mod, Return, exec, alacritty"
         "$mod, Space, exec, rofi -show drun"
+        "$mod, C, exec, rofi -show calc"
         "$mod, B, exec, brave"
+        "$mod, P, exec, spotify"
+        "$mod, G, exec, gimp"
         
         # Window management
         "$mod, Q, killactive"
         "$mod, M, exit"
         "$mod, V, togglefloating"
-        "$mod, P, pseudo"
         "$mod, J, togglesplit"
         "$mod, F, fullscreen"
         
