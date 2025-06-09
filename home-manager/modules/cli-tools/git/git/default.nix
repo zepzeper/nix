@@ -13,6 +13,11 @@
     userName = "Zepzeper";
     userEmail = "wouterschiedam98@gmail.com";
 
+		aliases = {
+			pushall = "push --recurse-submodules=on-demand";
+			pullall = "pull --recurse-submodules=on-demand";
+		};
+
 		extraConfig = {
 			safe = {
 				directory = [

@@ -64,6 +64,12 @@
     in
     {
       settings = {
+
+				experimental-features = [
+					"nix-command"
+						"flakes"
+				];
+
         # Disable global registry
         flake-regisstry = "";
         # Workaround for https://github.com/NixOS/nix/issues/9574
