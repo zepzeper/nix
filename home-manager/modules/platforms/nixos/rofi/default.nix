@@ -2,7 +2,7 @@
 {
   programs.rofi = {
     enable = true;
-    theme = ".config/rofi/rose-pine";
+    theme = "${config.home.homeDirectory}/.dotfiles/rofi/rose-pine";
     extraConfig = {
       modi = "drun,run,window";
       show-icons = true;

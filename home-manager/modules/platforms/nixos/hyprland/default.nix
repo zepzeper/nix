@@ -99,10 +99,10 @@
       ipc = "on";
       splash = false;
       preload = [
-        "~/Wallpapers/wall-2.jpg"
+        "~/Wallpapers/wall-1.jpg"
       ];
       wallpaper = [
-        ",~/Wallpapers/wall-2.jpg"
+        ",~/Wallpapers/wall-1.jpg"
       ];
     };
   };
