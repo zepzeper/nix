@@ -286,11 +286,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1749466877,
-        "narHash": "sha256-XYJ42+phqlHsg+F1GLky6OavUAJnU9G9P/Zq/A90ek4=",
+        "lastModified": 1749472642,
+        "narHash": "sha256-QECLipLX/l+D6PusVt0L8TWfp/pkT3Is/u/mgqEyoSk=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "fb546aaa6154a0d0ba82e20b20f1f12f818df537",
+        "rev": "3192389b877fabb71bbcf78c67349a1f6790a9ac",
         "type": "github"
       },
       "original": {
@@ -302,11 +302,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1749467301,
-        "narHash": "sha256-/HICqucf2QlJGtTXXFCtmcC+2gvCPlaSwaJ2X0zBhkY=",
+        "lastModified": 1749470479,
+        "narHash": "sha256-9APmzfWZYoBsLapr9e/wZWT6PGCjRXjdH2amJuZ1Iww=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "455309bb9564d1e39ece54080209840662059d04",
+        "rev": "aab3736a91f3e27b58ada8b99a33489958ac1ca6",
         "type": "github"
       },
       "original": {
@@ -389,11 +389,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1749410258,
-        "narHash": "sha256-C7X/mLccrPd87iJTRlamCsFXfWr1uFrZ3uIHFpqzw+o=",
+        "lastModified": 1749468664,
+        "narHash": "sha256-QcqDBMzNGL1V4YI/zxTdnmhSTCDC8BHTnzx504Kk5lg=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "231e01e39b187d9a84b4a27871eb2bc4fb5c7d84",
+        "rev": "81468253eac574ed4410075eb991a338fff423df",
         "type": "github"
       },
       "original": {
@@ -616,14 +616,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1749468292,
-        "narHash": "sha256-s+VIznLD6rbs+SLjXfSME2qsJ4QAj8U4FonqPoDlrpY=",
-        "path": "/home/zepzeper/.dotfiles/nixvim",
-        "type": "path"
+        "lastModified": 1749468373,
+        "narHash": "sha256-zrbQmC9WPOND4ufabDFtbFvC6rJrTHTyfYGPx9/0rMM=",
+        "owner": "zepzeper",
+        "repo": "nixvim",
+        "rev": "a55157700b76c03cbb838f9164c68e672a7f276d",
+        "type": "github"
       },
       "original": {
-        "path": "/home/zepzeper/.dotfiles/nixvim",
-        "type": "path"
+        "owner": "zepzeper",
+        "repo": "nixvim",
+        "type": "github"
       }
     },
     "naersk": {
