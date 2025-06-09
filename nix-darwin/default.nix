@@ -14,9 +14,7 @@
     inputs.nix-homebrew.darwinModules.nix-homebrew
     ./${hostname}
     ./modules/appearance
-    ./modules/booster
-    ./modules/creativity
-    ./modules/social
+    ./modules/apps
   ];
 
   # Only install the docs I use
