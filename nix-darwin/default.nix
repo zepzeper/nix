@@ -24,7 +24,7 @@
   documentation.man.enable = true;
 
   environment = {
-    shells = [ pkgs.fish ];
+    shells = [ pkgs.zsh ];
     systemPackages = with pkgs; [
       git
       mas

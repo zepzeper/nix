@@ -1,8 +1,8 @@
 { username, ... }:
 {
   homebrew = {
+		casks = [];
   };
-
 
   services.openssh = {
     enable = true;
