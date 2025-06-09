@@ -80,6 +80,7 @@
       isVM = false;
     in
     inputs.nix-darwin.lib.darwinSystem {
+			system = platform;
       specialArgs = {
         inherit
           inputs
@@ -87,6 +88,7 @@
           hostname
           platform
           username
+					stateVersion
           isVM
           ;
       };

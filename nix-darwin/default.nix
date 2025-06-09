@@ -7,6 +7,7 @@
   pkgs,
   platform,
   username,
+	stateVersion,
   ...
 }:
 {
@@ -87,7 +88,7 @@
 
   system = {
 
-    stateVersion = 6;
+    stateVersion = stateVersion;
 
     defaults = {
       CustomUserPreferences = {
