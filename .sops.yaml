@@ -1,5 +1,5 @@
 keys:
-  - &zepzeper age1pmrk3gwqmau8nz55aavjsz4akych58lk097nrfz3p4463gtrkufq9nl22m
+  - &zepzeper age1ew8pjdhswnhvtnetx9jdq6y7ay9qqfkx2dwgagjseeeu9rc52c5sqgawrf
 creation_rules:
   - path_regex: secrets\.yaml$
     key_groups:
