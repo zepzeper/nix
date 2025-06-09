@@ -65,13 +65,10 @@
     {
       settings = {
 
-				experimental-features = [
-					"nix-command"
-						"flakes"
-				];
+	      extraOptions = ''
+		      experimental-features = nix-command flakes
+		      '';
 
-        # Disable global registry
-        flake-regisstry = "";
         # Workaround for https://github.com/NixOS/nix/issues/9574
         nix-path = config.nix.nixPath;
         warn-dirty = false;
@@ -94,7 +91,6 @@
 
   system.primaryUser = username;
   system = {
-
     stateVersion = stateVersion;
 
     defaults = {
@@ -129,6 +125,11 @@
         # Turn on app auto-update
         "com.apple.commerce".AutoUpdate = true;
 
+				"com.apple.symbolichotkeys" = {
+					appleSymbolicHotKeys = {
+						"64" = { enabled = false; };  # Disable Cmd+Space Spotlight shortcut
+					};
+				};
       };
 
       NSGlobalDomain = {

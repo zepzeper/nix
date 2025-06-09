@@ -6,6 +6,10 @@
     aerospace
   ];
 
-	settings = builtins.fromTOML (builtins.readFile "${config.home.homeDirectory}/.dotfiles/aerospace/aerospace.toml");
+  home.file = {
+    ".config/aerospace/aerospace.toml" = {
+    source = "/Users/zepzeper/.dotfiles/aerospace/aerospace.toml";
+	};
+  };
 
 }

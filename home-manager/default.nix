@@ -26,6 +26,7 @@
       ./modules/platforms/nixos
     ];
 
+
   home = {
     inherit stateVersion;
     inherit username;
@@ -45,6 +46,10 @@
       })
     ];
   };
+
+  accounts.calendar.basePath = "${config.home.homeDirectory}/.calendar";
+  accounts.contact.basePath = "${config.home.homeDirectory}/.contacts";
+
 
   programs.home-manager.enable = true;
 
