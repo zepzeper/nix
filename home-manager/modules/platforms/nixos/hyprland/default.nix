@@ -35,15 +35,33 @@
       # Misc settings
       misc = {
         force_default_wallpaper = true;
+        # Add these cursor-related settings
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        vfr = true;
+        vrr = 0;
       };
       
-      # Environment variables for NVIDIA
+      # Add cursor settings
+      cursor = {
+        no_hardware_cursors = true;
+        enable_hyprcursor = false;
+        hide_on_key_press = false;
+      };
+      
+      # Environment variables for NVIDIA - expanded for stability
       env = [
         "LIBVA_DRIVER_NAME,nvidia"
         "XDG_SESSION_TYPE,wayland"
         "GBM_BACKEND,nvidia-drm"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "WLR_NO_HARDWARE_CURSORS,1"
+        # Additional stability env vars
+        "NVIDIA_EXPERIMENTAL_EXPLICIT_SYNC,1"
+        "WLR_DRM_NO_ATOMIC,1"
+        "WLR_RENDERER,gles2"
+        "__GL_GSYNC_ALLOWED,0"
+        "__GL_VRR_ALLOWED,0"
       ];
       
       # Key bindings
@@ -91,7 +109,7 @@
       ];
     };
   };
-
+  
   # Hyprpaper service for wallpapers (only on Linux)
   services.hyprpaper = {
     enable = true;

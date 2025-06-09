@@ -120,22 +120,22 @@
 
   # Ensure your custom scripts are available
   home.file = {
-    "scripts/tmux-sessionizer.sh" = {
+    "${config.home.homeDirectory}/scripts/tmux-sessionizer.sh" = {
       source = "${config.home.homeDirectory}/.dotfiles/scripts/tmux-sessionizer.sh";
       executable = true;
     };
 
-    "scripts/nix-devonizer.sh" = {
+    "${config.home.homeDirectory}/scripts/nix-devonizer.sh" = {
       source = "${config.home.homeDirectory}/.dotfiles/scripts/nix-devonizer.sh";
       executable = true;
     };
 
-    "scripts/snipster.sh" = {
+    "${config.home.homeDirectory}/scripts/snipster.sh" = {
       source = "${config.home.homeDirectory}/.dotfiles/scripts/snipster.sh";
       executable = true;
     };
 
-    "scripts/cheat.sh" = {
+    "${config.home.homeDirectory}/scripts/cheat.sh" = {
       source = "${config.home.homeDirectory}/.dotfiles/scripts/cheat.sh";
       executable = true;
     };
