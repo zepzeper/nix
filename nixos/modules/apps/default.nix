@@ -6,6 +6,7 @@ _: {
 				 ./email
 				 ./media
 				 ./notes
+				 ./podman
 				 ./reader
 				 ./steam
 				 ./work
