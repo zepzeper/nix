@@ -1,5 +1,6 @@
 _: {
 		 imports = [
+			 ./1password
 			 ./browser
 				 ./creative
 				 ./discord
