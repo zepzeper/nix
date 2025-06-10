@@ -1,8 +1,10 @@
 { pkgs, ... }:
 {
   imports = [
+		./1password
     ./browser
     ./discord
+		./karabiner
     ./mail
 		./obsidian
 		./orbstack
