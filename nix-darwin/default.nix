@@ -157,9 +157,13 @@
         orientation = "bottom";
         autohide = true;
         persistent-apps = [
+					"${pkgs.alacritty}/Applications/Alacritty.app"
+						"/Applications/Brave Browser.app"
+						"/Applications/Thunderbird.app"				
+						"/Applications/Slack.app"
         ];
         show-recents = false;
-        tilesize = 48;
+        tilesize = 36;
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
         wvous-tl-corner = 1;
@@ -169,7 +173,7 @@
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
         FXDefaultSearchScope = "SCcf";
-        FXPreferredViewStyle = "Nlsv";
+        FXPreferredViewStyle = "clmv"; #column view
         FXRemoveOldTrashItems = true;
         NewWindowTarget = "Desktop";
         ShowExternalHardDrivesOnDesktop = true;
@@ -183,7 +187,7 @@
       };
       screensaver = {
         askForPassword = true;
-        askForPasswordDelay = 300;
+        askForPasswordDelay = 3000;
       };
       WindowManager = {
         StandardHideDesktopIcons = true;
