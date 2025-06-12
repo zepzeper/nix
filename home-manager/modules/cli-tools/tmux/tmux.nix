@@ -20,6 +20,7 @@
       set -sag terminal-features ",*:RGB"
       set -sag terminal-features ",*:usstyle"
       set-option -ga terminal-overrides ",*-256color*:TC"
+			set-option -sg escape-time 10
 
       set -g prefix C-a
       unbind C-b

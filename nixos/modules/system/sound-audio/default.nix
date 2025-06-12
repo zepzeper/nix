@@ -4,6 +4,12 @@
   ...
 }: {
   services.pulseaudio.enable = false;
+	security.wrappers.ffmpeg = {
+		owner = "root";
+		group = "video";
+		capabilities = "cap_sys_admin+ep";
+		source = "${pkgs.ffmpeg}/bin/ffmpeg";
+	};
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
