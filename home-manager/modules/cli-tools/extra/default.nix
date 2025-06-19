@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   prettierNoLicense = pkgs.symlinkJoin {
@@ -9,30 +9,35 @@ let
     '';
   };
 in {
-  home.packages = with pkgs; [
-    fzf
-    ripgrep
-    fd
-    gcc
-    cmake
-    jq
-    ffmpeg
-    wf-recorder
-    mpv
-    xorg.xrandr
-    imagemagick_light
-    glab
-    prettierNoLicense
-
+	home.packages = with pkgs; [
+		fzf
+		ripgrep
+		fd
+		gcc
+		cmake
+		jq
+		ffmpeg
+		prettierNoLicense
+		go
 		nodejs
 		vscode-extensions.xdebug.php-debug
-    php84Packages.composer
-    php
-  ];
+		php84Packages.composer
+		(php84.withExtensions ({ enabled, all }: enabled ++ [ all.redis ]))
+	] ++ lib.optionals stdenv.isLinux [
+		wf-recorder
+		mpv
+		xorg.xrandr
+		imagemagick_light
+		glab
+		postman
+
+		libnotify
+		hyprshot
+	];
 
   programs.zsh = {
     shellAliases = {
-      grep = "ripgrep";
+      grep = "rg";
       find = "fd";
     };
   };

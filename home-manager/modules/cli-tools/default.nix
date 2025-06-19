@@ -7,7 +7,9 @@ _: {
     ./git
 		./gping
     ./lsd
+    ./lynx
 		./procs
+		./redis
 		./sops
     ./tmux
     ./yazi

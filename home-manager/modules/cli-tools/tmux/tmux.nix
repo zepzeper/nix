@@ -41,8 +41,6 @@
 
       bind - split-window -v -c "#{pane_current_path}"
 
-      bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
-
       set -g mouse on
 
       set -g pane-base-index 1
@@ -58,7 +56,7 @@
       bind-key -T copy-mode-vi w send-keys -X select-word
       unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode after dragging with mouse
 
-# ----- tpipeline configuration -----
+			# ----- tpipeline configuration -----
       # Set the status bar at the bottom
       set -g status-position bottom
 
@@ -107,6 +105,7 @@
       bind-key g new-window "${config.home.homeDirectory}/scripts/nix-devonizer.sh"
       bind-key i new-window "${config.home.homeDirectory}/scripts/cheat.sh"
       bind-key u new-window "${config.home.homeDirectory}/scripts/snipster.sh"
+      bind-key r new-window "${config.home.homeDirectory}/scripts/rec.sh"
 
     '';
   };
@@ -138,6 +137,10 @@
 
     "${config.home.homeDirectory}/scripts/cheat.sh" = {
       source = "${config.home.homeDirectory}/.dotfiles/scripts/cheat.sh";
+      executable = true;
+    };
+    "${config.home.homeDirectory}/scripts/rec.sh" = {
+      source = "${config.home.homeDirectory}/.dotfiles/scripts/rec.sh";
       executable = true;
     };
   };

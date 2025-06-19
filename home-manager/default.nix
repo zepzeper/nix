@@ -26,7 +26,6 @@
       ./modules/platforms/nixos
     ];
 
-
   home = {
     inherit stateVersion;
     inherit username;

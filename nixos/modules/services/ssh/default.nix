@@ -8,7 +8,8 @@
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = false;
+        PasswordAuthentication = true;
+        PubkeyAuthentication = true;
         PermitRootLogin = "no";
       };
     };

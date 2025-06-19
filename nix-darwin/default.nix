@@ -55,6 +55,7 @@
 
   nixpkgs = {
     config.allowUnfree = true;
+		config.allowUnfreePredicate = _: true;
     hostPlatform = lib.mkDefault "${platform}";
   };
 
