@@ -49,9 +49,6 @@
   accounts.calendar.basePath = "${config.home.homeDirectory}/.calendar";
   accounts.contact.basePath = "${config.home.homeDirectory}/.contacts";
 
-
-  programs.home-manager.enable = true;
-
   fonts.fontconfig.enable = true;
 
   news.display = "silent";

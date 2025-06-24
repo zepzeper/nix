@@ -9,7 +9,6 @@ _: {
     ./lsd
     ./lynx
 		./procs
-		./redis
 		./sops
     ./tmux
     ./yazi
