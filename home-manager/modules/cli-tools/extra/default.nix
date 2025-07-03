@@ -44,6 +44,11 @@ let
     # ---- Common Utilities ----
     all.bcmath      # For arbitrary precision mathematics
     all.gd          # For image processing
+    all.filter
+    all.session
+    all.xml
+    all.xmlwriter
+    all.simplexml
   ]);
 
   php-with-debugger = pkgs.symlinkJoin {
@@ -72,12 +77,14 @@ in {
 		prettierNoLicense
 		go
 		nodejs
-        yarn
+    yarn
 		vscode-extensions.xdebug.php-debug
 		php84Packages.composer
 		php-with-debugger
-        intelephense
+    intelephense
 		my-python-env
+
+    postman
 	] ++ lib.optionals stdenv.isLinux [
 		wf-recorder
 		mpv

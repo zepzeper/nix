@@ -23,6 +23,22 @@ let
       orange = "#fab387";
     };
 
+    gruvbox = {
+      blue     = "#83a598";
+      lavender = "#d3869b";  # Closest approximation
+        sapphire = "#458588";  # Muted cyan/blue tone
+        sky      = "#689d6a";  # Muted aqua/green
+        teal     = "#8ec07c";  # Pastel green
+        green    = "#b8bb26";
+      red      = "#fb4934";
+      text     = "#ebdbb2";
+      subtext  = "#a89984";
+      overlay  = "#665c54";
+      purple   = "#d3869b";
+      yellow   = "#fabd2f";
+      orange   = "#fe8019";
+    };
+
     # Tokyo Night palette
     tokyonight = {
       blue = "#7aa2f7";
