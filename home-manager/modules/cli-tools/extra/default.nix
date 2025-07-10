@@ -69,20 +69,37 @@ in {
 	home.packages = with pkgs; [
 		fzf
 		ripgrep
-		fd
 		gcc
+    raylib
+    clang-tools
+    rustc    # The Rust compiler
+    cargo    # Rust's package manager
+    pkg-config # Needed by some build scripts
+    gnumake  # The 'make' command
+    cryptopp
 		cmake
+    webkitgtk_4_1
+    gdk-pixbuf
 		jq
 		ffmpeg
 		prettierNoLicense
 		go
+    gopls
 		nodejs
     yarn
+    bootdev-cli
+    xxd
+
+
 		vscode-extensions.xdebug.php-debug
 		php84Packages.composer
 		php-with-debugger
     intelephense
+    lua-language-server
 		my-python-env
+    vscode-langservers-extracted
+    tailwindcss-language-server
+    rust-analyzer 
 
     postman
 	] ++ lib.optionals stdenv.isLinux [
@@ -103,7 +120,6 @@ in {
   programs.zsh = {
     shellAliases = {
       grep = "rg";
-      find = "fd";
     };
   };
 }

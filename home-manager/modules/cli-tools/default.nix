@@ -6,6 +6,7 @@ _: {
 		./speedtest
     ./git
 		./gping
+		./love2d
     ./lsd
     ./lynx
 		./procs
