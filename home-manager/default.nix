@@ -18,6 +18,8 @@
       ./modules/cli-tools
       ./modules/fonts
       ./modules/scripts
+      inputs.sops-nix.homeManagerModules.default
+      ./modules/sops
     ]
     ++ lib.optionals (isNixOS) [
       ./modules/platforms/nixos

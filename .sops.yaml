@@ -1,8 +1,8 @@
 keys:
-  - &users:
-    - &zepzeper age1h7nrzudldl77vx4tsd6tvm3k062yjyjtjd4mdvpwp8qxdkgu0y7qtsvk9a
-  - &hosts:
-    - &nixix: age1ruadjdqmttwcyvn6hpfwhn5867d73rvztehn4v78y3cqnz2ezf3qqlk7cd
+  - &users
+    - &zepzeper age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
+  - &hosts
+    - &nixix age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
 creation_rules:
   - path_regex: secrets\.yaml$
     key_groups:

@@ -31,6 +31,11 @@
       source = ../../scripts/nix-vm;
       executable = true;
     };
+    
+    ".local/bin/encrypt-ssh-keys" = {
+      source = ../../scripts/encrypt-ssh-keys;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH
