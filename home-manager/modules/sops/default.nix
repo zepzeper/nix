@@ -8,7 +8,7 @@
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
     
     # Path to secrets file
-    defaultSopsFile = ../../secrets.yaml;
+    defaultSopsFile = ../../../secrets.yaml;
     
     secrets = {
       # Main SSH key

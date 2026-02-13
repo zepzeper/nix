@@ -37,7 +37,8 @@
     in
     {
       homeConfigurations = {
-        "zepzeper@desktop" = helper.mkHome {
+        desktop = helper.mkHome {
+          username = "zepzeper";
           hostname = "desktop";
           platform = "x86_64-linux";
         };
@@ -45,6 +46,7 @@
 
       nixosConfigurations = {
         desktop = helper.mkNixOS {
+          username = "zepzeper";
           hostname = "desktop";
           platform = "x86_64-linux";
         };
@@ -58,7 +60,6 @@
 			  default = pkgs.mkShell {
 			  packages = [
 			  inputs.home-manager.packages.${system}.home-manager
-			  pkgs.git
 			  ];
 			  };
 			  });

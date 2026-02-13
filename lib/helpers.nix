@@ -9,11 +9,11 @@
   mkHome =
     {
       hostname,
-      username ? "zepzeper",
-      platform ? "x86_64-linux",
+      username,
+      platform,
     }:
     let
-      isNixOS = hostname == "desktop";
+      isNixOS = true;
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${platform};
@@ -34,8 +34,8 @@
   mkNixOS =
     {
       hostname,
-      username ? "zepzeper",
-      platform ? "x86_64-linux",
+      username,
+      platform,
     }:
     let
       isVM = false;

@@ -3,16 +3,16 @@
   ...
 }:
 {
-  wayland.windowManager.hyprland = {
-    enable = true;
-    settings = builtins.fromJSON (builtins.readFile "${config.home.homeDirectory}/.dotfiles/hyprland/hyprland.json");
-  };
+  #wayland.windowManager.hyprland = {
+  #  enable = true;
+  #  settings = builtins.fromJSON (builtins.readFile "${config.home.homeDirectory}/personal/dotfiles/hyprland/hyprland.json");
+  #};
   
   # Hyprpaper service for wallpapers
-  services.hyprpaper = {
-    enable = true;
-    settings = builtins.fromJSON (builtins.readFile "${config.home.homeDirectory}/.dotfiles/hyprland/hyprpaper.json");
-  };
+  #services.hyprpaper = {
+  #  enable = true;
+  #  settings = builtins.fromJSON (builtins.readFile "${config.home.homeDirectory}/.dotfiles/hyprland/hyprpaper.json");
+  #};
 
 	services.mako = {
 		enable = true;

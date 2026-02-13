@@ -1,7 +1,13 @@
-_: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     git
-    gh
-    lazygit
   ];
+
+  programs.git = {
+    enable = true;
+
+    userName = "zepzeper";
+    userEmail = "wouterschiedam98@gmail.com";
+  };
 }

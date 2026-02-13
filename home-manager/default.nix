@@ -32,7 +32,7 @@
 
     sessionVariables = lib.mkMerge [
       {
-				USER = username;
+	USER = username;
         EDITOR = "nvim";
       }
       (lib.mkIf isNixOS {
