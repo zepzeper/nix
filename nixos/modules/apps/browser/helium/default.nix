@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    nur.repos.Ev357.helium
+    inputs.nur.repos.Ev357.helium
   ];
 }
