@@ -13,7 +13,7 @@
       platform ? "x86_64-linux",
     }:
     let
-      isNixOS = hostname == "nixix";
+      isNixOS = hostname == "desktop";
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${platform};

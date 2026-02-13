@@ -7,7 +7,7 @@
 set -e
 
 NIX_DIR="${HOME}/personal/nix"
-HOSTNAME="nixix"
+HOSTNAME="desktop"
 VM_MEMORY="4096"  # 4GB RAM for VM
 VM_CORES="2"
 
@@ -38,7 +38,7 @@ show_help() {
 }
 
 VM_DIR="${NIX_DIR}/result"
-VM_DISK="${NIX_DIR}/nixix-vm-disk.qcow2"
+VM_DISK="${NIX_DIR}/desktop-vm-disk.qcow2"
 VM_BIN="${VM_DIR}/bin/run-${HOSTNAME}-vm"
 
 build_vm() {

@@ -37,15 +37,15 @@
     in
     {
       homeConfigurations = {
-        "zepzeper@nixix" = helper.mkHome {
-          hostname = "nixix";
+        "zepzeper@desktop" = helper.mkHome {
+          hostname = "desktop";
           platform = "x86_64-linux";
         };
       };
 
       nixosConfigurations = {
-        nixix = helper.mkNixOS {
-          hostname = "nixix";
+        desktop = helper.mkNixOS {
+          hostname = "desktop";
           platform = "x86_64-linux";
         };
       };

@@ -77,7 +77,7 @@ stop_recording() {
 # System functions
 system_update() {
     notify-send "System Update" "Starting update..."
-    sudo nixos-rebuild switch --flake /home/$USER/.dotfiles/nix#nixix
+    sudo nixos-rebuild switch --flake /home/$USER/.dotfiles/nix#desktop
     notify-send "System Update" "Complete!"
 }
 
