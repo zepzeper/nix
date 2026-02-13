@@ -11,6 +11,7 @@
 }:
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./hardware-configuration.nix
     ./modules/system
     ./modules/services
