@@ -100,21 +100,22 @@ echo ""
 
 # Encrypt the file
 if sops --encrypt --in-place "$TMP_DIR/secrets.yaml"; then
+    # Copy to a safe location
+    OUTPUT_FILE="$HOME/personal/nix/secrets.yaml"
+    cp "$TMP_DIR/secrets.yaml" "$OUTPUT_FILE"
+    
     echo "✅ Successfully encrypted!"
     echo ""
-    echo "Next steps:"
-    echo "1. Copy the encrypted file to your nix repo:"
-    echo "   cp $TMP_DIR/secrets.yaml ~/personal/nix/"
+    echo "📁 Encrypted file copied to: $OUTPUT_FILE"
     echo ""
-    echo "2. Go to your nix repo and commit:"
+    echo "Next steps:"
+    echo "1. Go to your nix repo and commit:"
     echo "   cd ~/personal/nix"
     echo "   git add secrets.yaml .sops.yaml"
     echo "   git commit -m 'Add encrypted SSH keys'"
     echo ""
-    echo "3. Push to remote:"
+    echo "2. Push to remote:"
     echo "   git push"
-    echo ""
-    echo "4. The encrypted file is at: $TMP_DIR/secrets.yaml"
     echo ""
     echo "⚠️  IMPORTANT: Keep your age private key safe!"
     echo "   It's at: ~/.config/sops/age/keys.txt"
@@ -122,8 +123,9 @@ if sops --encrypt --in-place "$TMP_DIR/secrets.yaml"; then
     echo "   ~/.config/sops/age/keys.txt"
 else
     echo "❌ Encryption failed"
+    rm -rf "$TMP_DIR"
     exit 1
 fi
 
-# Cleanup
+# Cleanup temp files
 rm -rf "$TMP_DIR"
