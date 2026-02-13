@@ -12,6 +12,7 @@
 {
   imports =
     [
+      ./modules/dotfiles
       ./modules/neovim
       ./modules/shell
       ./modules/cli-tools

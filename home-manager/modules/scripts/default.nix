@@ -21,6 +21,11 @@
       source = ../../scripts/nix-launcher;
       executable = true;
     };
+    
+    ".local/bin/nix-rebuild" = {
+      source = ../../scripts/nix-rebuild;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH
@@ -34,5 +39,6 @@
     shot = "nix-shot";
     rec = "nix-rec";
     launcher = "nix-launcher";
+    rebuild = "nix-rebuild";
   };
 }
