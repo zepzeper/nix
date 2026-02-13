@@ -36,6 +36,11 @@
       source = ../../scripts/encrypt-ssh-keys;
       executable = true;
     };
+    
+    ".local/bin/install-hooks" = {
+      source = ../../scripts/install-hooks;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH

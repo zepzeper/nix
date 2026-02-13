@@ -1,0 +1,38 @@
+# Nix
+result
+result-*
+*.qcow2
+*.iso
+nixos-switch.log
+
+# Secrets - NEVER commit these!
+*.key
+*.pem
+*.priv
+id_ed25519
+id_rsa
+id_ecdsa
+id_dsa
+id_*.chartbuddy
+!id_*.pub
+!id_*.chartbuddy.pub
+keys.txt
+*.age
+.sops.yaml.backup*
+secrets.yaml.backup*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
