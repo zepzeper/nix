@@ -26,6 +26,11 @@
       source = ../../scripts/nix-rebuild;
       executable = true;
     };
+    
+    ".local/bin/nix-vm" = {
+      source = ../../scripts/nix-vm;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH
@@ -40,5 +45,6 @@
     rec = "nix-rec";
     launcher = "nix-launcher";
     rebuild = "nix-rebuild";
+    vm = "nix-vm";
   };
 }
