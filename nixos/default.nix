@@ -35,6 +35,9 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = lib.mkDefault "${platform}";
+    overlays = [
+      inputs.nur.overlay
+    ];
   };
 
   services.xserver.xkb = {

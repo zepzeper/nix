@@ -18,28 +18,10 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    blink-cmp = {
-      url = "github:saghen/blink.cmp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    #  my-nixvim-config = {
-    #    #url = "github:zepzeper/nixvim";
-			 # url = "path:/home/zepzeper/.dotfiles/nixvim"; # local path for testing
-    # 
-    #    inputs.nixpkgs.follows = "nixpkgs";
-    #    inputs.nixvim.follows = "nixvim";
-    #    inputs.blink-cmp.follows = "blink-cmp";
-    #  };
-
     sops-nix.url = "github:Mic92/sops-nix";
     hyprland.url = "github:hyprwm/Hyprland";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nur.url = "github:nix-community/NUR";
   };
   outputs =
     {

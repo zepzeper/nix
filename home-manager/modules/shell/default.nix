@@ -1,7 +1,6 @@
 _: {
   imports = [
-		./ssh
-    ./starship
+    ./ssh
     ./zsh
   ];
 }

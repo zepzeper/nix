@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# Quick Launcher Utility
+# Wrapper around rofi with common actions
+#
+
+set -e
+
+case "${1:-drun}" in
+    drun|app)
+        # Launch application
+        rofi -show drun -show-icons
+        ;;
+    run)
+        # Run command
+        rofi -show run
+        ;;
+    window)
+        # Switch window
+        rofi -show window
+        ;;
+    emoji)
+        # Emoji picker
+        rofi -modi emoji -show emoji
+        ;;
+    calc)
+        # Calculator
+        rofi -modi calc -show calc -no-show-match -no-sort
+        ;;
+    ssh)
+        # SSH connections
+        rofi -modi ssh -show ssh
+        ;;
+    files)
+        # File browser
+        rofi -modi filebrowser -show filebrowser
+        ;;
+    menu|m)
+        # System menu
+        nix-menu --gui
+        ;;
+    *)
+        echo "Usage: nix-launcher [drun|run|window|emoji|calc|ssh|files|menu]"
+        echo ""
+        echo "Commands:"
+        echo "  drun     Launch applications (default)"
+        echo "  run      Run commands"
+        echo "  window   Switch windows"
+        echo "  emoji    Emoji picker"
+        echo "  calc     Calculator"
+        echo "  ssh      SSH connections"
+        echo "  files    File browser"
+        echo "  menu     System menu"
+        exit 1
+        ;;
+esac

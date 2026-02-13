@@ -14,17 +14,6 @@
     }:
     let
       isNixOS = hostname == "nixix";
-
-      nixvimSpecialArgs = {
-        inputs = {
-          nixpkgs = inputs.nixpkgs;
-          nixvim = inputs.nixvim;
-          blink-cmp = inputs.blink-cmp;
-          self = inputs.my-nixvim-config;
-        };
-        self = inputs.my-nixvim-config;
-      };
-
     in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${platform};
@@ -38,8 +27,6 @@
           stateVersion
           isNixOS
           ;
-        my-nixvim-config = inputs.my-nixvim-config;
-        inherit nixvimSpecialArgs;
       };
       modules = [ ../home-manager ];
     };

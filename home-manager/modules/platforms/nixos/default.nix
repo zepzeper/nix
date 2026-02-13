@@ -1,8 +1,6 @@
 _: {
   imports = [
-		./hyprland
-    ./alacritty
-    ./neovide
+    ./hyprland
     ./rofi
   ];
 }

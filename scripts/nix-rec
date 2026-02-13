@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+#
+# Screen Recording Utility
+# Usage: nix-rec [region|screen|stop|status]
+#
+
+set -e
+
+RECORDING_DIR="${RECORDING_DIR:-$HOME/Videos/recordings}"
+mkdir -p "$RECORDING_DIR"
+
+PIDFILE="/tmp/nix-recording.pid"
+
+start_recording() {
+    local mode="${1:-region}"
+    
+    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+        echo "Recording already in progress!"
+        notify-send "Recording Error" "Already recording"
+        exit 1
+    fi
+    
+    local filename="$RECORDING_DIR/recording_$(date +%Y%m%d_%H%M%S).mp4"
+    
+    case "$mode" in
+        region|r)
+            wf-recorder -g "$(slurp)" -f "$filename" &
+            ;;
+        screen|s)
+            wf-recorder -f "$filename" &
+            ;;
+    esac
+    
+    echo $! > "$PIDFILE"
+    notify-send "Recording Started" "Mode: $mode"
+    echo "Recording to: $filename"
+    echo "Stop with: nix-rec stop"
+}
+
+stop_recording() {
+    if [ -f "$PIDFILE" ]; then
+        local pid=$(cat "$PIDFILE")
+        if kill -0 "$pid" 2>/dev/null; then
+            kill -INT "$pid"
+            rm "$PIDFILE"
+            notify-send "Recording Stopped" "Saved to Videos/recordings"
+            echo "Recording stopped"
+        else
+            rm "$PIDFILE"
+            echo "No active recording"
+        fi
+    else
+        echo "No recording in progress"
+    fi
+}
+
+show_status() {
+    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+        echo "Recording in progress (PID: $(cat "$PIDFILE"))"
+    else
+        echo "No recording in progress"
+    fi
+}
+
+case "${1:-region}" in
+    start|region|r)
+        start_recording region
+        ;;
+    screen|s)
+        start_recording screen
+        ;;
+    stop)
+        stop_recording
+        ;;
+    status)
+        show_status
+        ;;
+    *)
+        echo "Usage: nix-rec [region|screen|stop|status]"
+        echo ""
+        echo "Commands:"
+        echo "  region    Record selected region (default)"
+        echo "  screen    Record full screen"
+        echo "  stop      Stop recording"
+        echo "  status    Show recording status"
+        exit 1
+        ;;
+esac

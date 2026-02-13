@@ -1,8 +1,7 @@
-_:{
-  imports = [
-		./git
-		./github
-		./jj
-		./lazygit
+_: {
+  home.packages = with pkgs; [
+    git
+    gh
+    lazygit
   ];
 }

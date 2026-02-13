@@ -3,12 +3,12 @@
   users.users.zepzeper = {
     isNormalUser = true;
     description = "Wouter";
-		group = "users";
+    group = "users";
     extraGroups = [
       "networkmanager"
       "wheel"
-			"video"
-			"podman"
+        "video"
+        "podman"
     ];
     packages = with pkgs; [
       thunderbird

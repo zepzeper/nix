@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# Quick Screenshot Utility
+# Usage: nix-shot [full|region|window] [filename]
+#
+
+set -e
+
+SCREENSHOT_DIR="${SCREENSHOT_DIR:-$HOME/Pictures/screenshots}"
+mkdir -p "$SCREENSHOT_DIR"
+
+type="${1:-region}"
+filename="${2:-$SCREENSHOT_DIR/screenshot_$(date +%Y%m%d_%H%M%S).png}"
+
+case "$type" in
+    full|f)
+        grim "$filename"
+        ;;
+    region|r)
+        grim -g "$(slurp)" "$filename"
+        ;;
+    window|w)
+        geometry=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+        grim -g "$geometry" "$filename"
+        ;;
+    *)
+        echo "Usage: nix-shot [full|region|window] [filename]"
+        echo ""
+        echo "Examples:"
+        echo "  nix-shot full          # Full screen screenshot"
+        echo "  nix-shot region        # Select region (default)"
+        echo "  nix-shot window        # Active window only"
+        exit 1
+        ;;
+esac
+
+# Copy to clipboard
+wl-copy < "$filename"
+
+# Notify
+notify-send "Screenshot saved" "$filename"
+echo "Screenshot saved to: $filename"

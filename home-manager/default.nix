@@ -12,12 +12,11 @@
 {
   imports =
     [
-      inputs.nixvim.homeManagerModules.default
-      # ./modules/nixvim
       ./modules/neovim
       ./modules/shell
       ./modules/cli-tools
       ./modules/fonts
+      ./modules/scripts
     ]
     ++ lib.optionals (isNixOS) [
       ./modules/platforms/nixos

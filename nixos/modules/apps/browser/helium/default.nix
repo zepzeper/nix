@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    brave
+    nur.repos.Ev357.helium
   ];
 }

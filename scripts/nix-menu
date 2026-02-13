@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+#
+# Nix Menu System - Quick access to common tasks
+# Inspired by omarchy-menu
+#
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Menu items
+show_menu() {
+    echo "Nix System Menu"
+    echo "==============="
+    echo ""
+    echo "1) Screenshot (full screen)"
+    echo "2) Screenshot (region)"
+    echo "3) Screenshot (window)"
+    echo "4) Start Recording"
+    echo "5) Stop Recording"
+    echo "6) System Update"
+    echo "7) System Cleanup"
+    echo "8) Edit Config"
+    echo "9) WiFi Menu"
+    echo "10) Bluetooth Menu"
+    echo "0) Exit"
+    echo ""
+}
+
+# Screenshot functions
+screenshot_full() {
+    local filename="$HOME/Pictures/screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png"
+    mkdir -p "$(dirname "$filename")"
+    grim "$filename"
+    wl-copy < "$filename"
+    notify-send "Screenshot saved" "$filename"
+}
+
+screenshot_region() {
+    local filename="$HOME/Pictures/screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png"
+    mkdir -p "$(dirname "$filename")"
+    grim -g "$(slurp)" "$filename"
+    wl-copy < "$filename"
+    notify-send "Screenshot saved" "$filename"
+}
+
+screenshot_window() {
+    local filename="$HOME/Pictures/screenshots/screenshot_$(date +%Y%m%d_%H%M%S).png"
+    mkdir -p "$(dirname "$filename")"
+    local geometry=$(hyprctl activewindow -j | jq -r '"\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"')
+    grim -g "$geometry" "$filename"
+    wl-copy < "$filename"
+    notify-send "Screenshot saved" "$filename"
+}
+
+# Recording functions
+start_recording() {
+    if pgrep -x "wf-recorder" > /dev/null; then
+        notify-send "Recording already in progress"
+        return
+    fi
+    local filename="$HOME/Videos/recordings/recording_$(date +%Y%m%d_%H%M%S).mp4"
+    mkdir -p "$(dirname "$filename")"
+    wf-recorder -g "$(slurp)" -f "$filename" &
+    notify-send "Recording started" "Stop with menu or killall wf-recorder"
+}
+
+stop_recording() {
+    if pgrep -x "wf-recorder" > /dev/null; then
+        killall -INT wf-recorder
+        notify-send "Recording stopped"
+    else
+        notify-send "No recording in progress"
+    fi
+}
+
+# System functions
+system_update() {
+    notify-send "System Update" "Starting update..."
+    sudo nixos-rebuild switch --flake /home/$USER/.dotfiles/nix#nixix
+    notify-send "System Update" "Complete!"
+}
+
+system_cleanup() {
+    notify-send "System Cleanup" "Running garbage collection..."
+    sudo nix-collect-garbage -d
+    notify-send "System Cleanup" "Complete!"
+}
+
+edit_config() {
+    $EDITOR ~/.dotfiles/nix
+}
+
+# TUI Menus
+wifi_menu() {
+    rofi -modi "network:networkmanager_dmenu" -show network
+}
+
+bluetooth_menu() {
+    rofi-bluetooth
+}
+
+# Main loop
+main() {
+    if [ "$1" = "--gui" ] || [ "$1" = "-g" ]; then
+        # GUI mode using rofi
+        choice=$(echo -e "Screenshot Full\nScreenshot Region\nScreenshot Window\nStart Recording\nStop Recording\nSystem Update\nSystem Cleanup\nEdit Config\nWiFi Menu\nBluetooth Menu" | rofi -dmenu -p "Nix Menu")
+        
+        case "$choice" in
+            "Screenshot Full") screenshot_full ;;
+            "Screenshot Region") screenshot_region ;;
+            "Screenshot Window") screenshot_window ;;
+            "Start Recording") start_recording ;;
+            "Stop Recording") stop_recording ;;
+            "System Update") system_update ;;
+            "System Cleanup") system_cleanup ;;
+            "Edit Config") edit_config ;;
+            "WiFi Menu") wifi_menu ;;
+            "Bluetooth Menu") bluetooth_menu ;;
+        esac
+    else
+        # Terminal mode
+        while true; do
+            show_menu
+            read -p "Select option: " choice
+            
+            case "$choice" in
+                1) screenshot_full ;;
+                2) screenshot_region ;;
+                3) screenshot_window ;;
+                4) start_recording ;;
+                5) stop_recording ;;
+                6) system_update ;;
+                7) system_cleanup ;;
+                8) edit_config ;;
+                9) wifi_menu ;;
+                10) bluetooth_menu ;;
+                0) exit 0 ;;
+                *) echo "Invalid option" ;;
+            esac
+            
+            echo ""
+            read -p "Press Enter to continue..."
+        done
+    fi
+}
+
+main "$@"
