@@ -1,5 +1,5 @@
 {
-  description = "Zepzeper's nix & nix-darwin, Home Manager Configuration";
+  description = "Zepzeper's NixOS & Home Manager Configuration";
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -17,24 +17,6 @@
     };
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    nix-darwin.url = "github:LnL7/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -62,9 +44,7 @@
   outputs =
     {
       self,
-      nix-darwin,
       nixpkgs,
-      nix-homebrew,
       ...
     }@inputs:
     let
@@ -75,11 +55,6 @@
     in
     {
       homeConfigurations = {
-        # MacBooks
-        "zepzeper@m1-mbp" = helper.mkHome {
-          hostname = "m1-mbp";
-          platform = "aarch64-darwin";
-        };
         "zepzeper@nixix" = helper.mkHome {
           hostname = "nixix";
           platform = "x86_64-linux";
@@ -93,14 +68,7 @@
         };
       };
 
-      darwinConfigurations = {
-        m1-mbp = helper.mkDarwin {
-          hostname = "m1-mbp";
-          platform = "aarch64-darwin";
-        };
-      };
-
-	  devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system:
+	  devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
 			  let
 			  pkgs = nixpkgs.legacyPackages.${system};
 			  in

@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  isDarwin,
   isNixOS,
   lib,
   outputs,
@@ -20,9 +19,6 @@
       ./modules/cli-tools
       ./modules/fonts
     ]
-    ++ lib.optionals (isDarwin) [
-      ./modules/platforms/macos
-    ]
     ++ lib.optionals (isNixOS) [
       ./modules/platforms/nixos
     ];
@@ -30,7 +26,7 @@
   home = {
     inherit stateVersion;
     inherit username;
-    homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
+    homeDirectory = "/home/${username}";
 
     sessionVariables = lib.mkMerge [
       {

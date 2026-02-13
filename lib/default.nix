@@ -9,9 +9,8 @@ let
 in
 {
   inherit (helpers)
-    mkDarwin
     mkHome
-		mkNixOS
+    mkNixOS
     forAllSystems
     ;
 }
