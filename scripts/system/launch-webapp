@@ -11,25 +11,15 @@ google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi* | helium*)
 *) browser="chromium.desktop" ;;
 esac
 
-# Find the .desktop file in NixOS store paths
-desktop_file=$(find /nix/store -name "$browser" -path "*/share/applications/*" 2>/dev/null | head -1)
+# Check fast locations first (symlinked current system)
+for dir in /run/current-system/sw/share/applications ~/.local/share/applications /usr/share/applications; do
+    if [ -f "$dir/$browser" ]; then
+        browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "$dir/$browser" | head -1)
+        [ -n "$browser_exec" ] && break
+    fi
+done
 
-# If found, extract the Exec line
-if [ -n "$desktop_file" ]; then
-    browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "$desktop_file" 2>/dev/null | head -1)
-fi
-
-# Fallback: try common locations
-if [ -z "$browser_exec" ]; then
-    for dir in ~/.local/share/applications ~/.nix-profile/share/applications /usr/share/applications /run/current-system/sw/share/applications; do
-        if [ -f "$dir/$browser" ]; then
-            browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "$dir/$browser" | head -1)
-            [ -n "$browser_exec" ] && break
-        fi
-    done
-fi
-
-# Final fallback: use browser name without .desktop
+# Fallback: use browser name without .desktop
 if [ -z "$browser_exec" ]; then
     browser_exec="${browser%.desktop}"
 fi

@@ -54,6 +54,25 @@ show_localsend_menu() {
     esac
 }
 
+show_apps_menu() {
+    # Build a simple list first
+    app_list=$(for dir in /run/current-system/sw/share/applications /usr/share/applications ~/.local/share/applications; do
+        [ ! -d "$dir" ] && continue
+        for desktop_file in "$dir"/*.desktop; do
+            [ ! -f "$desktop_file" ] && continue
+            basename "$desktop_file" .desktop
+        done
+    done | sort -u)
+    
+    # Show the menu
+    selected=$(echo "$app_list" | walker --dmenu -p "Launch App")
+    
+    # Launch if something was selected
+    if [ -n "$selected" ]; then
+        gtk-launch "$selected.desktop" &
+    fi
+}
+
 case "${1,,}" in
     screenrecord)
         show_screenrecord_menu
@@ -61,12 +80,16 @@ case "${1,,}" in
     localsend)
         show_localsend_menu
         ;;
+    apps)
+        show_apps_menu
+        ;;
     *)
         echo "Usage: launch-menu <menu_name>"
         echo ""
         echo "Available menus:"
         echo "  screenrecord - Screen recording options"
         echo "  localsend    - LocalSend share options"
+        echo "  apps         - Launch applications"
         echo ""
         exit 1
         ;;
