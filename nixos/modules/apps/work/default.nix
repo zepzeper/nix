@@ -1,5 +1,5 @@
 _: {
-  imports = [ 
-		./slack 
-	];
+  imports = [
+    ./slack
+  ];
 }

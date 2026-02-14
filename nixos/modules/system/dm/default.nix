@@ -2,8 +2,7 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   # Display manager configuration
   services.displayManager = {
     sddm = {
@@ -12,7 +11,7 @@
     };
     defaultSession = "hyprland";
   };
-  
+
   # Explicitly disable all desktop environments
   services.desktopManager = {
     plasma6.enable = false;
@@ -29,13 +28,13 @@
       awesome.enable = false;
     };
   };
-  
+
   # Enable Hyprland
   programs.hyprland = {
     enable = true;
     # Ensure it's the primary compositor
     xwayland.enable = true;
   };
-  
+
   services.xserver.enable = false;
 }

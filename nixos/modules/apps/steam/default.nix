@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # ===== GAMING CONFIGURATION =====
   programs.steam = {
     enable = true;
@@ -9,7 +12,7 @@
     localNetworkGameTransfers.openFirewall = true;
     gamescopeSession.enable = true;
     extraCompatPackages = with pkgs; [
-      proton-ge-bin  # Better compatibility than default Proton
+      proton-ge-bin # Better compatibility than default Proton
     ];
   };
 

@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   users.users.zepzeper = {
     isNormalUser = true;
     description = "Wouter";
@@ -7,10 +10,10 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-        "video"
-        "podman"
+      "video"
+      "podman"
     ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [ ];
+    openssh.authorizedKeys.keys = [];
   };
 }

@@ -1,3 +1,3 @@
 _: {
-  imports = [ ./helium ];
+  imports = [./helium];
 }

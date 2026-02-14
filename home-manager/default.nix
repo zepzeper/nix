@@ -8,8 +8,7 @@
   stateVersion,
   username,
   ...
-}:
-{
+}: {
   imports =
     [
       ./modules/dotfiles
@@ -21,7 +20,7 @@
       inputs.sops-nix.homeManagerModules.default
       ./modules/sops
     ]
-    ++ lib.optionals (isNixOS) [
+    ++ lib.optionals isNixOS [
       ./modules/platforms/nixos
     ];
 
@@ -32,7 +31,7 @@
 
     sessionVariables = lib.mkMerge [
       {
-	USER = username;
+        USER = username;
         EDITOR = "nvim";
       }
       (lib.mkIf isNixOS {

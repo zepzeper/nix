@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs.rofi = {
     enable = true;
     theme = "${config.home.homeDirectory}/.dotfiles/rofi/rose-pine";

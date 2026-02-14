@@ -23,45 +23,39 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nur.url = "github:nix-community/NUR";
   };
-  outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }@inputs:
-    let
-      inherit (self) outputs;
-      stateVersion = "25.05";
-      helper = import ./lib { inherit inputs outputs stateVersion; };
-
-    in
-    {
-      homeConfigurations = {
-        desktop = helper.mkHome {
-          username = "zepzeper";
-          hostname = "desktop";
-          platform = "x86_64-linux";
-        };
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
+    stateVersion = "25.05";
+    helper = import ./lib {inherit inputs outputs stateVersion;};
+  in {
+    homeConfigurations = {
+      desktop = helper.mkHome {
+        username = "zepzeper";
+        hostname = "desktop";
+        platform = "x86_64-linux";
       };
+    };
 
-      nixosConfigurations = {
-        desktop = helper.mkNixOS {
-          username = "zepzeper";
-          hostname = "desktop";
-          platform = "x86_64-linux";
-        };
+    nixosConfigurations = {
+      desktop = helper.mkNixOS {
+        username = "zepzeper";
+        hostname = "desktop";
+        platform = "x86_64-linux";
       };
+    };
 
-	  devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" ] (system:
-			  let
-			  pkgs = nixpkgs.legacyPackages.${system};
-			  in
-			  {
-			  default = pkgs.mkShell {
-			  packages = [
-			  inputs.home-manager.packages.${system}.home-manager
-			  ];
-			  };
-			  });
-	};
+    devShells = nixpkgs.lib.genAttrs ["x86_64-linux"] (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      default = pkgs.mkShell {
+        packages = [
+          inputs.home-manager.packages.${system}.home-manager
+        ];
+      };
+    });
+  };
 }

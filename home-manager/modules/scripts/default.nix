@@ -1,27 +1,30 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Install custom scripts to ~/.local/bin
   home.file = {
     ".local/bin/nix-menu" = {
       source = ../../../scripts/nix-menu;
       executable = true;
     };
-    
+
     ".local/bin/nix-shot" = {
       source = ../../../scripts/nix-shot;
       executable = true;
     };
-    
+
     ".local/bin/nix-rec" = {
       source = ../../../scripts/nix-rec;
       executable = true;
     };
-    
+
     ".local/bin/nix-launcher" = {
       source = ../../../scripts/nix-launcher;
       executable = true;
     };
-    
+
     ".local/bin/nix-rebuild" = {
       source = ../../../scripts/nix-rebuild;
       executable = true;
@@ -49,7 +52,7 @@
   };
 
   # Ensure ~/.local/bin is in PATH
-  home.sessionPath = [ 
+  home.sessionPath = [
     "$HOME/.local/bin"
   ];
 

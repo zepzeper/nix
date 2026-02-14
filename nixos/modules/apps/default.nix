@@ -1,10 +1,10 @@
 _: {
-		 imports = [
-                ./browser
-				 ./creative
-				 ./media
-				 ./reader
-				 ./steam
-				 ./work
-		 ];
-	 }
+  imports = [
+    ./browser
+    ./creative
+    ./media
+    ./reader
+    ./steam
+    ./work
+  ];
+}

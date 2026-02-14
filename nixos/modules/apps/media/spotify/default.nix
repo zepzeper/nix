@@ -3,8 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     # For NixOS
     inputs.spicetify-nix.nixosModules.default

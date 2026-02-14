@@ -1,9 +1,12 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # Path to dotfiles submodule (inside nix repo)
   dotfilesDir = "${config.home.homeDirectory}/personal/nix/dotfiles";
-in
-{
+in {
   # Neovim configuration
   xdg.configFile."nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/nvim";

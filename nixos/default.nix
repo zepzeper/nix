@@ -8,8 +8,7 @@
   platform,
   username,
   ...
-}:
-{
+}: {
   imports = [
     inputs.sops-nix.nixosModules.sops
     ./hardware-configuration.nix
@@ -28,7 +27,7 @@
       ];
       trusted-users = [
         "root"
-	username
+        username
       ];
     };
   };
@@ -59,10 +58,9 @@
     gparted
     polkit_gnome
     cudaPackages.cudatoolkit
-        home-manager
+    home-manager
   ];
 
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
-
 }

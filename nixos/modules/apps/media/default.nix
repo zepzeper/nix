@@ -1,6 +1,6 @@
 _: {
-  imports = [ 
-		./spotify 
-		./vlc 
-	];
+  imports = [
+    ./spotify
+    ./vlc
+  ];
 }
