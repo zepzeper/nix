@@ -35,4 +35,9 @@ in {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/waybar";
     recursive = true;
   };
+
+  xdg.configFile."rofi" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/rofi";
+    recursive = true;
+  };
 }

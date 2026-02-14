@@ -1,21 +1,22 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-error:
-       … in the left operand of the update (//) operator
-         at /nix/store/n6qqmv6g7p6i01bwh7qda4piqdm4n1r9-source/modules/default.nix:61:5:
-           60|     module
-           61|     // {
-             |     ^
-           62|       activationPackage = module.config.home.activationPackage;
+evaluation warning: `programs.zsh.initExtra` is deprecated, use `programs.zsh.initContent` instead.
 
-       … while evaluating a branch condition
-         at /nix/store/4ggd0kb8as38xa0kr730qpnsa89df0x7-source/lib/lists.nix:141:18:
-          140|       len = length list;
-          141|       fold' = n: if n == len then nul else op (elemAt list n) (fold' (n + 1));
-             |                  ^
-          142|     in
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: path '/nix/store/xl7zmpchk4kjx8ypbi47k2455bw4kl47-source/home-manager/modules/platforms/nixos/waybar' does not exist
+                    Example: programs.zsh.initContent = "your content here";
+these 2 derivations will be built:
+  /nix/store/cn6hbnw2xjvf33h2lxdjl0cpmlf854yb-home-manager-files.drv
+  /nix/store/95rzax3664xci3rlc6ykzq9m8622nc4n-home-manager-generation.drv
+building '/nix/store/cn6hbnw2xjvf33h2lxdjl0cpmlf854yb-home-manager-files.drv'...
+error: Cannot build '/nix/store/cn6hbnw2xjvf33h2lxdjl0cpmlf854yb-home-manager-files.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/zfq3jjq28m1lqlxc2qd45f8wxp33rzxf-home-manager-files
+       Last 1 log lines:
+       > Error installing file '.config/rofi/config.rasi' outside $HOME
+       For full logs, run:
+         nix log /nix/store/cn6hbnw2xjvf33h2lxdjl0cpmlf854yb-home-manager-files.drv
+error: Cannot build '/nix/store/95rzax3664xci3rlc6ykzq9m8622nc4n-home-manager-generation.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/vqg9c6wl3ss553naq04mg6ph3xa1km3g-home-manager-generation

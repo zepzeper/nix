@@ -1,30 +1,51 @@
 #!/usr/bin/env bash
 
-# MINIMAL MENU - The Simplest Version
-# Just the core pattern to build from
+# LAUNCH MENU
+# Main menu launcher that calls specific menu functions
+# Usage: launch-menu <menu_name>
 
-# Show a menu and return the choice
-menu() {
-    echo -e "$1" | dmenu -p "$2"
+# Path to theme file
+THEME="$HOME/.config/rofi/screenrecord.rasi"
+
+show_menu() {
+    local prompt="$1"
+    local options="$2"
+    
+    echo -e "$options" | rofi -dmenu \
+        -p "$prompt" \
+        -theme "$THEME"
 }
 
-# Submenu example
-submenu_apps() {
-    case $(menu "Firefox\nFiles\nTerminal" "Launch") in
-        Firefox) firefox & ;;
-        Files) nautilus & ;;
-        Terminal) alacritty & ;;
+show_screenrecord_menu() {
+    case $(show_menu "Screenrecord" "🔊 With desktop audio\n🎤 With microphone audio\n📹 With webcam") in
+        *desktop*) 
+            notify-send "Starting recording" "Desktop audio only"
+            omarchy-cmd-screenrecord --with-desktop-audio
+            ;;
+        *microphone*) 
+            notify-send "Starting recording" "Desktop + microphone audio"
+             omarchy-cmd-screenrecord --with-desktop-audio --with-microphone-audio
+            ;;
+        *webcam*) 
+            notify-send "Starting recording" "Desktop + microphone + webcam"
+            omarchy-cmd-screenrecord --with-desktop-audio --with-microphone-audio --with-webcam
+            ;;
+        *) 
+            exit 0
+            ;;
     esac
 }
 
-# Main menu
-main_menu() {
-    case $(menu "Apps\nSystem\nQuit" "Menu") in
-        Apps) submenu_apps ;;
-        System) systemctl suspend ;;
-        Quit) exit 0 ;;
-    esac
-}
-
-# Run it
-main_menu
+case "${1,,}" in
+    screenrecord)
+        show_screenrecord_menu
+        ;;
+    *)
+        echo "Usage: launch-menu <menu_name>"
+        echo ""
+        echo "Available menus:"
+        echo "  screenrecord - Screen recording options"
+        echo ""
+        exit 1
+        ;;
+esac

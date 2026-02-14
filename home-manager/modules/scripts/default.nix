@@ -92,7 +92,7 @@
       source = ../../../scripts/system/launch-screenshot;
       executable = true;
     };
-        
+
     ".local/bin/launch-screenrecorder" = {
       source = ../../../scripts/system/launch-screenrecorder;
       executable = true;
