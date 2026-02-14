@@ -5,6 +5,7 @@
 }: {
   # Install custom scripts to ~/.local/bin
   home.file = {
+    # Nix scripts
     ".local/bin/nix-menu" = {
       source = ../../../scripts/nix-menu;
       executable = true;
@@ -30,6 +31,7 @@
       executable = true;
     };
 
+    # Misc scripts
     ".local/bin/cheat" = {
       source = ../../../scripts/misc/cheat;
       executable = true;
@@ -47,6 +49,22 @@
 
     ".local/bin/tmux-sessionizer" = {
       source = ../../../scripts/misc/tmux-sessionizer;
+      executable = true;
+    };
+
+    # System scripts
+    ".local/bin/launch-or-focus" = {
+      source = ../../../scripts/system/launch-or-focus;
+      executable = true;
+    };
+
+    ".local/bin/launch-tui" = {
+      source = ../../../scripts/system/launch-tui;
+      executable = true;
+    };
+
+    ".local/bin/launch-webapp" = {
+      source = ../../../scripts/system/launch-webapp;
       executable = true;
     };
   };

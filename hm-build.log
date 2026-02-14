@@ -1,22 +1,24 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: `programs.zsh.initExtra` is deprecated, use `programs.zsh.initContent` instead.
+error:
+       … while calling the 'derivationStrict' builtin
+         at <nix/derivation-internal.nix>:37:12:
+           36|
+           37|   strict = derivationStrict drvAttrs;
+             |            ^
+           38|
 
-                    Example: programs.zsh.initContent = "your content here";
-Starting Home Manager activation
-Activating checkFilesChanged
-Activating checkLinkTargets
-Activating writeBoundary
-No change so reusing latest profile generation
-Activating installPackages
-replacing old 'home-manager-path'
-installing 'home-manager-path'
-Activating linkGeneration
-Cleaning up orphan links from /home/zepzeper
-Creating home file links in /home/zepzeper
-Activating onFilesChange
-Activating reloadSystemd
-Starting units: sops-nix.service
-Activating sops-nix
-warning: Git tree '/home/zepzeper/personal/nix' is dirty
+       … while evaluating derivation 'home-manager-generation'
+         whose name attribute is located at /nix/store/1l4nm55xcq55cdp1xz3x5mfgr4c24058-source/pkgs/stdenv/generic/make-derivation.nix:468:13
+
+       … while evaluating attribute 'buildCommand' of derivation 'home-manager-generation'
+         at /nix/store/1l4nm55xcq55cdp1xz3x5mfgr4c24058-source/pkgs/build-support/trivial-builders/default.nix:80:17:
+           79|         enableParallelBuilding = true;
+           80|         inherit buildCommand name;
+             |                 ^
+           81|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '/nix/store/dy3lpakbfhcxq535lhl0sb6zdwplvdaf-source/scripts/system/launch-or-focus' does not exist
