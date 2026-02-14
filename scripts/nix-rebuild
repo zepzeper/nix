@@ -28,6 +28,7 @@ fi
 cd dotfiles
 if [ -n "$(git status --porcelain)" ]; then
     echo -e "${YELLOW}📁 Uncommitted changes in dotfiles submodule:${NC}"
+    git checkout master
     git status --short
     echo ""
     read -p "Commit dotfiles changes? (y/n) " -n 1 -r

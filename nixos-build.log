@@ -2,5 +2,10 @@ building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/8mzm0v177wrdxgjl16jdzp4n47xs08nn-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
-Done. The new configuration is /nix/store/nvag3da8klsspzj47cygbrkwlficb0wi-nixos-system-desktop-25.11.20250624.30a61f0
+evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/h24x1xkqkwbz3rrhaywz1icc6nz18p3y-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
+these 2 derivations will be built:
+  /nix/store/hgrnvfq2mchfs6y75ldx759bl57jgibs-users-groups.json.drv
+  /nix/store/zsyj0h7xxjbfpprrk77zcaqj1kifqd18-nixos-system-desktop-25.11.20250624.30a61f0.drv
+building '/nix/store/hgrnvfq2mchfs6y75ldx759bl57jgibs-users-groups.json.drv'...
+building '/nix/store/zsyj0h7xxjbfpprrk77zcaqj1kifqd18-nixos-system-desktop-25.11.20250624.30a61f0.drv'...
+Done. The new configuration is /nix/store/8ynvshnz6anipfkgpwggcd128sqy3l5m-nixos-system-desktop-25.11.20250624.30a61f0

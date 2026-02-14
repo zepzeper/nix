@@ -10,8 +10,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "video"
-      "podman"
     ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [];

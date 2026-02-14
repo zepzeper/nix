@@ -5,6 +5,11 @@
     alejandra
   ];
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.ghostty = {
     enable = true;
   };
