@@ -36,6 +36,7 @@ in {
     recursive = true;
   };
 
+  # Rofi configuration
   xdg.configFile."rofi" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/rofi";
     recursive = true;
