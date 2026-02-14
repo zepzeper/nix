@@ -37,7 +37,7 @@ if [ -n "$(git status --porcelain)" ]; then
         git add -A
         read -p "Enter commit message for dotfiles: " msg
         git commit -m "$msg"
-        git push
+        git push origin HEAD:master
         cd ..
         git add dotfiles
         git commit -m "Update dotfiles submodule"

@@ -11,7 +11,7 @@
 
     initExtra = ''
       # Custom tmux sessionizer keybinding
-      bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer.sh\n"
+      bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
     '';
 
     oh-my-zsh = {
