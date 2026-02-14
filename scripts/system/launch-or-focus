@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # Launch or focus on a given command identified by the passed in window-pattern.
 # Use by some default bindings, like the one for Spotify, to ensure there is only one instance of the application open.
 
