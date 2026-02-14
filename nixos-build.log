@@ -2,5 +2,11 @@ building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/9blf41yq0rbj4dqfz5a0xywmx3a20cyl-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
-Done. The new configuration is /nix/store/7r350i57waqsh6q58mdrchcfg72jvpgw-nixos-system-desktop-26.05.20260213.a82ccc3
+evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/5riyw2i5ksz1fnlizp9wkl45sdp4kkfz-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
+evaluation warning: The xorg package set has been deprecated, 'xorg.libXcursor' has been renamed to 'libxcursor'
+evaluation warning: The xorg package set has been deprecated, 'xorg.libxcb' has been renamed to 'libxcb'
+evaluation warning: The xorg package set has been deprecated, 'xorg.libXdmcp' has been renamed to 'libxdmcp'
+evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilerrors' has been renamed to 'libxcb-errors'
+evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilrenderutil' has been renamed to 'libxcb-render-util'
+evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilwm' has been renamed to 'libxcb-wm'
+Done. The new configuration is /nix/store/yhv2czcinq3a1y0rdac9m48fgkkj7nyb-nixos-system-desktop-26.05.20260213.a82ccc3

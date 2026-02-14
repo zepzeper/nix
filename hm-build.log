@@ -1,33 +1,21 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/kcikl5r5n7lrjic5j9p7x0wl4kmvrpdz-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
-trace: warning: `programs.ssh` default values will be removed in the future.
-Consider setting `programs.ssh.enableDefaultConfig` to false,
-and manually set the default values you want to keep at
-`programs.ssh.matchBlocks."*"`.
+error:
+       … in the left operand of the update (//) operator
+         at /nix/store/n6qqmv6g7p6i01bwh7qda4piqdm4n1r9-source/modules/default.nix:61:5:
+           60|     module
+           61|     // {
+             |     ^
+           62|       activationPackage = module.config.home.activationPackage;
 
-evaluation warning: `programs.zsh.initExtra` is deprecated, use `programs.zsh.initContent` instead.
+       … while evaluating a branch condition
+         at /nix/store/4ggd0kb8as38xa0kr730qpnsa89df0x7-source/lib/lists.nix:141:18:
+          140|       len = length list;
+          141|       fold' = n: if n == len then nul else op (elemAt list n) (fold' (n + 1));
+             |                  ^
+          142|     in
 
-                    Example: programs.zsh.initContent = "your content here";
-Starting Home Manager activation
-Activating checkFilesChanged
-Activating checkLinkTargets
-Activating writeBoundary
-Activating installPackages
-replacing old 'home-manager-path'
-installing 'home-manager-path'
-Activating linkGeneration
-Cleaning up orphan links from /home/zepzeper
-Creating home file links in /home/zepzeper
-Activating onFilesChange
-Activating reloadSystemd
-Starting units: sops-nix.service
-Activating sops-nix
-warning: Git tree '/home/zepzeper/personal/nix' is dirty
-trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/g6n56b8nxq09946vrdkq5rqvkbzyphkz-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
-trace: warning: `programs.ssh` default values will be removed in the future.
-Consider setting `programs.ssh.enableDefaultConfig` to false,
-and manually set the default values you want to keep at
-`programs.ssh.matchBlocks."*"`.
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
 
+       error: path '/nix/store/xl7zmpchk4kjx8ypbi47k2455bw4kl47-source/home-manager/modules/platforms/nixos/waybar' does not exist

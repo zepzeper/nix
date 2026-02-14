@@ -30,12 +30,9 @@ in {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/tmux/.tmux.conf";
   };
 
-  # # Zsh configuration
-  # home.file.".zshrc" = {
-  #   source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.zshrc";
-  # };
-  #
-  # home.file.".zsh-profile" = {
-  #   source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/zsh/.zsh-profile";
-  # };
+  # Waybar configuration
+  home.file."waybar" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/waybar";
+    recursive = true;
+  };
 }
