@@ -2,11 +2,36 @@
 
 # Launch the passed in URL as a web app in the default browser (or chromium if the default doesn't support --app).
 
-browser=$(xdg-settings get default-web-browser)
+url="$1"
+shift
 
+browser=$(xdg-settings get default-web-browser)
 case $browser in
 google-chrome* | brave-browser* | microsoft-edge* | opera* | vivaldi* | helium*) ;;
 *) browser="chromium.desktop" ;;
 esac
 
-exec setsid uwsm-app -- $(sed -n 's/^Exec=\([^ ]*\).*/\1/p' {~/.local,~/.nix-profile,/usr}/share/applications/$browser 2>/dev/null | head -1) --app="$1" "${@:2}"
+# Find the .desktop file in NixOS store paths
+desktop_file=$(find /nix/store -name "$browser" -path "*/share/applications/*" 2>/dev/null | head -1)
+
+# If found, extract the Exec line
+if [ -n "$desktop_file" ]; then
+    browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "$desktop_file" 2>/dev/null | head -1)
+fi
+
+# Fallback: try common locations
+if [ -z "$browser_exec" ]; then
+    for dir in ~/.local/share/applications ~/.nix-profile/share/applications /usr/share/applications /run/current-system/sw/share/applications; do
+        if [ -f "$dir/$browser" ]; then
+            browser_exec=$(sed -n 's/^Exec=\([^ ]*\).*/\1/p' "$dir/$browser" | head -1)
+            [ -n "$browser_exec" ] && break
+        fi
+    done
+fi
+
+# Final fallback: use browser name without .desktop
+if [ -z "$browser_exec" ]; then
+    browser_exec="${browser%.desktop}"
+fi
+
+exec setsid uwsm-app -- "$browser_exec" --app="$url" "$@"

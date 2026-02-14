@@ -36,9 +36,9 @@ in {
     recursive = true;
   };
 
-  # Rofi configuration
-  xdg.configFile."rofi" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/rofi";
+  # Walker configuration
+  xdg.configFile."walker" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/walker";
     recursive = true;
   };
 }

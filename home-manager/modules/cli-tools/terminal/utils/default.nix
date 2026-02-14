@@ -5,6 +5,7 @@
     wiremix
     btop
     wayfreeze
+    walker
     libnotify
     gpu-screen-recorder
     jq
