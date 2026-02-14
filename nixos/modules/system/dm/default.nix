@@ -3,6 +3,11 @@
   pkgs,
   ...
 }: {
+  # Make UWSM available system-wide
+  environment.systemPackages = with pkgs; [
+    uwsm
+  ];
+
   # Display manager configuration
   services.displayManager = {
     sddm = {
@@ -12,7 +17,7 @@
     defaultSession = "hyprland";
   };
 
-  # Explicitly disable all desktop environments
+  # Disable all desktop environments
   services.desktopManager = {
     plasma6.enable = false;
   };
@@ -23,18 +28,15 @@
       xfce.enable = false;
     };
     windowManager = {
-      # Disable X11 window managers too
       i3.enable = false;
       awesome.enable = false;
     };
+    enable = false; # disable X11 entirely
   };
 
-  # Enable Hyprland
+  # Enable Hyprland as the primary Wayland compositor
   programs.hyprland = {
     enable = true;
-    # Ensure it's the primary compositor
     xwayland.enable = true;
   };
-
-  services.xserver.enable = false;
 }
