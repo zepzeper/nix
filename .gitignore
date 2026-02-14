@@ -4,6 +4,7 @@ result-*
 *.qcow2
 *.iso
 nixos-switch.log
+result
 
 # Secrets - NEVER commit these!
 *.key

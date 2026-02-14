@@ -4,5 +4,6 @@ _: {
     ./tmux
     ./screenshot
     ./recording
+    ./terminal
   ];
 }

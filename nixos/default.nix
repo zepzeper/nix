@@ -59,6 +59,7 @@
     gparted
     polkit_gnome
     cudaPackages.cudatoolkit
+        home-manager
   ];
 
   programs.zsh.enable = true;

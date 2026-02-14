@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./hyprland
+        #./hyprland
     ./rofi
   ];
 }
