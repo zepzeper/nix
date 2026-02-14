@@ -47,16 +47,6 @@
 
   services.printing.enable = true;
 
-  #services.greetd = {
-  #  enable = true;
-  #  settings = {
-  #    default_session = {
-  #      command = "uwsm start hyprland.desktop";
-  #      user = "zepzeper";
-  #    };
-  #  };
-  #};
-
   environment.systemPackages = with pkgs; [
     neovim
     wget
