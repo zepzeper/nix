@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# MINIMAL MENU - The Simplest Version
+# Just the core pattern to build from
+
+# Show a menu and return the choice
+menu() {
+    echo -e "$1" | dmenu -p "$2"
+}
+
+# Submenu example
+submenu_apps() {
+    case $(menu "Firefox\nFiles\nTerminal" "Launch") in
+        Firefox) firefox & ;;
+        Files) nautilus & ;;
+        Terminal) alacritty & ;;
+    esac
+}
+
+# Main menu
+main_menu() {
+    case $(menu "Apps\nSystem\nQuit" "Menu") in
+        Apps) submenu_apps ;;
+        System) systemctl suspend ;;
+        Quit) exit 0 ;;
+    esac
+}
+
+# Run it
+main_menu

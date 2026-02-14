@@ -33,6 +33,8 @@
       {
         USER = username;
         EDITOR = "nvim";
+        SCREENSHOT_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
+        SCREENRECORD_DIR = "${config.home.homeDirectory}/Videos/Recordings";
       }
       (lib.mkIf isNixOS {
         NIXOS_OZONE_WL = "1";

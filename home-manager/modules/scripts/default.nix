@@ -58,6 +58,11 @@
       executable = true;
     };
 
+    ".local/bin/launch-or-focus-tui" = {
+      source = ../../../scripts/system/launch-or-focus-tui;
+      executable = true;
+    };
+
     ".local/bin/launch-tui" = {
       source = ../../../scripts/system/launch-tui;
       executable = true;
@@ -65,6 +70,41 @@
 
     ".local/bin/launch-webapp" = {
       source = ../../../scripts/system/launch-webapp;
+      executable = true;
+    };
+
+    ".local/bin/launch-wifi" = {
+      source = ../../../scripts/system/launch-wifi;
+      executable = true;
+    };
+
+    ".local/bin/launch-bluetooth" = {
+      source = ../../../scripts/system/launch-bluetooth;
+      executable = true;
+    };
+
+    ".local/bin/launch-audio" = {
+      source = ../../../scripts/system/launch-audio;
+      executable = true;
+    };
+
+    ".local/bin/launch-screenshot" = {
+      source = ../../../scripts/system/launch-screenshot;
+      executable = true;
+    };
+        
+    ".local/bin/launch-screenrecorder" = {
+      source = ../../../scripts/system/launch-screenrecorder;
+      executable = true;
+    };
+
+    ".local/bin/is-screen-recording" = {
+      source = ../../../scripts/system/is-screen-recording;
+      executable = true;
+    };
+
+    ".local/bin/launch-menu" = {
+      source = ../../../scripts/system/launch-menu;
       executable = true;
     };
   };

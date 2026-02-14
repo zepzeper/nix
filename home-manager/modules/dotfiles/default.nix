@@ -31,7 +31,7 @@ in {
   };
 
   # Waybar configuration
-  home.file."waybar" = {
+  xdg.configFile."waybar" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/waybar";
     recursive = true;
   };
