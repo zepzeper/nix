@@ -4,19 +4,6 @@ Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:
 evaluation warning: `programs.zsh.initExtra` is deprecated, use `programs.zsh.initContent` instead.
 
                     Example: programs.zsh.initContent = "your content here";
-these 6 derivations will be built:
-  /nix/store/d11shg698q2a6zvmvgnsj86bfn2xclj4-hm_.zshrc.drv
-  /nix/store/isgp37q552vf3fijiyhiz7gg2xqry2pw-home-manager-path.drv
-  /nix/store/slx1327hisl1hwadgfg7ms34zb2lnzkj-hm_fontconfigconf.d10hmfonts.conf.drv
-  /nix/store/14n44n4qjvp2ys534p5dm8v2fxj5byma-home-manager-files.drv
-  /nix/store/54laychjcfwr3wj1k5gylm96xx7wxnps-activation-script.drv
-  /nix/store/yxlwl74kq5y2p9qd44gdg7v74zjillna-home-manager-generation.drv
-building '/nix/store/isgp37q552vf3fijiyhiz7gg2xqry2pw-home-manager-path.drv'...
-building '/nix/store/d11shg698q2a6zvmvgnsj86bfn2xclj4-hm_.zshrc.drv'...
-building '/nix/store/54laychjcfwr3wj1k5gylm96xx7wxnps-activation-script.drv'...
-building '/nix/store/slx1327hisl1hwadgfg7ms34zb2lnzkj-hm_fontconfigconf.d10hmfonts.conf.drv'...
-building '/nix/store/14n44n4qjvp2ys534p5dm8v2fxj5byma-home-manager-files.drv'...
-building '/nix/store/yxlwl74kq5y2p9qd44gdg7v74zjillna-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
@@ -25,7 +12,6 @@ Creating new profile generation
 Activating installPackages
 replacing old 'home-manager-path'
 installing 'home-manager-path'
-building '/nix/store/nwgac3zxkmsia7x9cj58lhfzf095cw00-user-environment.drv'...
 Activating linkGeneration
 Cleaning up orphan links from /home/zepzeper
 Creating home file links in /home/zepzeper

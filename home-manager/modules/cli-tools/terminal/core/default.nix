@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     ghostty
     fzf
+    ripgrep
     alejandra
   ];
 

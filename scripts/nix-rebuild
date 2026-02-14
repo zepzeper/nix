@@ -143,4 +143,5 @@ fi
 popd > /dev/null
 
 echo ""
+git push
 echo -e "${GREEN}🎉 Done!${NC}"
