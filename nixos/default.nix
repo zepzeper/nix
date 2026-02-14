@@ -36,7 +36,7 @@
     config.allowUnfree = true;
     hostPlatform = lib.mkDefault "${platform}";
     overlays = [
-      inputs.nur.overlay or (final: prev: {})
+      inputs.nur.overlay
     ];
   };
 
