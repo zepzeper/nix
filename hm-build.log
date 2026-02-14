@@ -1,0 +1,19 @@
+warning: Git tree '/home/zepzeper/personal/nix' is dirty
+Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
+Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
+Starting Home Manager activation
+Activating checkFilesChanged
+Activating checkLinkTargets
+Activating writeBoundary
+No change so reusing latest profile generation
+Activating installPackages
+replacing old 'home-manager-path'
+installing 'home-manager-path'
+Activating linkGeneration
+Cleaning up orphan links from /home/zepzeper
+Creating home file links in /home/zepzeper
+Activating onFilesChange
+Activating reloadSystemd
+Starting units: sops-nix.service
+Activating sops-nix
+warning: Git tree '/home/zepzeper/personal/nix' is dirty

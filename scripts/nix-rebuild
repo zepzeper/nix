@@ -83,14 +83,23 @@ fi
 echo ""
 
 # Rebuild NixOS
-echo -e "${GREEN}🚀 Rebuilding NixOS...${NC}"
-if sudo nixos-rebuild switch --flake ".#${HOSTNAME}" 2>&1 | tee nixos-switch.log; then
-    echo -e "${GREEN}✅ Rebuild successful!${NC}"
+echo -e "${GREEN}🔍 Building NixOS (dry build)...${NC}"
+if sudo nixos-rebuild build --flake ".#${HOSTNAME}" 2>&1 | tee nixos-build.log; then
+    echo -e "${GREEN}✅ Build successful! Switching...${NC}"
+    sudo nixos-rebuild switch --flake ".#${HOSTNAME}"
 else
-    echo -e "${RED}❌ Rebuild failed!${NC}"
-    echo ""
-    echo -e "${YELLOW}Last 50 lines of log:${NC}"
-    tail -50 nixos-switch.log | grep --color=always "error\|warning" || tail -50 nixos-switch.log
+    echo -e "${RED}❌ Build failed!${NC}"
+    tail -50 nixos-build.log
+    popd > /dev/null
+    exit 1
+fi
+
+echo -e "${GREEN}🔍 Building Home Manager...${NC}"
+if home-manager switch --flake ".#${HOSTNAME}" --impure 2>&1 | tee hm-build.log; then
+    echo -e "${GREEN}✅ Home Manager build successful!${NC}"
+else
+    echo -e "${RED}❌ Home Manager build failed!${NC}"
+    tail -50 hm-build.log
     popd > /dev/null
     exit 1
 fi
