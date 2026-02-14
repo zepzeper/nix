@@ -1,11 +1,6 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    ghostty
+_: {
+  imports = [
+    ./core
   ];
-
-    programs.ghostty = {
-        enable = true;
-    };
-
 }
+

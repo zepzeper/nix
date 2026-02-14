@@ -6,29 +6,6 @@
 {
   home.packages = with pkgs; [
     zsh
+    oh-my-zsh
   ];
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      vim = "nvim";
-      c = "clear";
-      hms = "home-manager switch";
-      ncg = "nix-collect-garbage";
-    };
-    history.size = 10000;
-    oh-my-zsh = {
-      enable = true;
-    };
-    zplug = {
-      enable = true;
-      plugins = [
-        { name = "jeffreytse/zsh-vi-mode"; }
-      ];
-    };
-  };
 }

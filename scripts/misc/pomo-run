@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+clear
+
+# Pomodoro durations (minutes)
+typeset -A pomo_options
+pomo_options[work]=50
+pomo_options[break]=10
+
+# Normalize input
+val="${1//[[:space:]]/}"
+
+run_session() {
+  local mode="$1"
+  local minutes="${pomo_options[$mode]}"
+
+  echo "Starting $mode session ($minutes min)..." | lolcat
+  timer ${minutes}m
+  spd-say "$mode session done"
+}
+
+if [[ -n "${pomo_options[$val]}" ]]; then
+  run_session "$val"
+
+  # Auto-chain: work → break
+  if [[ "$val" == "work" ]]; then
+    echo
+    echo "Starting break..." | lolcat
+    sleep 2
+    run_session "break"
+  fi
+
+  printf "\nFinished. Press any key to close..."
+  read -k 1
+else
+  echo "Error: Invalid option '$val'"
+  echo "Available options: work, break"
+  printf "\nPress any key to close..."
+  read -k 1
+fi

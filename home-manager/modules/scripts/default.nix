@@ -26,6 +26,26 @@
       source = ../../../scripts/nix-rebuild;
       executable = true;
     };
+
+    ".local/bin/cheat" = {
+      source = ../../../scripts/misc/cheat;
+      executable = true;
+    };
+
+    ".local/bin/llm" = {
+      source = ../../../scripts/misc/llm;
+      executable = true;
+    };
+
+    ".local/bin/pomo-run" = {
+      source = ../../../scripts/misc/pomo-run;
+      executable = true;
+    };
+
+    ".local/bin/tmux-sessionizer" = {
+      source = ../../../scripts/misc/tmux-sessionizer;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH
