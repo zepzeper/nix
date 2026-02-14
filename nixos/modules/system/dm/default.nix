@@ -5,7 +5,6 @@
 }: {
   # Make UWSM available system-wide
   environment.systemPackages = with pkgs; [
-    hyprland
     uwsm
   ];
 
@@ -25,7 +24,6 @@
 
   services.xserver = {
     desktopManager = {
-      plasma5.enable = false;
       gnome.enable = false;
       xfce.enable = false;
     };
