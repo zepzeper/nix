@@ -5,6 +5,7 @@
 }: {
   # Make UWSM available system-wide
   environment.systemPackages = with pkgs; [
+    hyprland
     uwsm
   ];
 
