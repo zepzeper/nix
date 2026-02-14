@@ -8,7 +8,7 @@ Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
 Activating writeBoundary
-Creating new profile generation
+No change so reusing latest profile generation
 Activating installPackages
 replacing old 'home-manager-path'
 installing 'home-manager-path'

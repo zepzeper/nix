@@ -52,7 +52,7 @@
     settings = {
       default_session = {
         command = "uwsm start hyprland.desktop";
-        user = "your-username";
+        user = "zepzeper";
       };
     };
   };
