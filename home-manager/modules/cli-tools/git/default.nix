@@ -6,7 +6,11 @@
   programs.git = {
     enable = true;
 
-    userName = "zepzeper";
-    userEmail = "wouterschiedam98@gmail.com";
+    settings = {
+      user = {
+        name = "zepzeper";
+        email = "wouterschiedam98@gmail.com";
+      };
+    };
   };
 }

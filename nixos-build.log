@@ -2,5 +2,5 @@ building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/scjfz01armdb7an7whqm5am8lan4bqnh-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
+evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/6acj6k3zg9kf2rv03rpidmrdfryp22a2-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
 Done. The new configuration is /nix/store/zdn8ig2zgakf0dz4zkn0ri9asnslckfj-nixos-system-desktop-26.05.20260213.a82ccc3
