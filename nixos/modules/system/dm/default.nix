@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   # Make UWSM available system-wide
@@ -14,7 +15,7 @@
       enable = true;
       wayland.enable = true;
     };
-    defaultSession = "hyprland-uwsm";
+    defaultSession = "hyprland";
   };
 
   # Disable all desktop environments
@@ -37,6 +38,8 @@
   # Enable Hyprland as the primary Wayland compositor
   programs.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
   };
 

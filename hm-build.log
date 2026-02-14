@@ -1,7 +1,7 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/ajmaxz6gdwdqgghch2jn569cx32wkbwh-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
+trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/kcikl5r5n7lrjic5j9p7x0wl4kmvrpdz-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
 trace: warning: `programs.ssh` default values will be removed in the future.
 Consider setting `programs.ssh.enableDefaultConfig` to false,
 and manually set the default values you want to keep at
@@ -25,7 +25,7 @@ Activating reloadSystemd
 Starting units: sops-nix.service
 Activating sops-nix
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
-trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/3bhbbgfm6xsw16sa4qk8p13i35sc9rmx-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
+trace: warning: The option `programs.ssh.addKeysToAgent' defined in `/nix/store/g6n56b8nxq09946vrdkq5rqvkbzyphkz-source/home-manager/modules/shell/ssh' has been renamed to `programs.ssh.matchBlocks.*.addKeysToAgent'.
 trace: warning: `programs.ssh` default values will be removed in the future.
 Consider setting `programs.ssh.enableDefaultConfig` to false,
 and manually set the default values you want to keep at
