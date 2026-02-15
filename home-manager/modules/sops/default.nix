@@ -1,8 +1,8 @@
 {config, ...}: {
   # SOPS configuration for secret management
   # Decrypts secrets.yaml and places keys in ~/.ssh/
-
   sops = {
+    enable = true
     # Age key location (you'll copy your age private key here after install)
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
