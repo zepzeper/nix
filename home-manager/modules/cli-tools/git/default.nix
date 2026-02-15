@@ -9,7 +9,7 @@
     settings = {
       user = {
         name = "zepzeper";
-        email = "wouterschiedam98@gmail.com";
+        email = "wouterschiedam@hotmail.com";
       };
     };
   };

@@ -1,11 +1,19 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 2 derivations will be built:
-  /nix/store/fjv8k3fydydl4dgip611q5v7m4pvwx7r-home-manager-files.drv
-  /nix/store/vrsr539xslcp68s9gxxppsfvfai25c2c-home-manager-generation.drv
-building '/nix/store/fjv8k3fydydl4dgip611q5v7m4pvwx7r-home-manager-files.drv'...
-building '/nix/store/vrsr539xslcp68s9gxxppsfvfai25c2c-home-manager-generation.drv'...
+these 6 derivations will be built:
+  /nix/store/104fjxknv542q3jdbf9si42lvr0fckzn-hm_gitconfig.drv
+  /nix/store/prl4zl7lzk9vx4k27n9d7gw0q32kdwl5-manifest.json.drv
+  /nix/store/v1jklr0hhlyzz59lf8z6k4abgpyk4lz3-sops-nix-user.drv
+  /nix/store/70cphh1b8lkw7z58wjjki550iqmwm745-sops-nix.service.drv
+  /nix/store/3rng5qvb80m8mvln8apfna4jnrq4wr93-home-manager-files.drv
+  /nix/store/j0x2kf7p5kqjyn7pbw9j4nh21xrf8j47-home-manager-generation.drv
+building '/nix/store/104fjxknv542q3jdbf9si42lvr0fckzn-hm_gitconfig.drv'...
+building '/nix/store/prl4zl7lzk9vx4k27n9d7gw0q32kdwl5-manifest.json.drv'...
+building '/nix/store/v1jklr0hhlyzz59lf8z6k4abgpyk4lz3-sops-nix-user.drv'...
+building '/nix/store/70cphh1b8lkw7z58wjjki550iqmwm745-sops-nix.service.drv'...
+building '/nix/store/3rng5qvb80m8mvln8apfna4jnrq4wr93-home-manager-files.drv'...
+building '/nix/store/j0x2kf7p5kqjyn7pbw9j4nh21xrf8j47-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
@@ -19,5 +27,5 @@ Creating home file links in /home/zepzeper
 Activating onFilesChange
 Activating reloadSystemd
 Starting units: sops-nix.service
+sops-nix.service failed
 Activating sops-nix
-warning: Git tree '/home/zepzeper/personal/nix' is dirty
