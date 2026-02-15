@@ -1,26 +1,18 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-error:
-       … in the left operand of the update (//) operator
-         at /nix/store/n6qqmv6g7p6i01bwh7qda4piqdm4n1r9-source/modules/default.nix:61:5:
-           60|     module
-           61|     // {
-             |     ^
-           62|       activationPackage = module.config.home.activationPackage;
-
-       … while evaluating a branch condition
-         at /nix/store/4ggd0kb8as38xa0kr730qpnsa89df0x7-source/lib/lists.nix:141:18:
-          140|       len = length list;
-          141|       fold' = n: if n == len then nul else op (elemAt list n) (fold' (n + 1));
-             |                  ^
-          142|     in
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: syntax error, unexpected '=', expecting ';'
-       at /nix/store/52vq1r0is7x4rk06wj6d2whshwy76xz1-source/home-manager/modules/sops/default.nix:7:17:
-            6|     # Age key location (you'll copy your age private key here after install)
-            7|     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-             |                 ^
-            8|
+Starting Home Manager activation
+Activating checkFilesChanged
+Activating checkLinkTargets
+Activating writeBoundary
+Activating installPackages
+replacing old 'home-manager-path'
+installing 'home-manager-path'
+Activating linkGeneration
+Cleaning up orphan links from /home/zepzeper
+Creating home file links in /home/zepzeper
+Activating onFilesChange
+Activating reloadSystemd
+Starting units: sops-nix.service
+Activating sops-nix
+warning: Git tree '/home/zepzeper/personal/nix' is dirty

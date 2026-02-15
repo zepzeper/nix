@@ -2,7 +2,7 @@ building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/kvp4r97iyq2agavx21ba63hann9m6w3z-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
+evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/ny4b6afszwpb3fg3n96v3b61j4phsiwf-source/nixos/modules/system' has been renamed to `services.desktopManager.gnome.enable'.
 evaluation warning: The xorg package set has been deprecated, 'xorg.libXcursor' has been renamed to 'libxcursor'
 evaluation warning: The xorg package set has been deprecated, 'xorg.libxcb' has been renamed to 'libxcb'
 evaluation warning: The xorg package set has been deprecated, 'xorg.libXdmcp' has been renamed to 'libxdmcp'
