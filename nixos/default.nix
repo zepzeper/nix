@@ -61,6 +61,18 @@
     home-manager
   ];
 
+  system.autoUpgrade = {
+    enable = true;
+    dates = "weekly";
+    allowReboot = false;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
+
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
 }

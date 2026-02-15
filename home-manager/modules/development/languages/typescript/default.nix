@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.typescript;
 in {
   options.modules.development.languages.typescript = {
@@ -8,7 +12,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      nodejs_22
       nodePackages.npm
       nodePackages.pnpm
       nodePackages.yarn
@@ -17,17 +20,15 @@ in {
       nodePackages.typescript-language-server
       vscode-langservers-extracted
       nodePackages."@tailwindcss/language-server"
-      nodePackages.vscode-json-languageserver
       nodePackages.prettier
       prettierd
       nodePackages.eslint
-      nodePackages.vite
     ];
-    
+
     home.sessionVariables = {
       NPM_CONFIG_PREFIX = "$HOME/.npm-global";
     };
-    
+
     home.sessionPath = [
       "$HOME/.npm-global/bin"
     ];

@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.go;
 in {
   options.modules.development.languages.go = {
@@ -15,12 +19,12 @@ in {
       delve
       go-tools
     ];
-    
+
     home.sessionVariables = {
       GOPATH = "$HOME/go";
       GOBIN = "$HOME/go/bin";
     };
-    
+
     home.sessionPath = [
       "$HOME/go/bin"
     ];

@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.nix;
 in {
   options.modules.development.languages.nix = {
@@ -9,7 +13,6 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       nil
-      nixfmt-rfc-style
       alejandra
       nix-tree
       nix-diff

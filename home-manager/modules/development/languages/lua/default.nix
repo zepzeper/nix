@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.lua;
 in {
   options.modules.development.languages.lua = {
@@ -8,7 +12,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      lua
       luajit
       luarocks
       lua-language-server

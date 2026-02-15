@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.php;
 in {
   options.modules.development.languages.php = {
@@ -8,11 +12,11 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      php83
-      php83Packages.composer
-      nodePackages.intelephense
-      php83Packages.php-cs-fixer
-      php83Extensions.xdebug
+      php84
+      php84Packages.composer
+      phpactor
+      php84Packages.php-cs-fixer
+      php84Extensions.xdebug
     ];
   };
 }

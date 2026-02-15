@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.c;
 in {
   options.modules.development.languages.c = {
@@ -9,7 +13,7 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       gcc
-      clang-tools  # clangd LSP
+      clang-tools # clangd LSP
       cmake
       gnumake
       pkg-config

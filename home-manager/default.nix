@@ -58,7 +58,7 @@
       php.enable = true;
       nix.enable = true;
     };
-    
+
     lsp.common.enable = true;
   };
 

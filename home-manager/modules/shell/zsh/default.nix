@@ -9,7 +9,7 @@
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
 
-    initExtra = ''
+    initContent = ''
       # Custom tmux sessionizer keybinding
       bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
     '';

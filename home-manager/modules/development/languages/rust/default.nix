@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.languages.rust;
 in {
   options.modules.development.languages.rust = {
@@ -17,7 +21,7 @@ in {
       cargo-edit
       cargo-outdated
     ];
-    
+
     home.sessionVariables = {
       RUST_BACKTRACE = "1";
     };

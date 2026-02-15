@@ -1,5 +1,8 @@
-{ config, lib, ... }:
-let
+{
+  config,
+  lib,
+  ...
+}: let
   cfg = config.modules.development.languages;
 in {
   imports = [
@@ -10,7 +13,6 @@ in {
     ./typescript
     ./lua
     ./php
-    ./python
     ./nix
   ];
 

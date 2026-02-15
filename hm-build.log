@@ -1,9 +1,6 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: `programs.zsh.initExtra` is deprecated, use `programs.zsh.initContent` instead.
-
-                    Example: programs.zsh.initContent = "your content here";
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets

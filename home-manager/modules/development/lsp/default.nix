@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.modules.development.lsp.common;
 in {
   options.modules.development.lsp.common = {
@@ -14,15 +18,13 @@ in {
       yaml-language-server
       yamllint
       taplo
-      nodePackages.vscode-json-languageserver
       marksman
       nodePackages.markdownlint-cli
-      nodePackages.dockerfile-language-server-nodejs
+      dockerfile-language-server
       hadolint
       sqls
       lemminx
       terraform-ls
-      ansible-language-server
       nodePackages.graphql-language-service-cli
     ];
   };
