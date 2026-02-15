@@ -21,11 +21,11 @@
   # Disable all desktop environments
   services.desktopManager = {
     plasma6.enable = false;
+    gnome.enable = false;
   };
 
   services.xserver = {
     desktopManager = {
-      gnome.enable = false;
       xfce.enable = false;
     };
     windowManager = {

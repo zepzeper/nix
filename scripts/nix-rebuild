@@ -18,7 +18,7 @@ echo -e "${YELLOW}=== NixOS Rebuild Script ===${NC}"
 echo ""
 
 # Check if there are uncommitted changes in dotfiles submodule
-if [ -n "$(git submodule status | grep "-")" ]; then
+if grep -q "$(git submodule status | grep "-")"; then
     echo -e "${YELLOW}⚠️  Dotfiles submodule not initialized!${NC}"
     echo "Running: git submodule update --init --recursive"
     git submodule update --init --recursive
@@ -26,7 +26,7 @@ fi
 
 # Check for changes in dotfiles submodule
 cd dotfiles
-if [ -n "$(git status --porcelain)" ]; then
+if grep -q "$(git status --porcelain)"; then
     echo -e "${YELLOW}📁 Uncommitted changes in dotfiles submodule:${NC}"
     git checkout master
     git status --short
@@ -35,7 +35,7 @@ if [ -n "$(git status --porcelain)" ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         git add -A
-        read -p "Enter commit message for dotfiles: " msg
+        read -rp "Enter commit message for dotfiles: " msg
         git commit -m "$msg"
         git push origin HEAD:master
         cd ..

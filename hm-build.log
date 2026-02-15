@@ -1,6 +1,11 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
+these 2 derivations will be built:
+  /nix/store/fjv8k3fydydl4dgip611q5v7m4pvwx7r-home-manager-files.drv
+  /nix/store/vrsr539xslcp68s9gxxppsfvfai25c2c-home-manager-generation.drv
+building '/nix/store/fjv8k3fydydl4dgip611q5v7m4pvwx7r-home-manager-files.drv'...
+building '/nix/store/vrsr539xslcp68s9gxxppsfvfai25c2c-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
