@@ -6,7 +6,6 @@
     btop
     wayfreeze
     walker
-    elephant
     libnotify
     gtk3
     jq

@@ -12,6 +12,7 @@
   imports =
     [
       ./modules/dotfiles
+      ./modules/development
       ./modules/neovim
       ./modules/shell
       ./modules/cli-tools
@@ -44,6 +45,21 @@
         ];
       })
     ];
+  };
+
+  modules.development = {
+    languages = {
+      c.enable = true;
+      zig.enable = true;
+      go.enable = true;
+      rust.enable = true;
+      typescript.enable = true;
+      lua.enable = true;
+      php.enable = true;
+      nix.enable = true;
+    };
+    
+    lsp.common.enable = true;
   };
 
   accounts.calendar.basePath = "${config.home.homeDirectory}/.calendar";

@@ -8,7 +8,7 @@ show_menu() {
     local prompt="$1"
     local options="$2"
     
-    echo -e "$options" | walker --dmenu -p "$prompt"
+    echo -e "$options" | walker -p "$prompt"
 }
 
 show_screenrecord_menu() {
@@ -74,26 +74,39 @@ show_apps_menu() {
 }
 
 browser_search() {
-    # Prompt user for input
     input=$(echo "" | walker --dmenu -p "Search")
     
-    # Exit if nothing entered
     [ -z "$input" ] && return
     
-    # Check if it's a direct URL
-    if [[ "$input" =~ ^https?:// ]]; then
+    helium_pid=$(hyprctl clients -j | jq -r '.[] | select(.class=="helium") | .pid' | head -1)
+    
+    # Handle custom bangs
+    if [[ "$input" =~ ^!nix[[:space:]](.+) ]]; then
+        # Search NixOS packages
+        query="${BASH_REMATCH[1]}"
+        encoded=$(printf %s "$query" | jq -sRr @uri)
+        helium "https://search.nixos.org/packages?channel=unstable&query=$encoded" &
+    elif [[ "$input" =~ ^!home[[:space:]](.+) ]]; then
+        # Search Home Manager options
+        query="${BASH_REMATCH[1]}"
+        encoded=$(printf %s "$query" | jq -sRr @uri)
+        helium "https://home-manager-options.extranix.com/?query=$encoded" &
+    elif [[ "$input" =~ ^!nixopts[[:space:]](.+) ]]; then
+        # Search NixOS options
+        query="${BASH_REMATCH[1]}"
+        encoded=$(printf %s "$query" | jq -sRr @uri)
+        helium "https://search.nixos.org/options?channel=unstable&query=$encoded" &
+    elif [[ "$input" =~ ^https?:// ]]; then
+        # Direct URL
         helium "$input" &
     else
-        # URL encode the entire input (including potential !bangs)
+        # Default: DuckDuckGo search (handles their bangs like !gh, !reddit, etc)
         encoded=$(printf %s "$input" | jq -sRr @uri)
-        
-        # Pass to your default search engine which will handle the !bangs
         helium "https://duckduckgo.com/?q=$encoded" &
     fi
     
-    # Wait a moment for the window to appear/update
     sleep 0.3
-    hyprctl dispatch focuswindow "class:helium"
+    [ -n "$helium_pid" ] && hyprctl dispatch focuswindow "class:helium"
 }
 
 case "${1,,}" in
