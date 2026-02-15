@@ -8,8 +8,10 @@
     walker
     libnotify
     gtk3
+    bat
     jq
     yq
+    pandoc
   ];
 
   services.mako = {

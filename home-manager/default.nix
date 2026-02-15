@@ -57,6 +57,7 @@
       lua.enable = true;
       php.enable = true;
       nix.enable = true;
+      haskell.enable = true;
     };
 
     lsp.common.enable = true;

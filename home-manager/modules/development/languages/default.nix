@@ -9,6 +9,7 @@ in {
     ./c
     ./zig
     ./go
+    ./haskell
     ./rust
     ./typescript
     ./lua

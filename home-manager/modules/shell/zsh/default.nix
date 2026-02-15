@@ -9,6 +9,10 @@
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
 
+    shellAliases = {
+      cat = "bat --paging=never";
+    };
+
     initContent = ''
       # Custom tmux sessionizer keybinding
       bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
