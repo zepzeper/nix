@@ -73,6 +73,29 @@ show_apps_menu() {
     fi
 }
 
+browser_search() {
+    # Prompt user for input
+    input=$(echo "" | walker --dmenu -p "Search")
+    
+    # Exit if nothing entered
+    [ -z "$input" ] && return
+    
+    # Check if it's a direct URL
+    if [[ "$input" =~ ^https?:// ]]; then
+        helium "$input" &
+    else
+        # URL encode the entire input (including potential !bangs)
+        encoded=$(printf %s "$input" | jq -sRr @uri)
+        
+        # Pass to your default search engine which will handle the !bangs
+        helium "https://duckduckgo.com/?q=$encoded" &
+    fi
+    
+    # Wait a moment for the window to appear/update
+    sleep 0.3
+    hyprctl dispatch focuswindow "class:helium"
+}
+
 case "${1,,}" in
     screenrecord)
         show_screenrecord_menu
@@ -83,6 +106,9 @@ case "${1,,}" in
     apps)
         show_apps_menu
         ;;
+    bsearch)
+        browser_search
+        ;;
     *)
         echo "Usage: launch-menu <menu_name>"
         echo ""
@@ -90,6 +116,7 @@ case "${1,,}" in
         echo "  screenrecord - Screen recording options"
         echo "  localsend    - LocalSend share options"
         echo "  apps         - Launch applications"
+        echo "  bsearch      - Search browser"
         echo ""
         exit 1
         ;;

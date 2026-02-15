@@ -6,8 +6,9 @@
     btop
     wayfreeze
     walker
+    elephant
     libnotify
-    gpu-screen-recorder
+    gtk3
     jq
     yq
   ];
