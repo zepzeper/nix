@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # NixOS Rebuild Script
 
 set -e
@@ -18,7 +19,7 @@ echo -e "${YELLOW}=== NixOS Rebuild Script ===${NC}"
 echo ""
 
 # Check if there are uncommitted changes in dotfiles submodule
-if grep -q "$(git submodule status | grep "-")"; then
+if git submodule status | grep -q "^-"; then
     echo -e "${YELLOW}⚠️  Dotfiles submodule not initialized!${NC}"
     echo "Running: git submodule update --init --recursive"
     git submodule update --init --recursive
@@ -26,7 +27,7 @@ fi
 
 # Check for changes in dotfiles submodule
 cd dotfiles
-if grep -q "$(git status --porcelain)"; then
+if git status --porcelain | grep -q .; then
     echo -e "${YELLOW}📁 Uncommitted changes in dotfiles submodule:${NC}"
     git checkout master
     git status --short
