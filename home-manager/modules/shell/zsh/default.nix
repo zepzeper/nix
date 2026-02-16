@@ -13,6 +13,14 @@
       cat = "bat --paging=never";
     };
 
+    plugins = [
+      {
+        name = "vi-mode";
+        src = pkgs.zsh-vi-mode;
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      }
+    ];
+
     initContent = ''
       # Custom tmux sessionizer keybinding
       bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
