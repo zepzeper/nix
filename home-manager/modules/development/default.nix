@@ -6,6 +6,7 @@
   cfg = config.modules.development;
 in {
   imports = [
+    ./docker
     ./languages
     ./lsp
   ];
