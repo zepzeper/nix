@@ -87,6 +87,11 @@
       source = ../../../scripts/system/launch-menu;
       executable = true;
     };
+
+    ".local/bin/launch-nightlight" = {
+      source = ../../../scripts/system/launch-nightlight;
+      executable = true;
+    };
   };
 
   # Ensure ~/.local/bin is in PATH

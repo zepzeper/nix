@@ -8,6 +8,7 @@
     walker
     libnotify
     gtk3
+    hyprsunset
     bat
     jq
     yq
