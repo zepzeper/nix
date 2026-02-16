@@ -8,4 +8,4 @@ evaluation warning: The xorg package set has been deprecated, 'xorg.libXdmcp' ha
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilerrors' has been renamed to 'libxcb-errors'
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilrenderutil' has been renamed to 'libxcb-render-util'
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilwm' has been renamed to 'libxcb-wm'
-Done. The new configuration is /nix/store/9cy4h8n2kryv678pdk6zyvzvr9gsid58-nixos-system-desktop-26.05.20260213.a82ccc3
+Done. The new configuration is /nix/store/dbrn427lsfp9ql6vj8s5165sd4ynkcac-nixos-system-desktop-26.05.20260213.a82ccc3
