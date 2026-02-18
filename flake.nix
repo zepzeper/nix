@@ -16,6 +16,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     sops-nix.url = "github:Mic92/sops-nix";
@@ -41,9 +46,16 @@
     };
 
     nixosConfigurations = {
+      # Desktop workstation
       desktop = helper.mkNixOS {
         username = "zepzeper";
         hostname = "desktop";
+        platform = "x86_64-linux";
+      };
+
+      ds10u = helper.mkServer {
+        username = "admin";
+        hostname = "ds10u";
         platform = "x86_64-linux";
       };
     };

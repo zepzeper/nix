@@ -12,9 +12,11 @@
   imports = [
     inputs.sops-nix.nixosModules.sops
     ./hardware-configuration.nix
-    ./modules/system
-    ./modules/services
-    ./modules/apps
+    ../../modules/nixos/common/system
+    ../../modules/nixos/common/services
+    ../../modules/nixos/desktop/system
+    ../../modules/nixos/desktop/services
+    ../../modules/nixos/desktop/apps
   ];
 
   system.stateVersion = "25.05";

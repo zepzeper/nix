@@ -11,7 +11,7 @@
     openssh = {
       enable = true;
       settings = {
-        PasswordAuthentication = true;
+        PasswordAuthentication = false;
         PubkeyAuthentication = true;
         PermitRootLogin = "no";
       };

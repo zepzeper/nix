@@ -10,6 +10,7 @@ in {
     (helpers)
     mkHome
     mkNixOS
+    mkServer
     forAllSystems
     ;
 }
