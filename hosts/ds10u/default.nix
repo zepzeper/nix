@@ -3,12 +3,13 @@
   inputs,
   lib,
   pkgs,
+  username,
   ...
 }: {
   imports = [
     inputs.sops-nix.nixosModules.sops
     inputs.disko.nixosModules.disko
-
+    
     ../../modules/nixos/common/base.nix
     ../../modules/nixos/common/system
     ../../modules/nixos/common/services
@@ -27,7 +28,7 @@
       ];
       trusted-users = [
         "root"
-        username
+        hostname
       ];
     };
   };
