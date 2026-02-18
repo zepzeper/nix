@@ -5,6 +5,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-      nur.repos.forkprince.helium-nightly
+    nur.repos.forkprince.helium-nightly
   ];
 }

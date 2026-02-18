@@ -9,6 +9,6 @@
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
-      "beekeeper-studio-5.5.5"
+    "beekeeper-studio-5.5.5"
   ];
 }
