@@ -35,18 +35,15 @@ show_localsend_menu() {
     case $(show_menu "LocalSend" "Clipboard\nFile\nFolder") in
         *Clipboard*) 
             notify-send "LocalSend" "Sending clipboard"
-            # Add your clipboard send command here
-            # localsend send --clipboard
+             localsend send --clipboard
             ;;
         *File*) 
             notify-send "LocalSend" "Select file to send"
-            # Add your file send command here
-            # localsend send --file
+             localsend send --file
             ;;
         *Folder*) 
             notify-send "LocalSend" "Select folder to send"
-            # Add your folder send command here
-            # localsend send --folder
+             localsend send --folder
             ;;
         *) 
             exit 0
@@ -73,42 +70,6 @@ show_apps_menu() {
     fi
 }
 
-browser_search() {
-    input=$(echo "" | walker --dmenu -p "Search")
-    
-    [ -z "$input" ] && return
-    
-    helium_pid=$(hyprctl clients -j | jq -r '.[] | select(.class=="helium") | .pid' | head -1)
-    
-    # Handle custom bangs
-    if [[ "$input" =~ ^!nix[[:space:]](.+) ]]; then
-        # Search NixOS packages
-        query="${BASH_REMATCH[1]}"
-        encoded=$(printf %s "$query" | jq -sRr @uri)
-        helium "https://search.nixos.org/packages?channel=unstable&query=$encoded" &
-    elif [[ "$input" =~ ^!home[[:space:]](.+) ]]; then
-        # Search Home Manager options
-        query="${BASH_REMATCH[1]}"
-        encoded=$(printf %s "$query" | jq -sRr @uri)
-        helium "https://home-manager-options.extranix.com/?query=$encoded" &
-    elif [[ "$input" =~ ^!nixopts[[:space:]](.+) ]]; then
-        # Search NixOS options
-        query="${BASH_REMATCH[1]}"
-        encoded=$(printf %s "$query" | jq -sRr @uri)
-        helium "https://search.nixos.org/options?channel=unstable&query=$encoded" &
-    elif [[ "$input" =~ ^https?:// ]]; then
-        # Direct URL
-        helium "$input" &
-    else
-        # Default: DuckDuckGo search (handles their bangs like !gh, !reddit, etc)
-        encoded=$(printf %s "$input" | jq -sRr @uri)
-        helium "https://duckduckgo.com/?q=$encoded" &
-    fi
-    
-    sleep 0.3
-    [ -n "$helium_pid" ] && hyprctl dispatch focuswindow "class:helium"
-}
-
 case "${1,,}" in
     screenrecord)
         show_screenrecord_menu
@@ -119,9 +80,6 @@ case "${1,,}" in
     apps)
         show_apps_menu
         ;;
-    bsearch)
-        browser_search
-        ;;
     *)
         echo "Usage: launch-menu <menu_name>"
         echo ""
@@ -129,7 +87,6 @@ case "${1,,}" in
         echo "  screenrecord - Screen recording options"
         echo "  localsend    - LocalSend share options"
         echo "  apps         - Launch applications"
-        echo "  bsearch      - Search browser"
         echo ""
         exit 1
         ;;

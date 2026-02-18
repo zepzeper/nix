@@ -8,13 +8,4 @@ evaluation warning: The xorg package set has been deprecated, 'xorg.libXdmcp' ha
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilerrors' has been renamed to 'libxcb-errors'
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilrenderutil' has been renamed to 'libxcb-render-util'
 evaluation warning: The xorg package set has been deprecated, 'xorg.xcbutilwm' has been renamed to 'libxcb-wm'
-these 4 derivations will be built:
-  /nix/store/vryq0aa9hbvic5fajwlpl7vn8hyymml4-etc-fstab.drv
-  /nix/store/gjqjmdgdjlrjk9pa9lkqpjcwc3sszlrh-etc.drv
-  /nix/store/hmw9n7bnm0adbxkj3mmjgzpzz9ypz2b7-activate.drv
-  /nix/store/jzvaw3yz6amhah9qplr48qnql0qf3z9j-nixos-system-desktop-26.05.20260213.a82ccc3.drv
-building '/nix/store/vryq0aa9hbvic5fajwlpl7vn8hyymml4-etc-fstab.drv'...
-building '/nix/store/gjqjmdgdjlrjk9pa9lkqpjcwc3sszlrh-etc.drv'...
-building '/nix/store/hmw9n7bnm0adbxkj3mmjgzpzz9ypz2b7-activate.drv'...
-building '/nix/store/jzvaw3yz6amhah9qplr48qnql0qf3z9j-nixos-system-desktop-26.05.20260213.a82ccc3.drv'...
 Done. The new configuration is /nix/store/gqbkglrvm0kh3hbpnjjs37sqcfp3xzmh-nixos-system-desktop-26.05.20260213.a82ccc3
