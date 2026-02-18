@@ -28,7 +28,7 @@
       ];
       trusted-users = [
         "root"
-        hostname
+        username
       ];
     };
   };
