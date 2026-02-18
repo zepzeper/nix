@@ -34,7 +34,8 @@
   };
 
   users.users = {
-    admin = {
+    ${username} = {
+      initialPassword = "changeme";
       isNormalUser = true;
       description = "Server Admin";
       group = "users";
