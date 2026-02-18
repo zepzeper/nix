@@ -7,6 +7,7 @@
 in {
   imports = [
     ./docker
+    ./database
     ./languages
     ./lsp
   ];
