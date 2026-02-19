@@ -1,5 +1,5 @@
-# Desktop host configuration
-# Hardware-specific settings for desktop workstation
+# Laptop host configuration
+# Hardware-specific settings for laptop
 {
   config,
   pkgs,
@@ -15,12 +15,29 @@
 
   system.stateVersion = "25.05";
 
-  # Bootloader - desktop uses GRUB on NVMe
-  boot.loader.grub = {
+  # Laptop typically uses systemd-boot
+  boot.loader.systemd-boot = {
     enable = true;
-    device = "/dev/nvme0n1";
-    efiSupport = true;
-    efiInstallAsRemovable = true;
+    configurationLimit = 10;
+  };
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Power management for laptop
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      
+      WIFI_PWR_ON_AC = "off";
+      WIFI_PWR_ON_BAT = "on";
+      
+      RUNTIME_PM_ON_AC = "on";
+      RUNTIME_PM_ON_BAT = "auto";
+    };
   };
 
   # Nix settings
@@ -43,7 +60,7 @@
     overlays = [ inputs.nur.overlays.default ];
   };
 
-  # Desktop packages
+  # Laptop packages
   environment.systemPackages = with pkgs; [
     neovim
     wget
@@ -52,10 +69,9 @@
     cachix
     wl-clipboard
     playerctl
-    gparted
     polkit_gnome
-    cudaPackages.cudatoolkit
     home-manager
+    powertop
   ];
 
   # Keyboard layout
@@ -64,7 +80,7 @@
     variant = "";
   };
 
-  # Enable nix-ld for running non-Nix binaries
+  # Enable nix-ld
   programs.nix-ld.enable = true;
 
   # Auto-upgrade
@@ -74,10 +90,6 @@
     allowReboot = false;
   };
 
-  # Additional drives
-  fileSystems."/run/media/${username}/hdd" = {
-    device = "/dev/disk/by-uuid/5cc5723d-0e4f-4028-a0f4-9a6764eabbda";
-    fsType = "ext4";
-    options = [ "nosuid" "nodev" "nofail" "x-gvfs-show" ];
-  };
+  # Laptop-specific: fingerprint reader (if available)
+  # services.fprintd.enable = lib.mkDefault false;
 }

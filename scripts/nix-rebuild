@@ -1,22 +1,40 @@
 #!/usr/bin/env bash
 
-# NixOS Rebuild Script
+# NixOS Rebuild Script - Host Agnostic
+# Usage: ./nix-rebuild [hostname]
+# If no hostname is provided, uses the current system's hostname
 
 set -e
 
 NIX_DIR="${HOME}/personal/nix"
-HOSTNAME="desktop"
+
+# Get hostname from argument or current system
+if [ -n "$1" ]; then
+    HOSTNAME="$1"
+else
+    HOSTNAME=$(hostname)
+fi
 
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 pushd "$NIX_DIR" > /dev/null
 
-echo -e "${YELLOW}=== NixOS Rebuild Script ===${NC}"
+echo -e "${BLUE}=== NixOS Rebuild Script ===${NC}"
+echo -e "${BLUE}Target Host: ${HOSTNAME}${NC}"
 echo ""
+
+# Check if the hostname exists in flake.nix
+if ! grep -q "${HOSTNAME} = " flake.nix; then
+    echo -e "${RED}❌ Error: Host '${HOSTNAME}' not found in flake.nix${NC}"
+    echo "Available hosts:"
+    grep -E "^\s+(desktop|laptop|server|ds10u)[0-9]* = " flake.nix | sed 's/=.*//' | sed 's/^\s*/  - /'
+    exit 1
+fi
 
 # Check if there are uncommitted changes in dotfiles submodule
 if git submodule status | grep -q "^-"; then
@@ -26,27 +44,29 @@ if git submodule status | grep -q "^-"; then
 fi
 
 # Check for changes in dotfiles submodule
-cd dotfiles
-if git status --porcelain | grep -q .; then
-    echo -e "${YELLOW}📁 Uncommitted changes in dotfiles submodule:${NC}"
-    git checkout master
-    git status --short
-    echo ""
-    read -p "Commit dotfiles changes? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        git add -A
-        read -rp "Enter commit message for dotfiles: " msg
-        git commit -m "$msg"
-        git push origin HEAD:master
-        cd ..
-        git add dotfiles
-        git commit -m "Update dotfiles submodule"
+if [ -d "dotfiles/.git" ]; then
+    cd dotfiles
+    if git status --porcelain | grep -q .; then
+        echo -e "${YELLOW}📁 Uncommitted changes in dotfiles submodule:${NC}"
+        git checkout master 2>/dev/null || true
+        git status --short
+        echo ""
+        read -p "Commit dotfiles changes? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            git add -A
+            read -rp "Enter commit message for dotfiles: " msg
+            git commit -m "$msg"
+            git push origin HEAD:master 2>/dev/null || echo -e "${YELLOW}⚠️  Could not push dotfiles${NC}"
+            cd ..
+            git add dotfiles
+            git commit -m "Update dotfiles submodule"
+        else
+            cd ..
+        fi
     else
         cd ..
     fi
-else
-    cd ..
 fi
 
 # Show current changes
@@ -58,7 +78,7 @@ echo ""
 read -p "Edit flake.nix? (y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    nvim flake.nix
+    ${EDITOR:-nvim} flake.nix
 fi
 
 # Format nix files (using nixfmt if available, otherwise skip)
@@ -85,7 +105,8 @@ fi
 echo ""
 
 # Rebuild NixOS
-echo -e "${GREEN}🔍 Building NixOS (dry build)...${NC}"
+echo -e "${GREEN}🔍 Building NixOS configuration for ${HOSTNAME}...${NC}"
+echo -e "${BLUE}Running: nixos-rebuild build --flake .#${HOSTNAME}${NC}"
 if sudo nixos-rebuild build --flake ".#${HOSTNAME}" 2>&1 | tee nixos-build.log; then
     echo -e "${GREEN}✅ Build successful! Switching...${NC}"
     sudo nixos-rebuild switch --flake ".#${HOSTNAME}"
@@ -96,19 +117,27 @@ else
     exit 1
 fi
 
-echo -e "${GREEN}🔍 Building Home Manager...${NC}"
-if home-manager switch --flake ".#${HOSTNAME}" --impure 2>&1 | tee hm-build.log; then
-    echo -e "${GREEN}✅ Home Manager build successful!${NC}"
+# Only run home-manager if it's a workstation/laptop host (has home configuration)
+if grep -q "homeConfigurations.${HOSTNAME} = " flake.nix 2>/dev/null || \
+   [[ "$HOSTNAME" =~ ^(desktop|laptop)$ ]]; then
+    echo ""
+    echo -e "${GREEN}🔍 Building Home Manager for ${HOSTNAME}...${NC}"
+    if home-manager switch --flake ".#${HOSTNAME}" --impure 2>&1 | tee hm-build.log; then
+        echo -e "${GREEN}✅ Home Manager build successful!${NC}"
+    else
+        echo -e "${RED}❌ Home Manager build failed!${NC}"
+        tail -50 hm-build.log
+        popd > /dev/null
+        exit 1
+    fi
 else
-    echo -e "${RED}❌ Home Manager build failed!${NC}"
-    tail -50 hm-build.log
-    popd > /dev/null
-    exit 1
+    echo -"
+    echo -e "${BLUE}ℹ️  Skipping Home Manager (no home configuration for ${HOSTNAME})${NC}"
 fi
 
 # Get generation info
-gen=$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep current)
 echo ""
+gen=$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep current)
 echo -e "${GREEN}📦 Current generation: $gen${NC}"
 
 # Commit changes
@@ -144,5 +173,7 @@ fi
 popd > /dev/null
 
 echo ""
-git push
+if git remote get-url origin &>/dev/null; then
+    git push 2>/dev/null || echo -e "${YELLOW}⚠️  Could not push changes${NC}"
+fi
 echo -e "${GREEN}🎉 Done!${NC}"

@@ -3,6 +3,7 @@ keys:
     - &zepzeper age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
   - &hosts
     - &desktop age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
+
 creation_rules:
   - path_regex: secrets\.yaml$
     key_groups:

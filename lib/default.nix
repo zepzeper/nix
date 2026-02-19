@@ -9,8 +9,10 @@ in {
   inherit
     (helpers)
     mkHome
-    mkNixOS
+    mkWorkstation
     mkServer
+    mkMinimal
+    mkNixOS  # Legacy alias
     forAllSystems
     ;
 }

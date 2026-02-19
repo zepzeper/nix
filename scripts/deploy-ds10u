@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+# DS10U Server Deployment Script
+# Usage: ./deploy-ds10u [ip-address]
+
+set -e
+
+NIX_DIR="${HOME}/personal/nix"
+DS10U_IP="${1:-}"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}=== DS10U Server Deployment ===${NC}"
+echo ""
+
+# Check if IP is provided
+if [ -z "$DS10U_IP" ]; then
+    echo -e "${YELLOW}Usage: ./deploy-ds10u <ip-address>${NC}"
+    echo "Example: ./deploy-ds10u 192.168.1.100"
+    exit 1
+fi
+
+pushd "$NIX_DIR" > /dev/null
+
+# Check if configuration builds
+echo -e "${BLUE}🔍 Building configuration...${NC}"
+nix build .#nixosConfigurations.ds10u.config.system.build.toplevel --no-link 2>&1 | tail -20
+
+echo ""
+echo -e "${GREEN}✅ Configuration builds successfully${NC}"
+echo ""
+
+# Check if this is a fresh install or update
+echo -e "${YELLOW}Is this a fresh install or an update?${NC}"
+echo "1) Fresh install (use nixos-anywhere)"
+echo "2) Update existing NixOS (use nixos-rebuild)"
+echo "3) Cancel"
+read -p "Select option (1-3): " option
+
+case $option in
+    1)
+        echo ""
+        echo -e "${BLUE}🚀 Deploying fresh install to ${DS10U_IP}...${NC}"
+        echo "This will install NixOS on the server."
+        read -p "Are you sure? (yes/no): " confirm
+        if [ "$confirm" = "yes" ]; then
+            nixos-anywhere --flake ".#ds10u" "root@${DS10U_IP}"
+        else
+            echo -e "${YELLOW}Cancelled${NC}"
+        fi
+        ;;
+    2)
+        echo ""
+        echo -e "${BLUE}🔄 Updating existing NixOS on ${DS10U_IP}...${NC}"
+        nixos-rebuild switch --flake ".#ds10u" --target-host "admin@${DS10U_IP}"
+        ;;
+    3)
+        echo -e "${YELLOW}Cancelled${NC}"
+        exit 0
+        ;;
+    *)
+        echo -e "${RED}Invalid option${NC}"
+        exit 1
+        ;;
+esac
+
+popd > /dev/null
+
+echo ""
+echo -e "${GREEN}🎉 Done!${NC}"
+echo ""
+echo "Next steps:"
+echo "1. SSH into the server: ssh admin@${DS10U_IP}"
+echo "2. Test sudo: sudo whoami"
+echo "3. Check docs/DS10U_DEPLOY_CHECKLIST.md for Phase 2 (SOPS setup)"

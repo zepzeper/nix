@@ -1,0 +1,31 @@
+# Audio configuration
+# Sets up PipeWire for sound
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  # Disable PulseAudio, enable PipeWire
+  hardware.pulseaudio.enable = false;
+  
+  # RealtimeKit for audio permissions
+  security.rtkit.enable = true;
+
+  # PipeWire configuration
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+  # Additional audio packages
+  environment.systemPackages = with pkgs; [
+    pavucontrol
+    pulseaudio # for pactl command
+  ];
+}
