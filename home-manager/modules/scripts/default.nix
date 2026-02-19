@@ -11,6 +11,11 @@
       executable = true;
     };
 
+    ".local/bin/nix-deploy-anywhere" = {
+      source = ../../../scripts/nix-deploy-anywhere;
+      executable = true;
+    };
+
     # Misc scripts
     ".local/bin/cheat" = {
       source = ../../../scripts/misc/cheat;
@@ -102,5 +107,6 @@
   # Shell aliases for convenience
   programs.zsh.shellAliases = {
     rebuild = "nix-rebuild";
+    deploy-anywhere = "nix-deploy-anywhere";
   };
 }
