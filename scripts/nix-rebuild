@@ -118,20 +118,21 @@ else
 fi
 
 # Only run home-manager if it's a workstation/laptop host (has home configuration)
-if grep -q "homeConfigurations.${HOSTNAME} = " flake.nix 2>/dev/null || \
+if grep -q "homeConfigurations\.${HOSTNAME}\s*=" flake.nix 2>/dev/null || \
    [[ "$HOSTNAME" =~ ^(desktop|laptop)$ ]]; then
     echo ""
     echo -e "${GREEN}🔍 Building Home Manager for ${HOSTNAME}...${NC}"
+
     if home-manager switch --flake ".#${HOSTNAME}" --impure 2>&1 | tee hm-build.log; then
         echo -e "${GREEN}✅ Home Manager build successful!${NC}"
     else
         echo -e "${RED}❌ Home Manager build failed!${NC}"
         tail -50 hm-build.log
-        popd > /dev/null
+        popd > /dev/null 2>&1 || true
         exit 1
     fi
 else
-    echo -"
+    echo ""
     echo -e "${BLUE}ℹ️  Skipping Home Manager (no home configuration for ${HOSTNAME})${NC}"
 fi
 

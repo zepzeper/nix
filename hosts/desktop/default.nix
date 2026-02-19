@@ -74,7 +74,7 @@
 
   # Additional drives
   fileSystems."/run/media/${username}/hdd" = {
-    device = "/dev/disk/by-uuid/5cc5723d-0e4f-4028-a0f4-9a6764eabbda";
+    device = "/dev/disk/by-uuid/938f2c14-62a8-41e3-b67b-dd8785881bbd";
     fsType = "ext4";
     options = ["nosuid" "nodev" "nofail" "x-gvfs-show"];
   };

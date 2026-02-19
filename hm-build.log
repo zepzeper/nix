@@ -1,17 +1,6 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 5 derivations will be built:
-  /nix/store/dxqhjdgmxff0kynwhqn2xp4fnwlyx8jx-activation-script.drv
-  /nix/store/ch019h82x0ldfij1xw027x6zwkbvgiw3-hm_..zshrc.drv
-  /nix/store/h5kvq9phmn6fxvd89q61m66cf0s49452-user-dbus-services.drv
-  /nix/store/rxxpm42q65kd30gqrmx57bwlf641dqi0-home-manager-files.drv
-  /nix/store/b6v8nzvl7dypx125lr7x5w37hd1qvwil-home-manager-generation.drv
-building '/nix/store/dxqhjdgmxff0kynwhqn2xp4fnwlyx8jx-activation-script.drv'...
-building '/nix/store/ch019h82x0ldfij1xw027x6zwkbvgiw3-hm_..zshrc.drv'...
-building '/nix/store/h5kvq9phmn6fxvd89q61m66cf0s49452-user-dbus-services.drv'...
-building '/nix/store/rxxpm42q65kd30gqrmx57bwlf641dqi0-home-manager-files.drv'...
-building '/nix/store/b6v8nzvl7dypx125lr7x5w37hd1qvwil-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
