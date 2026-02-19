@@ -45,6 +45,7 @@
     vim
     zsh
     sudo
+    ssh-to-age
   ];
 
   # SSH server - allow password auth for initial setup

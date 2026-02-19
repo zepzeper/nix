@@ -62,7 +62,12 @@ case $option in
     2)
         echo ""
         echo -e "${BLUE}🔄 Updating existing NixOS on ${IP}...${NC}"
-        nixos-rebuild switch --flake ".#${MACHINE}" --target-host "admin@${IP}"
+        export HOME="$HOME"
+        NIX_SSHOPTS="-o StrictHostKeyChecking=no -o IdentityFile=$HOME/.ssh/id_ed25519" \
+        nixos-rebuild switch \
+            --flake ".#${MACHINE}" \
+            --target-host "admin@${IP}" \
+            --ask-sudo-password
         ;;
     3)
         echo -e "${YELLOW}Cancelled${NC}"

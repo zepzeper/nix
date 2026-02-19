@@ -39,10 +39,10 @@
   # Server users - ensure wheel group
   users.users.${username}.extraGroups = lib.mkDefault ["wheel"];
 
-  # Sudo configuration - requires password (set in host config via hashedPassword)
+  # Sudo configuration - passwordless for server management
   security.sudo = {
     enable = true;
-    wheelNeedsPassword = true; # Require password for sudo
+    wheelNeedsPassword = false;
   };
 
   # No sound/audio needed on most servers

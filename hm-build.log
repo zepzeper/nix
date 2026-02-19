@@ -2,33 +2,33 @@ warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
 these 5 derivations will be built:
-  /nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv
-  /nix/store/dd3fmzygmzmmp4daww9jn77mrjf58jib-sops-nix-user.drv
-  /nix/store/63wd7qhlny1rlz8g5ydgs7naav0y41wl-sops-nix.service.drv
-  /nix/store/0dpi9fanl32xmg4knpvxln877dqig73f-home-manager-files.drv
-  /nix/store/f50iyb9cc8ca4kc3jm0qwpldn2vfczi6-home-manager-generation.drv
-building '/nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv'...
-error: Cannot build '/nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv'.
+  /nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv
+  /nix/store/6pamhgnmdc5jqjqxm299f2nwjxnyks4d-sops-nix-user.drv
+  /nix/store/slqbk2pc7iyqmgrpkhagnbpdx7ydczpg-sops-nix.service.drv
+  /nix/store/jij33m71ri23lmj85lj1b6vxsy44d0hz-home-manager-files.drv
+  /nix/store/kzfx01g75kqnwn981avh029n5nh1gx56-home-manager-generation.drv
+building '/nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv'...
+error: Cannot build '/nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv'.
        Reason: builder failed with exit code 1.
        Output paths:
-         /nix/store/n6vaxb2r4gssy883s44wcxmsm8ai3yi9-manifest.json
+         /nix/store/v5mbyspkx2vh1pgrqggzbs1292w3f2sl-manifest.json
        Last 1 log lines:
-       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/s9hdyn4z4y6dgjxk0pksdal017cqx1bm-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
+       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/gxf4i0ldm5ifvyxr9aai6xdvr8sikygq-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
        For full logs, run:
-         nix log /nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv
-error: Cannot build '/nix/store/dd3fmzygmzmmp4daww9jn77mrjf58jib-sops-nix-user.drv'.
+         nix log /nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv
+error: Cannot build '/nix/store/6pamhgnmdc5jqjqxm299f2nwjxnyks4d-sops-nix-user.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/fq4ydl3cc84y91m2jikx3rw5hqzkhbm2-sops-nix-user
-error: Cannot build '/nix/store/63wd7qhlny1rlz8g5ydgs7naav0y41wl-sops-nix.service.drv'.
+         /nix/store/czdn8g38ljwh8iprygqws0gzxk8xvf6h-sops-nix-user
+error: Cannot build '/nix/store/slqbk2pc7iyqmgrpkhagnbpdx7ydczpg-sops-nix.service.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/xj05ndlpfjd74mgm82jiggpf4sryg7ks-sops-nix.service
-error: Cannot build '/nix/store/0dpi9fanl32xmg4knpvxln877dqig73f-home-manager-files.drv'.
+         /nix/store/c4xra05v9410aj4vhmzd5py61zik6i9f-sops-nix.service
+error: Cannot build '/nix/store/jij33m71ri23lmj85lj1b6vxsy44d0hz-home-manager-files.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/0s8gcd4pmxdaxv4cdf75n997pk5pbzrj-home-manager-files
-error: Cannot build '/nix/store/f50iyb9cc8ca4kc3jm0qwpldn2vfczi6-home-manager-generation.drv'.
+         /nix/store/yw2yhi2my3xi0d8a55yhhqzcxjca5fgk-home-manager-files
+error: Cannot build '/nix/store/kzfx01g75kqnwn981avh029n5nh1gx56-home-manager-generation.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/q6g9yj1lslmbzqb58radk578zj14b0pw-home-manager-generation
+         /nix/store/8kfqirbcqi7d3hbf981vgpx3p1zig49j-home-manager-generation
