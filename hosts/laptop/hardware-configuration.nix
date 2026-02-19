@@ -13,9 +13,9 @@
   ];
 
   # TODO: Update these after running nixos-generate-config on your laptop
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = [ "kvm-intel" ];  # Change to "kvm-amd" for AMD laptops
+  boot.kernelModules = ["kvm-intel"]; # Change to "kvm-amd" for AMD laptops
   boot.extraModulePackages = [];
 
   # TODO: Update with your actual partition layout
@@ -27,18 +27,18 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/PLACEHOLDER-EFI";
     fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
+    options = ["fmask=0022" "dmask=0022"];
   };
 
   # TODO: Update or remove if no swap
-  swapDevices = [ ];
+  swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  
+
   # Enable Bluetooth
   hardware.bluetooth.enable = true;
 }

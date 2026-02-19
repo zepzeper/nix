@@ -8,9 +8,10 @@
   ...
 }: {
   imports = [
-    ./dm          # Display manager and window compositor
-    ./audio       # Sound and audio
+    ./dm # Display manager and window compositor
+    ./audio # Sound and audio
     ./peripherals # Bluetooth and input devices
-    ./networking  # Desktop networking
+    ./networking # Desktop networking
+    ./graphics
   ];
 }

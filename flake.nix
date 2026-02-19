@@ -1,6 +1,6 @@
 {
   description = "Zepzeper's NixOS & Home Manager Configuration";
-  
+
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
@@ -69,7 +69,7 @@
         extraModules = [
           # Desktop-specific hardware
           ./modules/nixos/features/desktop/graphics
-          { modules.graphics.gpu = "nvidia"; }
+          {modules.graphics.gpu = "nvidia";}
         ];
       };
 

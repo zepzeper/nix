@@ -19,15 +19,13 @@
   boot.loader.grub = {
     enable = true;
     device = "/dev/nvme0n1";
-    efiSupport = true;
-    efiInstallAsRemovable = true;
   };
 
   # Nix settings
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" username ];
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" username];
       auto-optimise-store = true;
     };
     gc = {
@@ -40,7 +38,7 @@
   # Nixpkgs
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [ inputs.nur.overlays.default ];
+    overlays = [inputs.nur.overlays.default];
   };
 
   # Desktop packages
@@ -78,6 +76,6 @@
   fileSystems."/run/media/${username}/hdd" = {
     device = "/dev/disk/by-uuid/5cc5723d-0e4f-4028-a0f4-9a6764eabbda";
     fsType = "ext4";
-    options = [ "nosuid" "nodev" "nofail" "x-gvfs-show" ];
+    options = ["nosuid" "nodev" "nofail" "x-gvfs-show"];
   };
 }

@@ -24,7 +24,7 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = false;  # Key-only auth
+      PasswordAuthentication = false; # Key-only auth
       PubkeyAuthentication = true;
       ChallengeResponseAuthentication = false;
     };
@@ -37,12 +37,12 @@
   };
 
   # Server users - ensure wheel group
-  users.users.${username}.extraGroups = lib.mkDefault [ "wheel" ];
+  users.users.${username}.extraGroups = lib.mkDefault ["wheel"];
 
   # Sudo configuration - requires password (set in host config via hashedPassword)
   security.sudo = {
     enable = true;
-    wheelNeedsPassword = true;  # Require password for sudo
+    wheelNeedsPassword = true; # Require password for sudo
   };
 
   # No sound/audio needed on most servers

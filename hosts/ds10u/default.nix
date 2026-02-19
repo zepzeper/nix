@@ -48,8 +48,8 @@
   # Nix settings
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" username ];
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" username];
       auto-optimise-store = true;
     };
     gc = {
@@ -65,19 +65,19 @@
   # User configuration
   # Option A: Use hashedPassword for initial setup (comment out after age key is deployed)
   # Option B: Use SOPS for password (uncomment after age key is deployed)
-  
+
   users.users.${username} = {
     description = "Server Admin";
-    
+
     # SSH public key for login
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5BpOI02Rb5C104fjwAK4sIQB6xY64DCqQYNTzGRwQl wouterschiedam98@gmail.com"
     ];
-    
+
     # PHASE 1: Initial deployment - use hashed password
     # Comment this out after you've deployed the age key
     hashedPassword = "$6$18b6ar9iy8VXRanR$htj0EwRHzUnBXEBwtGSk0E0w5raS1QtX3Ge3Y.Z7pRVHHl87MYxJSBYjqWIOR6xrEgMKcyP5sUte6D2IdKzPe/";
-    
+
     # PHASE 2: After age key is deployed - use SOPS
     # Uncomment these lines and comment out hashedPassword above
     # hashedPasswordFile = config.sops.secrets.ds10u-admin-password.path;
@@ -87,7 +87,7 @@
   # PHASE 2: Enable this section after age key is deployed
   # sops.defaultSopsFile = ../../secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  # 
+  #
   # sops.secrets.ds10u-admin-password = {
   #   neededForUsers = true;
   # };

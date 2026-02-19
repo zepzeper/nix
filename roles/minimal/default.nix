@@ -9,8 +9,8 @@
   ...
 }: {
   # Boot configuration (generic - override per-host for specific bootloader)
-  boot.loader.systemd-boot.enable = lib.mkDefault true;
-  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+  #boot.loader.systemd-boot.enable = lib.mkDefault true;
+  #boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
   # Networking
   networking = {
@@ -20,17 +20,17 @@
 
   # Locale
   time.timeZone = lib.mkDefault "Europe/Amsterdam";
-  i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = lib.mkDefault "en_US.UTF-8";
-    LC_IDENTIFICATION = lib.mkDefault "en_US.UTF-8";
-    LC_MEASUREMENT = lib.mkDefault "en_US.UTF-8";
-    LC_MONETARY = lib.mkDefault "en_US.UTF-8";
-    LC_NAME = lib.mkDefault "en_US.UTF-8";
-    LC_NUMERIC = lib.mkDefault "en_US.UTF-8";
-    LC_PAPER = lib.mkDefault "en_US.UTF-8";
-    LC_TELEPHONE = lib.mkDefault "en_US.UTF-8";
-    LC_TIME = lib.mkDefault "en_US.UTF-8";
+    LC_ADDRESS = "nl_NL.UTF-8";
+    LC_IDENTIFICATION = "nl_NL.UTF-8";
+    LC_MEASUREMENT = "nl_NL.UTF-8";
+    LC_MONETARY = "nl_NL.UTF-8";
+    LC_NAME = "nl_NL.UTF-8";
+    LC_NUMERIC = "nl_NL.UTF-8";
+    LC_PAPER = "nl_NL.UTF-8";
+    LC_TELEPHONE = "nl_NL.UTF-8";
+    LC_TIME = "nl_NL.UTF-8";
   };
 
   # Console keymap
@@ -69,13 +69,9 @@
     isNormalUser = true;
     description = lib.mkDefault username;
     group = "users";
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keys = [];
-    # Note: Set password per-host using:
-    # initialPassword = "changeme";  # For first boot only
-    # OR
-    # hashedPassword = "...";  # For permanent password
   };
 
   # Enable zsh system-wide
@@ -83,7 +79,7 @@
 
   # Nix settings
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = ["nix-command" "flakes"];
     auto-optimise-store = true;
   };
 

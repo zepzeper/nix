@@ -8,7 +8,7 @@
 }: {
   options.modules.graphics = {
     gpu = lib.mkOption {
-      type = lib.types.enum [ "none" "nvidia" "amd" "intel" ];
+      type = lib.types.enum ["none" "nvidia" "amd" "intel"];
       default = "none";
       description = "GPU type to configure";
     };
@@ -17,8 +17,8 @@
   config = lib.mkMerge [
     # NVIDIA configuration
     (lib.mkIf (config.modules.graphics.gpu == "nvidia") {
-      services.xserver.videoDrivers = [ "nvidia" ];
-      
+      services.xserver.videoDrivers = ["nvidia"];
+
       hardware.nvidia = {
         modesetting.enable = true;
         powerManagement.enable = false;
@@ -32,16 +32,12 @@
         enable = true;
         enable32Bit = true;
       };
-
-      environment.systemPackages = with pkgs; [
-        nvtop
-      ];
     })
 
     # AMD configuration
     (lib.mkIf (config.modules.graphics.gpu == "amd") {
-      services.xserver.videoDrivers = [ "amdgpu" ];
-      
+      services.xserver.videoDrivers = ["amdgpu"];
+
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
@@ -55,14 +51,14 @@
       hardware.amdgpu.initrd.enable = true;
 
       environment.systemPackages = with pkgs; [
-        lact  # AMD GPU control
+        lact # AMD GPU control
       ];
     })
 
     # Intel configuration
     (lib.mkIf (config.modules.graphics.gpu == "intel") {
-      services.xserver.videoDrivers = [ "modesetting" ];
-      
+      services.xserver.videoDrivers = ["modesetting"];
+
       hardware.graphics = {
         enable = true;
         enable32Bit = true;

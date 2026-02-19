@@ -9,7 +9,7 @@
     hostname,
     username,
     platform,
-    role ? "workstation",  # workstation, minimal, or custom
+    role ? "workstation", # workstation, minimal, or custom
   }: let
     isNixOS = true;
   in
@@ -35,7 +35,7 @@
     hostname,
     username,
     platform,
-    extraModules ? [],  # Additional host-specific modules
+    extraModules ? [], # Additional host-specific modules
   }: let
     isVM = false;
   in
@@ -51,11 +51,14 @@
           isVM
           ;
       };
-      modules = [
-        ../roles/workstation
-      ] ++ extraModules ++ [
-        ../hosts/${hostname}
-      ];
+      modules =
+        [
+          ../roles/workstation
+        ]
+        ++ extraModules
+        ++ [
+          ../hosts/${hostname}
+        ];
     };
 
   # Helper for servers - minimal config, no GUI
@@ -63,7 +66,7 @@
     hostname,
     username,
     platform,
-    extraModules ? [],  # Additional host-specific modules
+    extraModules ? [], # Additional host-specific modules
   }: let
     isVM = false;
   in
@@ -79,11 +82,14 @@
           isVM
           ;
       };
-      modules = [
-        ../roles/server
-      ] ++ extraModules ++ [
-        ../hosts/${hostname}
-      ];
+      modules =
+        [
+          ../roles/server
+        ]
+        ++ extraModules
+        ++ [
+          ../hosts/${hostname}
+        ];
     };
 
   # Helper for minimal headless systems
@@ -107,20 +113,22 @@
           isVM
           ;
       };
-      modules = [
-        ../roles/minimal
-      ] ++ extraModules ++ [
-        ../hosts/${hostname}
-      ];
+      modules =
+        [
+          ../roles/minimal
+        ]
+        ++ extraModules
+        ++ [
+          ../hosts/${hostname}
+        ];
     };
 
   # Legacy helpers for backwards compatibility
-  mkNixOS = args: 
-    let
-      inherit (args) hostname username platform;
-      extraModules = args.extraModules or [];
-      isVM = false;
-    in
+  mkNixOS = args: let
+    inherit (args) hostname username platform;
+    extraModules = args.extraModules or [];
+    isVM = false;
+  in
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit
@@ -133,11 +141,14 @@
           isVM
           ;
       };
-      modules = [
-        ../roles/workstation
-      ] ++ extraModules ++ [
-        ../hosts/${hostname}
-      ];
+      modules =
+        [
+          ../roles/workstation
+        ]
+        ++ extraModules
+        ++ [
+          ../hosts/${hostname}
+        ];
     };
 
   forAllSystems = inputs.nixpkgs.lib.genAttrs [

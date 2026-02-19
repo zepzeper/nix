@@ -8,7 +8,7 @@
 }: {
   # Disable PulseAudio, enable PipeWire
   hardware.pulseaudio.enable = false;
-  
+
   # RealtimeKit for audio permissions
   security.rtkit.enable = true;
 
@@ -21,6 +21,13 @@
     };
     pulse.enable = true;
     jack.enable = true;
+  };
+
+  security.wrappers.ffmpeg = {
+    owner = "root";
+    group = "video";
+    capabilities = "cap_sys_admin+ep";
+    source = "${pkgs.ffmpeg}/bin/ffmpeg";
   };
 
   # Additional audio packages

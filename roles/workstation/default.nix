@@ -16,8 +16,8 @@
   ];
 
   # Workstation users need more privileges
-  users.users.${username}.extraGroups = [ 
-    "wheel" 
+  users.users.${username}.extraGroups = [
+    "wheel"
     "networkmanager"
     "docker"
     "video"
@@ -56,5 +56,5 @@
   };
 
   # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }

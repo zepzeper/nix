@@ -12,7 +12,7 @@ in {
     mkWorkstation
     mkServer
     mkMinimal
-    mkNixOS  # Legacy alias
+    mkNixOS # Legacy alias
     forAllSystems
     ;
 }

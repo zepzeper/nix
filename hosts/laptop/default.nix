@@ -28,13 +28,13 @@
     settings = {
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      
+
       CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-      
+
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "on";
-      
+
       RUNTIME_PM_ON_AC = "on";
       RUNTIME_PM_ON_BAT = "auto";
     };
@@ -43,8 +43,8 @@
   # Nix settings
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" username ];
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" username];
       auto-optimise-store = true;
     };
     gc = {
@@ -57,7 +57,7 @@
   # Nixpkgs
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [ inputs.nur.overlays.default ];
+    overlays = [inputs.nur.overlays.default];
   };
 
   # Laptop packages
