@@ -52,8 +52,6 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      # Password auth allowed initially - disable after key setup
-      PasswordAuthentication = lib.mkDefault true;
     };
   };
 

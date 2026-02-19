@@ -1,18 +1,34 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-Starting Home Manager activation
-Activating checkFilesChanged
-Activating checkLinkTargets
-Activating writeBoundary
-Activating installPackages
-replacing old 'home-manager-path'
-installing 'home-manager-path'
-Activating linkGeneration
-Cleaning up orphan links from /home/zepzeper
-Creating home file links in /home/zepzeper
-Activating onFilesChange
-Activating reloadSystemd
-Starting units: sops-nix.service
-Activating sops-nix
-warning: Git tree '/home/zepzeper/personal/nix' is dirty
+these 5 derivations will be built:
+  /nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv
+  /nix/store/dd3fmzygmzmmp4daww9jn77mrjf58jib-sops-nix-user.drv
+  /nix/store/63wd7qhlny1rlz8g5ydgs7naav0y41wl-sops-nix.service.drv
+  /nix/store/0dpi9fanl32xmg4knpvxln877dqig73f-home-manager-files.drv
+  /nix/store/f50iyb9cc8ca4kc3jm0qwpldn2vfczi6-home-manager-generation.drv
+building '/nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv'...
+error: Cannot build '/nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv'.
+       Reason: builder failed with exit code 1.
+       Output paths:
+         /nix/store/n6vaxb2r4gssy883s44wcxmsm8ai3yi9-manifest.json
+       Last 1 log lines:
+       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/s9hdyn4z4y6dgjxk0pksdal017cqx1bm-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
+       For full logs, run:
+         nix log /nix/store/fkm6pwcjmpkpg072iig28llqhig6rrh2-manifest.json.drv
+error: Cannot build '/nix/store/dd3fmzygmzmmp4daww9jn77mrjf58jib-sops-nix-user.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/fq4ydl3cc84y91m2jikx3rw5hqzkhbm2-sops-nix-user
+error: Cannot build '/nix/store/63wd7qhlny1rlz8g5ydgs7naav0y41wl-sops-nix.service.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/xj05ndlpfjd74mgm82jiggpf4sryg7ks-sops-nix.service
+error: Cannot build '/nix/store/0dpi9fanl32xmg4knpvxln877dqig73f-home-manager-files.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/0s8gcd4pmxdaxv4cdf75n997pk5pbzrj-home-manager-files
+error: Cannot build '/nix/store/f50iyb9cc8ca4kc3jm0qwpldn2vfczi6-home-manager-generation.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/q6g9yj1lslmbzqb58radk578zj14b0pw-home-manager-generation

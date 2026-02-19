@@ -46,7 +46,6 @@
   };
 
   # No sound/audio needed on most servers
-  hardware.pulseaudio.enable = lib.mkForce false;
   services.pipewire.enable = lib.mkForce false;
 
   # No Bluetooth on servers

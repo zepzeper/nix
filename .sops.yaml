@@ -1,12 +1,13 @@
 keys:
   - &users
     - &zepzeper age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
+    - &ds10u age107gc9ttkv0g7uyhqe5vq8ryjfx00nxg0lzcjrsp4qmce4uzhmuesdaayq2
   - &hosts
     - &desktop age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
-
 creation_rules:
   - path_regex: secrets\.yaml$
     key_groups:
       - age:
         - *zepzeper
         - *desktop
+        - *ds10u

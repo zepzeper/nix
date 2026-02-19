@@ -51,7 +51,10 @@ case $option in
         echo "This will install NixOS on the server."
         read -p "Are you sure? (yes/no): " confirm
         if [ "$confirm" = "yes" ]; then
-            nixos-anywhere --flake ".#${MACHINE}" "root@${IP}"
+            sudo nix run github:nix-community/nixos-anywhere -- \
+                -i ~/.ssh/id_ed25519 \
+                --flake ".#${MACHINE}" \
+                "nixos@${IP}"
         else
             echo -e "${YELLOW}Cancelled${NC}"
         fi
