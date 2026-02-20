@@ -112,4 +112,8 @@
   sops.secrets."tuliprox/url" = {
     owner = "root";
   };
+
+  sops.secrets."grafana-password" = {
+    owner = "root";
+  };
 }

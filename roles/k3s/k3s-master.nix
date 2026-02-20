@@ -12,6 +12,8 @@
     ./manifests/vaultwarden.nix
     ./manifests/pihole.nix
     ./manifests/tuliprox.nix
+    ./manifests/monitoring.nix
+    ./manifests/homepage.nix
   ];
 
   # Tailscale on master host

@@ -2,7 +2,7 @@ building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/39rgl612f3580j4b8frnymk9pwd696dw-source/modules/nixos/features/desktop/audio' has been renamed to `services.pulseaudio'.
+evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/jslxvwcmj549k4f8q8j767q0xn14hnav-source/modules/nixos/features/desktop/audio' has been renamed to `services.pulseaudio'.
 evaluation warning: The xorg package set has been deprecated, 'xorg.libXcursor' has been renamed to 'libxcursor'
 evaluation warning: The xorg package set has been deprecated, 'xorg.libxcb' has been renamed to 'libxcb'
 evaluation warning: The xorg package set has been deprecated, 'xorg.libXdmcp' has been renamed to 'libxdmcp'

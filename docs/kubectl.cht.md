@@ -63,3 +63,4 @@
 4. `kubectl get certificate -n <ns>` — if site has no HTTPS, check cert status
 5. `kubectl describe challenge -n <ns>` — if cert not ready, check ACME challenge
 6. `kubectl get secret <name> -n <ns>` — if challenge errors, check if secret exists
+7. `sudo systemctl restart k3s` — restart the whole cluster
