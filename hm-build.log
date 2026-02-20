@@ -3,36 +3,35 @@ Using saved setting for 'extra-substituters = https://nix-community.cachix.org' 
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
 these 8 derivations will be built:
   /nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv
-  /nix/store/gcxhh91ksrhqkw3w1waqg16mbwl7l469-activation-script.drv
   /nix/store/rm758pkd2xliy26ydkxd08whnfpxcqx2-hm_fontconfigconf.d10hmfonts.conf.drv
-  /nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv
-  /nix/store/xj175l0qrcbcrx60l0wqqrh8ai10vfix-sops-nix-user.drv
-  /nix/store/yg0ivkfhfj7ijvfnda4pqvnhdahri4g8-sops-nix.service.drv
-  /nix/store/mh0dn1scfdwdh54839z0impbzbnsrrr8-home-manager-files.drv
-  /nix/store/h8876bhqhxlaidgsy2kv4xv06i0rfhrd-home-manager-generation.drv
+  /nix/store/6lmx9v57wzsh9vlvn4ygkxydvlypc4m0-manifest.json.drv
+  /nix/store/bjah3cczk00mi4ysk2vw6mgqlzp95zhr-sops-nix-user.drv
+  /nix/store/y0n3f6skdpbhsl5dplwp8r490sj8flqh-sops-nix.service.drv
+  /nix/store/6dp9m3nryfp7g7b46gxls8qz33m4giq4-home-manager-files.drv
+  /nix/store/gcxhh91ksrhqkw3w1waqg16mbwl7l469-activation-script.drv
+  /nix/store/r6p25mdlhki4sflsxz3m2vipkgcfvypj-home-manager-generation.drv
 building '/nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv'...
-building '/nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv'...
-error: Cannot build '/nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv'.
-       Reason: builder failed with exit code 1.
-       Output paths:
-         /nix/store/4ffy6rhwhr87zc5jmddy85dhza3lxkyx-manifest.json
-       Last 1 log lines:
-       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/h80afcvm7cqf4yayqrl5r2dcabl930dd-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
-       For full logs, run:
-         nix log /nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv
-error: Cannot build '/nix/store/xj175l0qrcbcrx60l0wqqrh8ai10vfix-sops-nix-user.drv'.
-       Reason: 1 dependency failed.
-       Output paths:
-         /nix/store/b6i1089mwvkpqkyq0jibl29c34c3i1zv-sops-nix-user
-error: Cannot build '/nix/store/yg0ivkfhfj7ijvfnda4pqvnhdahri4g8-sops-nix.service.drv'.
-       Reason: 1 dependency failed.
-       Output paths:
-         /nix/store/94vxb9wcyx6g9yg4ir0dnw74xhwd5isy-sops-nix.service
-error: Cannot build '/nix/store/mh0dn1scfdwdh54839z0impbzbnsrrr8-home-manager-files.drv'.
-       Reason: 1 dependency failed.
-       Output paths:
-         /nix/store/7k8yv1bw96z0s7lix6v18id5mzsy9s6d-home-manager-files
-error: Cannot build '/nix/store/h8876bhqhxlaidgsy2kv4xv06i0rfhrd-home-manager-generation.drv'.
-       Reason: 1 dependency failed.
-       Output paths:
-         /nix/store/dgb8xyc2hj8nwhvmf2gqdhpv9pba8hrf-home-manager-generation
+building '/nix/store/6lmx9v57wzsh9vlvn4ygkxydvlypc4m0-manifest.json.drv'...
+building '/nix/store/bjah3cczk00mi4ysk2vw6mgqlzp95zhr-sops-nix-user.drv'...
+building '/nix/store/y0n3f6skdpbhsl5dplwp8r490sj8flqh-sops-nix.service.drv'...
+building '/nix/store/gcxhh91ksrhqkw3w1waqg16mbwl7l469-activation-script.drv'...
+building '/nix/store/rm758pkd2xliy26ydkxd08whnfpxcqx2-hm_fontconfigconf.d10hmfonts.conf.drv'...
+building '/nix/store/6dp9m3nryfp7g7b46gxls8qz33m4giq4-home-manager-files.drv'...
+building '/nix/store/r6p25mdlhki4sflsxz3m2vipkgcfvypj-home-manager-generation.drv'...
+Starting Home Manager activation
+Activating checkFilesChanged
+Activating checkLinkTargets
+Activating writeBoundary
+Activating installPackages
+nix profile remove /nix/store/m0jljyaaysia640h96vbmjvawld13kxi-home-manager-path
+removing 'home-manager-path'
+removed 1 packages, kept 1 packages
+warning: 'install' is a deprecated alias for 'add'
+Activating linkGeneration
+Cleaning up orphan links from /home/zepzeper
+Creating home file links in /home/zepzeper
+Activating onFilesChange
+Activating reloadSystemd
+Starting units: sops-nix.service
+Activating sops-nix
+warning: Git tree '/home/zepzeper/personal/nix' is dirty

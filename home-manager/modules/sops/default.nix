@@ -14,25 +14,11 @@
         path = "${config.home.homeDirectory}/.ssh/id_ed25519";
         mode = "0600";
       };
-      "ssh_keys/id_ed25519_pub" = {
-        path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
-        mode = "0644";
-      };
 
       # Chartbuddy SSH key (if it exists in secrets)
       "ssh_keys/id_ed25519_chartbuddy" = {
         path = "${config.home.homeDirectory}/.ssh/id_ed25519.chartbuddy";
         mode = "0600";
-      };
-      "ssh_keys/id_ed25519_chartbuddy_pub" = {
-        path = "${config.home.homeDirectory}/.ssh/id_ed25519.chartbuddy.pub";
-        mode = "0644";
-      };
-
-      # Known hosts
-      "ssh_keys/known_hosts" = {
-        path = "${config.home.homeDirectory}/.ssh/known_hosts";
-        mode = "0644";
       };
     };
   };
