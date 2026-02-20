@@ -9,6 +9,8 @@
     ./manifests/nginx-ingress.nix
     ./manifests/home-assistant.nix
     ./manifests/cert-manager.nix
+    ./manifests/vaultwarden.nix
+    ./manifests/pihole.nix
   ];
 
   # Tailscale on master host
@@ -44,9 +46,11 @@
       10250 # Kubelet metrics
       10251 # kube-scheduler
       10252 # kube-controller-manager
+      53 # Pi hole
     ];
     allowedUDPPorts = [
       8472 # VXLAN/Flannel networking
+      53 # Pi hole
     ];
   };
 }

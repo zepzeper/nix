@@ -1,11 +1,7 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 12 derivations will be built:
-  /nix/store/4ps8wd2b5r41banx4girp4r9xlmbb267-dummy-xdg-mime-dirs1.drv
-  /nix/store/967da42izgzhj1g4diclpknn9wknq3q9-dummy-xdg-mime-dirs2.drv
-  /nix/store/l143phw6skxxj5n0armfgm5jb76y43h1-dummy-fc-dir2.drv
-  /nix/store/xk6nlhmyg7yvfsdv7sailziyxn5mix7l-dummy-fc-dir1.drv
+these 8 derivations will be built:
   /nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv
   /nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv
   /nix/store/gagv42k99p33dxv2l7rfqmqgc4h8i170-sops-nix-user.drv
@@ -14,12 +10,8 @@ these 12 derivations will be built:
   /nix/store/rm758pkd2xliy26ydkxd08whnfpxcqx2-hm_fontconfigconf.d10hmfonts.conf.drv
   /nix/store/rxmmfdm18bgwpq9pb1vgi7wh5r2icazb-home-manager-files.drv
   /nix/store/nw2xwpajjca2vl1vzl5gswchcfixydb3-home-manager-generation.drv
-building '/nix/store/xk6nlhmyg7yvfsdv7sailziyxn5mix7l-dummy-fc-dir1.drv'...
-building '/nix/store/l143phw6skxxj5n0armfgm5jb76y43h1-dummy-fc-dir2.drv'...
-building '/nix/store/4ps8wd2b5r41banx4girp4r9xlmbb267-dummy-xdg-mime-dirs1.drv'...
-building '/nix/store/967da42izgzhj1g4diclpknn9wknq3q9-dummy-xdg-mime-dirs2.drv'...
-building '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'...
 building '/nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv'...
+building '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'...
 error: Cannot build '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'.
        Reason: builder failed with exit code 1.
        Output paths:

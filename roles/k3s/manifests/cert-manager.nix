@@ -3,42 +3,77 @@
   pkgs,
   ...
 }: {
-  system.activationScripts.k3s-cert-manager = {
-    deps = ["k3s-manifests"];
-    text = let
-      certManager = pkgs.fetchurl {
-        url = "https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml";
-        hash = "sha256-/Kr1EAKlaln2W2TKLaAhqTpRczwhqOhHjnJjwA7/fNA=";
-      };
-    in ''
-      mkdir -p /var/lib/rancher/k3s/server/manifests
-      cp ${certManager} /var/lib/rancher/k3s/server/manifests/cert-manager.yaml
-    '';
+  services.k3s.manifests.cert-manager = {
+    enable = true;
+    source = pkgs.fetchurl {
+      url = "https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml";
+      hash = "sha256-/Kr1EAKlaln2W2TKLaAhqTpRczwhqOhHjnJjwA7/fNA=";
+    };
   };
 
-  systemd.services.k3s-cloudflare-secret = {
-    description = "Create Cloudflare API token secret in Kubernetes";
-    after = ["k3s.service" "sops-nix.service"];
-    wants = ["k3s.service"];
-    wantedBy = ["multi-user.target"];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Environment = "KUBECONFIG=/etc/rancher/k3s/k3s.yaml";
+  sops.templates.cloudflare-secret-cert-manager = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "cert-manager";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
     };
-    script = ''
-      until ${pkgs.kubectl}/bin/kubectl get nodes; do sleep 2; done
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-cert-manager.json";
+  };
 
-      ${pkgs.kubectl}/bin/kubectl create namespace cert-manager --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
-      ${pkgs.kubectl}/bin/kubectl create namespace home-assistant --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
+  sops.templates.cloudflare-secret-home-assistant = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "home-assistant";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-home-assistant.json";
+  };
 
-      for namespace in cert-manager home-assistant; do
-        ${pkgs.kubectl}/bin/kubectl create secret generic cloudflare-api-token \
-          --from-file=api-token=${config.sops.secrets."cloudflare-api-token".path} \
-          --namespace $namespace \
-          --dry-run=client -o yaml | ${pkgs.kubectl}/bin/kubectl apply -f -
-      done
-    '';
+  sops.templates.cloudflare-secret-pihole = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "pihole";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-pihole.json";
+  };
+
+  services.k3s.manifests.namespaces = {
+    enable = true;
+    content = [
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "cert-manager";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "home-assistant";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "vaultwarden";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "pihole";
+      }
+    ];
   };
 
   services.k3s.manifests.cluster-issuer = {
