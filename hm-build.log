@@ -1,34 +1,46 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 5 derivations will be built:
-  /nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv
-  /nix/store/6pamhgnmdc5jqjqxm299f2nwjxnyks4d-sops-nix-user.drv
-  /nix/store/slqbk2pc7iyqmgrpkhagnbpdx7ydczpg-sops-nix.service.drv
-  /nix/store/jij33m71ri23lmj85lj1b6vxsy44d0hz-home-manager-files.drv
-  /nix/store/kzfx01g75kqnwn981avh029n5nh1gx56-home-manager-generation.drv
-building '/nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv'...
-error: Cannot build '/nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv'.
+these 12 derivations will be built:
+  /nix/store/4ps8wd2b5r41banx4girp4r9xlmbb267-dummy-xdg-mime-dirs1.drv
+  /nix/store/967da42izgzhj1g4diclpknn9wknq3q9-dummy-xdg-mime-dirs2.drv
+  /nix/store/l143phw6skxxj5n0armfgm5jb76y43h1-dummy-fc-dir2.drv
+  /nix/store/xk6nlhmyg7yvfsdv7sailziyxn5mix7l-dummy-fc-dir1.drv
+  /nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv
+  /nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv
+  /nix/store/gagv42k99p33dxv2l7rfqmqgc4h8i170-sops-nix-user.drv
+  /nix/store/gcxhh91ksrhqkw3w1waqg16mbwl7l469-activation-script.drv
+  /nix/store/pnl3wjvzd1qqjr01ds3qjrcn4yrwgimz-sops-nix.service.drv
+  /nix/store/rm758pkd2xliy26ydkxd08whnfpxcqx2-hm_fontconfigconf.d10hmfonts.conf.drv
+  /nix/store/rxmmfdm18bgwpq9pb1vgi7wh5r2icazb-home-manager-files.drv
+  /nix/store/nw2xwpajjca2vl1vzl5gswchcfixydb3-home-manager-generation.drv
+building '/nix/store/xk6nlhmyg7yvfsdv7sailziyxn5mix7l-dummy-fc-dir1.drv'...
+building '/nix/store/l143phw6skxxj5n0armfgm5jb76y43h1-dummy-fc-dir2.drv'...
+building '/nix/store/4ps8wd2b5r41banx4girp4r9xlmbb267-dummy-xdg-mime-dirs1.drv'...
+building '/nix/store/967da42izgzhj1g4diclpknn9wknq3q9-dummy-xdg-mime-dirs2.drv'...
+building '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'...
+building '/nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv'...
+error: Cannot build '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'.
        Reason: builder failed with exit code 1.
        Output paths:
-         /nix/store/v5mbyspkx2vh1pgrqggzbs1292w3f2sl-manifest.json
+         /nix/store/43q1rbi46r6zpaxvn1lp1ayvzwarq8ii-manifest.json
        Last 1 log lines:
-       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/gxf4i0ldm5ifvyxr9aai6xdvr8sikygq-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
+       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/xz4qzi9mnls6k4iywqvrqz63gqaacc5v-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
        For full logs, run:
-         nix log /nix/store/spnd1ig0bgnhb0vxiax901bfghpf2z0z-manifest.json.drv
-error: Cannot build '/nix/store/6pamhgnmdc5jqjqxm299f2nwjxnyks4d-sops-nix-user.drv'.
+         nix log /nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv
+error: Cannot build '/nix/store/gagv42k99p33dxv2l7rfqmqgc4h8i170-sops-nix-user.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/czdn8g38ljwh8iprygqws0gzxk8xvf6h-sops-nix-user
-error: Cannot build '/nix/store/slqbk2pc7iyqmgrpkhagnbpdx7ydczpg-sops-nix.service.drv'.
+         /nix/store/a67dgjknwrs4qy4ar1kyz4khcr8m2a9l-sops-nix-user
+error: Cannot build '/nix/store/pnl3wjvzd1qqjr01ds3qjrcn4yrwgimz-sops-nix.service.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/c4xra05v9410aj4vhmzd5py61zik6i9f-sops-nix.service
-error: Cannot build '/nix/store/jij33m71ri23lmj85lj1b6vxsy44d0hz-home-manager-files.drv'.
+         /nix/store/n1kz2m0s9v1vn51p278kf2zy1nzkxxjk-sops-nix.service
+error: Cannot build '/nix/store/rxmmfdm18bgwpq9pb1vgi7wh5r2icazb-home-manager-files.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/yw2yhi2my3xi0d8a55yhhqzcxjca5fgk-home-manager-files
-error: Cannot build '/nix/store/kzfx01g75kqnwn981avh029n5nh1gx56-home-manager-generation.drv'.
+         /nix/store/bbd580hdfk5rbr16x27z38gwy1h27vsl-home-manager-files
+error: Cannot build '/nix/store/nw2xwpajjca2vl1vzl5gswchcfixydb3-home-manager-generation.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/8kfqirbcqi7d3hbf981vgpx3p1zig49j-home-manager-generation
+         /nix/store/1wzx9x29gxa1blix05hxzncx8ggf73dk-home-manager-generation

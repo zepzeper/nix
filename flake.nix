@@ -38,7 +38,10 @@
   } @ inputs: let
     inherit (self) outputs;
     stateVersion = "25.05";
-    helper = import ./lib {inherit inputs outputs stateVersion;};
+    helper = import ./lib {
+      inherit inputs outputs stateVersion;
+      lib = nixpkgs.lib;
+    };
   in {
     # Home configurations
     homeConfigurations = {
@@ -87,6 +90,7 @@
         username = "admin";
         hostname = "ds10u";
         platform = "x86_64-linux";
+        isMasterNode = true;
       };
     };
 

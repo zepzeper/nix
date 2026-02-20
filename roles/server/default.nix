@@ -36,15 +36,6 @@
     allowPing = true;
   };
 
-  # Server users - ensure wheel group
-  users.users.${username}.extraGroups = lib.mkDefault ["wheel"];
-
-  # Sudo configuration - passwordless for server management
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
-
   # No sound/audio needed on most servers
   services.pipewire.enable = lib.mkForce false;
 

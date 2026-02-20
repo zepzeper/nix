@@ -85,6 +85,18 @@
   sops.defaultSopsFile = ../../secrets.yaml;
   sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
+  sops.secrets.tailscale-authkey = {
+    owner = "root";
+  };
+
+  sops.secrets.k3s-token = {
+    owner = "root";
+  };
+
+  sops.secrets.cloudflare-api-token = {
+    owner = "root";
+  };
+
   sops.secrets.ds10u-admin-password = {
     neededForUsers = true;
   };

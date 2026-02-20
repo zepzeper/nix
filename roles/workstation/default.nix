@@ -38,10 +38,6 @@
   # Enable Docker
   virtualisation.docker = {
     enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
   };
 
   # Enable fwupd for firmware updates

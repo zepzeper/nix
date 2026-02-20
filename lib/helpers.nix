@@ -2,6 +2,7 @@
   inputs,
   outputs,
   stateVersion,
+  lib,
   ...
 }: {
   # Helper function for generating home-manager configs
@@ -67,8 +68,10 @@
     username,
     platform,
     extraModules ? [], # Additional host-specific modules
+    isMasterNode,
   }: let
     isVM = false;
+    isMaster = isMasterNode;
   in
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -80,6 +83,7 @@
           username
           stateVersion
           isVM
+          isMaster
           ;
       };
       modules =
@@ -87,6 +91,9 @@
           ../roles/server
         ]
         ++ extraModules
+        ++ lib.optionals isMaster [
+          ../roles/k3s/k3s-master.nix
+        ]
         ++ [
           ../hosts/${hostname}
         ];
@@ -123,7 +130,6 @@
         ];
     };
 
-  # Legacy helpers for backwards compatibility
   mkNixOS = args: let
     inherit (args) hostname username platform;
     extraModules = args.extraModules or [];
