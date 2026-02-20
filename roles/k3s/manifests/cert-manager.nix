@@ -50,6 +50,19 @@
     path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-pihole.json";
   };
 
+  sops.templates.cloudflare-secret-tuliprox = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "tuliprox";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-tuliprox.json";
+  };
+
   services.k3s.manifests.namespaces = {
     enable = true;
     content = [
@@ -72,6 +85,11 @@
         apiVersion = "v1";
         kind = "Namespace";
         metadata.name = "pihole";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "tuliprox";
       }
     ];
   };

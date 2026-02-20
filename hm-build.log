@@ -3,36 +3,36 @@ Using saved setting for 'extra-substituters = https://nix-community.cachix.org' 
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
 these 8 derivations will be built:
   /nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv
-  /nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv
-  /nix/store/gagv42k99p33dxv2l7rfqmqgc4h8i170-sops-nix-user.drv
   /nix/store/gcxhh91ksrhqkw3w1waqg16mbwl7l469-activation-script.drv
-  /nix/store/pnl3wjvzd1qqjr01ds3qjrcn4yrwgimz-sops-nix.service.drv
   /nix/store/rm758pkd2xliy26ydkxd08whnfpxcqx2-hm_fontconfigconf.d10hmfonts.conf.drv
-  /nix/store/rxmmfdm18bgwpq9pb1vgi7wh5r2icazb-home-manager-files.drv
-  /nix/store/nw2xwpajjca2vl1vzl5gswchcfixydb3-home-manager-generation.drv
+  /nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv
+  /nix/store/xj175l0qrcbcrx60l0wqqrh8ai10vfix-sops-nix-user.drv
+  /nix/store/yg0ivkfhfj7ijvfnda4pqvnhdahri4g8-sops-nix.service.drv
+  /nix/store/mh0dn1scfdwdh54839z0impbzbnsrrr8-home-manager-files.drv
+  /nix/store/h8876bhqhxlaidgsy2kv4xv06i0rfhrd-home-manager-generation.drv
 building '/nix/store/b4n9frmxb28nncdgby9w40868gzgms1m-home-manager-path.drv'...
-building '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'...
-error: Cannot build '/nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv'.
+building '/nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv'...
+error: Cannot build '/nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv'.
        Reason: builder failed with exit code 1.
        Output paths:
-         /nix/store/43q1rbi46r6zpaxvn1lp1ayvzwarq8ii-manifest.json
+         /nix/store/4ffy6rhwhr87zc5jmddy85dhza3lxkyx-manifest.json
        Last 1 log lines:
-       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/xz4qzi9mnls6k4iywqvrqz63gqaacc5v-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
+       > /nix/store/hkgc7yzc3qgfjhv0n0kwpjmmg5qi4m7m-sops-install-secrets-0.0.1/bin/sops-install-secrets: manifest is not valid: secret ssh_keys/id_ed25519_chartbuddy_pub in /nix/store/h80afcvm7cqf4yayqrl5r2dcabl930dd-secrets.yaml is not valid: the key 'ssh_keys/id_ed25519_chartbuddy_pub' cannot be found
        For full logs, run:
-         nix log /nix/store/j71884y0xixp0w2x6j8cx9lvbizyf9x1-manifest.json.drv
-error: Cannot build '/nix/store/gagv42k99p33dxv2l7rfqmqgc4h8i170-sops-nix-user.drv'.
+         nix log /nix/store/j1d6y4x9q2kp3va9cyk5qfkfrxan2zhf-manifest.json.drv
+error: Cannot build '/nix/store/xj175l0qrcbcrx60l0wqqrh8ai10vfix-sops-nix-user.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/a67dgjknwrs4qy4ar1kyz4khcr8m2a9l-sops-nix-user
-error: Cannot build '/nix/store/pnl3wjvzd1qqjr01ds3qjrcn4yrwgimz-sops-nix.service.drv'.
+         /nix/store/b6i1089mwvkpqkyq0jibl29c34c3i1zv-sops-nix-user
+error: Cannot build '/nix/store/yg0ivkfhfj7ijvfnda4pqvnhdahri4g8-sops-nix.service.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/n1kz2m0s9v1vn51p278kf2zy1nzkxxjk-sops-nix.service
-error: Cannot build '/nix/store/rxmmfdm18bgwpq9pb1vgi7wh5r2icazb-home-manager-files.drv'.
+         /nix/store/94vxb9wcyx6g9yg4ir0dnw74xhwd5isy-sops-nix.service
+error: Cannot build '/nix/store/mh0dn1scfdwdh54839z0impbzbnsrrr8-home-manager-files.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/bbd580hdfk5rbr16x27z38gwy1h27vsl-home-manager-files
-error: Cannot build '/nix/store/nw2xwpajjca2vl1vzl5gswchcfixydb3-home-manager-generation.drv'.
+         /nix/store/7k8yv1bw96z0s7lix6v18id5mzsy9s6d-home-manager-files
+error: Cannot build '/nix/store/h8876bhqhxlaidgsy2kv4xv06i0rfhrd-home-manager-generation.drv'.
        Reason: 1 dependency failed.
        Output paths:
-         /nix/store/1wzx9x29gxa1blix05hxzncx8ggf73dk-home-manager-generation
+         /nix/store/dgb8xyc2hj8nwhvmf2gqdhpv9pba8hrf-home-manager-generation

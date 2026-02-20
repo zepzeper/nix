@@ -11,6 +11,7 @@
     ./manifests/cert-manager.nix
     ./manifests/vaultwarden.nix
     ./manifests/pihole.nix
+    ./manifests/tuliprox.nix
   ];
 
   # Tailscale on master host

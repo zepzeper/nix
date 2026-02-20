@@ -100,4 +100,16 @@
   sops.secrets.ds10u-admin-password = {
     neededForUsers = true;
   };
+
+  sops.secrets."tuliprox/username" = {
+    owner = "root";
+  };
+
+  sops.secrets."tuliprox/password" = {
+    owner = "root";
+  };
+
+  sops.secrets."tuliprox/url" = {
+    owner = "root";
+  };
 }
