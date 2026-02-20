@@ -15,6 +15,7 @@
       port = 0;
       # Upstream DNS servers - USE PI-HOLE FIRST
       server = [
+        "192.168.1.191"
         "1.1.1.1"
         "8.8.8.8"
       ];
