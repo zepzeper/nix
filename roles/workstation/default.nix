@@ -35,11 +35,6 @@
     networkmanagerapplet
   ];
 
-  # Enable Docker
-  virtualisation.docker = {
-    enable = true;
-  };
-
   # Enable fwupd for firmware updates
   services.fwupd.enable = true;
 
