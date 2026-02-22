@@ -139,7 +139,7 @@
   # Disk configuration
   disko.devices = {
     disk.main = {
-      device = "/dev/mmcblk0";
+      device = "/dev/mmcblk1";
       type = "disk";
       content = {
         type = "gpt";
@@ -186,6 +186,11 @@
     isNormalUser = true;
     description = "Server Admin";
     extraGroups = ["wheel"];
+
+    # SSH public key for login
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5BpOI02Rb5C104fjwAK4sIQB6xY64DCqQYNTzGRwQl wouterschiedam98@gmail.com"
+    ];
     # Generate with: mkpasswd -m sha-512
     hashedPassword = "$6$fGblLVdENFNWaanS$k6Y.1MyY7F8enwE0NcPNcEJFCNG4/XNhVt95VenI8x3.RRdyejM4IxkI/cvtCDfeuPyF8hRPDyQnBpkILL1/f.";
   };

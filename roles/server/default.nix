@@ -17,6 +17,8 @@
     iotop
     tcpdump
     ethtool
+    fzf
+    jq
   ];
 
   # SSH configuration - key-only authentication

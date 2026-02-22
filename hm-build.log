@@ -1,23 +1,17 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 5 derivations will be built:
-  /nix/store/gvbd2r3qm1ya868h4f6ynnf00gipb9ij-home-manager-path.drv
-  /nix/store/hi3f54v89455b4207lf2i83r9x3193n6-activation-script.drv
-  /nix/store/xvan46k7hwl9a2abxvrf42dfbxbs4gng-hm_fontconfigconf.d10hmfonts.conf.drv
-  /nix/store/i7hkfh4zhssgnkhczs89kk4fyd93vg6y-home-manager-files.drv
-  /nix/store/cjb68yngvs473h2xa0dxf42zcvljj3v0-home-manager-generation.drv
-building '/nix/store/gvbd2r3qm1ya868h4f6ynnf00gipb9ij-home-manager-path.drv'...
-building '/nix/store/hi3f54v89455b4207lf2i83r9x3193n6-activation-script.drv'...
-building '/nix/store/xvan46k7hwl9a2abxvrf42dfbxbs4gng-hm_fontconfigconf.d10hmfonts.conf.drv'...
-building '/nix/store/i7hkfh4zhssgnkhczs89kk4fyd93vg6y-home-manager-files.drv'...
-building '/nix/store/cjb68yngvs473h2xa0dxf42zcvljj3v0-home-manager-generation.drv'...
+these 2 derivations will be built:
+  /nix/store/ipmz236wy910773msl1za0iisvki486p-home-manager-files.drv
+  /nix/store/ij0xsfhjffwdnjaygd1akfzvqj538s1s-home-manager-generation.drv
+building '/nix/store/ipmz236wy910773msl1za0iisvki486p-home-manager-files.drv'...
+building '/nix/store/ij0xsfhjffwdnjaygd1akfzvqj538s1s-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
 Activating writeBoundary
 Activating installPackages
-nix profile remove /nix/store/033i7iprbwqylq9cg150hp4h4fdqjign-home-manager-path
+nix profile remove /nix/store/xjrvq4kba2bxp7adq34h35k945h94h6p-home-manager-path
 removing 'home-manager-path'
 removed 1 packages, kept 1 packages
 warning: 'install' is a deprecated alias for 'add'
