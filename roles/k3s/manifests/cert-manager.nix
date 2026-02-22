@@ -89,6 +89,19 @@
     path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-homepage.json";
   };
 
+  sops.templates.cloudflare-secret-mealie = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "mealie";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-mealie.json";
+  };
+
   services.k3s.manifests.namespaces = {
     enable = true;
     content = [
@@ -126,6 +139,11 @@
         apiVersion = "v1";
         kind = "Namespace";
         metadata.name = "homepage";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "mealie";
       }
     ];
   };

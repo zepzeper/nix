@@ -69,9 +69,11 @@
     platform,
     extraModules ? [], # Additional host-specific modules
     isMasterNode,
+    isWorkerNode,
   }: let
     isVM = false;
     isMaster = isMasterNode;
+    isWorker = isWorkerNode;
   in
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -84,6 +86,7 @@
           stateVersion
           isVM
           isMaster
+          isWorker
           ;
       };
       modules =
@@ -93,6 +96,9 @@
         ++ extraModules
         ++ lib.optionals isMaster [
           ../roles/k3s/k3s-master.nix
+        ]
+        ++ lib.optionals isWorker [
+          ../roles/k3s/k3s-worker.nix
         ]
         ++ [
           ../hosts/${hostname}
@@ -123,33 +129,6 @@
       modules =
         [
           ../roles/minimal
-        ]
-        ++ extraModules
-        ++ [
-          ../hosts/${hostname}
-        ];
-    };
-
-  mkNixOS = args: let
-    inherit (args) hostname username platform;
-    extraModules = args.extraModules or [];
-    isVM = false;
-  in
-    inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inherit
-          inputs
-          outputs
-          hostname
-          platform
-          username
-          stateVersion
-          isVM
-          ;
-      };
-      modules =
-        [
-          ../roles/workstation
         ]
         ++ extraModules
         ++ [

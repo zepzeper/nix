@@ -1,4 +1,14 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  hacs = pkgs.fetchzip {
+    url = "https://github.com/hacs/integration/archive/refs/tags/2.0.5.zip";
+    sha256 = "sha256-K70qufy5yisAzV1oaQ0JL0xnD7l3r5047CF/xRfJG88=";
+    stripRoot = false;
+  };
+  hacs-frontend = pkgs.fetchurl {
+    url = "https://files.pythonhosted.org/packages/py3/h/hacs-frontend/hacs_frontend-20250128065759-py3-none-any.whl";
+    sha256 = "sha256-5rGWFx+8s8s+ztLEjnifPclGtZ90kEh98W2NTkeoX8Q=";
+  };
+in {
   systemd.tmpfiles.rules = [
     "d /var/lib/home-assistant 0755 root root -"
   ];
@@ -6,6 +16,10 @@
   system.activationScripts.home-assistant-config = {
     deps = [];
     text = ''
+      mkdir -p /var/lib/home-assistant/custom_components/hacs
+      cp -r ${hacs}/integration-*/custom_components/hacs/. /var/lib/home-assistant/custom_components/hacs/
+      ${pkgs.unzip}/bin/unzip -o ${hacs-frontend} 'hacs_frontend/*' -d /var/lib/home-assistant/custom_components/hacs/
+
       mkdir -p /var/lib/home-assistant
 
       cat > /var/lib/home-assistant/configuration.yaml << EOF

@@ -20,6 +20,7 @@
     enable = true;
     device = "/dev/nvme0n1";
   };
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Nix settings
   nix = {

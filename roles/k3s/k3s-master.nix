@@ -12,6 +12,7 @@
     ./manifests/vaultwarden.nix
     ./manifests/pihole.nix
     ./manifests/tuliprox.nix
+    ./manifests/mealie.nix
     ./manifests/monitoring.nix
     ./manifests/homepage.nix
   ];
@@ -24,6 +25,9 @@
       ephemeral = false;
       preauthorized = true;
     };
+    extraUpFlags = [
+      "--advertise-routes=192.168.1.0/24"
+    ];
   };
 
   # K3s server (control plane)

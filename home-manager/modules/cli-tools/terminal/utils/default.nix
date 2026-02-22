@@ -13,6 +13,7 @@
     jq
     yq
     pandoc
+    w3m
   ];
 
   services.mako = {

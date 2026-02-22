@@ -80,7 +80,7 @@
       laptop = helper.mkWorkstation {
         username = "zepzeper";
         hostname = "laptop";
-        platform = "x86_64-linux";
+        platform = "aarch64-linux";
         extraModules = [
         ];
       };
@@ -91,6 +91,16 @@
         hostname = "ds10u";
         platform = "x86_64-linux";
         isMasterNode = true;
+        isWorkerNode = false;
+      };
+
+      # pi server
+      pi = helper.mkServer {
+        username = "admin";
+        hostname = "pi";
+        platform = "aarch64-linux";
+        isMasterNode = false;
+        isWorkerNode = true;
       };
     };
 

@@ -36,6 +36,10 @@
               href: https://pihole.krugten.org
               description: Ad Blocker
               icon: pi-hole.png
+          - Mealie:
+              href: https://mealie.krugten.org
+              description: Recipe Manager
+              icon: mealie.png
           - Grafana:
               href: https://grafana.krugten.org
               description: Monitoring
