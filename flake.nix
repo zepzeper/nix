@@ -89,7 +89,6 @@
                 screenshot = false;
                 recording = false;
                 terminal = {
-                  enable = true;
                   core = true;
                   utils = false;
                 };
@@ -98,7 +97,6 @@
                 docker = true;
                 database = false;
                 languages = {
-                  enable = true;
                   nix = true;
                   go = true;
                   rust = false;
@@ -167,7 +165,6 @@
                 screenshot = false;
                 recording = false;
                 terminal = {
-                  enable = true;
                   core = true;
                   utils = false;
                 };
@@ -220,44 +217,137 @@
     # NixOS configurations
     nixosConfigurations = {
       # Desktop workstation
-      desktop = helper.mkWorkstation {
+      desktop = helper.mkMachine {
         username = "zepzeper";
         hostname = "desktop";
         platform = "x86_64-linux";
-        extraModules = [
-          # Desktop-specific hardware
-          ./modules/nixos/features/desktop/graphics
-          {modules.graphics.gpu = "nvidia";}
-          {desktopSettings.bar = true;}
-        ];
+        roleSettings = [{
+            workstation = true;
+        }];
+        serviceSettings = [{
+            features = {
+                audio = true; 
+                waybar = true; 
+                dm = true; 
+                gpu = "nvidia";
+                networking = true; 
+                peripherals = true; 
+            };
+            services = {
+                docker = true;
+                openrgb = true;
+                xdg = true;
+            };
+            apps = {
+                browser = {
+                    helium = true;
+                };
+                creative = {
+                    gimp = true;
+                };
+                media = {
+                    hypnotix = true;
+                    localsend = true;
+                    spotify = true;
+                    vlc = true;
+                };
+                reader = {
+                    files = {
+                        nautilus = true;
+                    };
+                };
+                steam = true;
+            };
+        }];
       };
 
       # Laptop
-      laptop = helper.mkWorkstation {
+      laptop = helper.mkMachine {
         username = "zepzeper";
         hostname = "laptop";
         platform = "aarch64-linux";
-        extraModules = [
-          {desktopSettings.bar = true;}
-        ];
+        roleSettings = [{
+            workstation = true;
+        }];
+        serviceSettings = [{
+            features = {
+                audio = true; 
+                waybar = true; 
+                dm = true; 
+                gpu = "none";
+                networking = true; 
+                peripherals = true; 
+            };
+            services = {
+                docker = true;
+                xdg = true;
+            };
+            apps = {
+                browser = {
+                    helium = true;
+                };
+                creative = {
+                    gimp = true;
+                };
+                media = {
+                    hypnotix = true;
+                    localsend = true;
+                    spotify = true;
+                    vlc = true;
+                };
+                reader = {
+                    files = {
+                        nautilus = true;
+                    };
+                };
+            };
+        }];
       };
 
       # ds10u server
-      ds10u = helper.mkServer {
+      ds10u = helper.mkMachine {
         username = "admin";
         hostname = "ds10u";
         platform = "x86_64-linux";
-        isMasterNode = true;
-        isWorkerNode = false;
+        roleSettings = [{
+            server = true;
+            k3s = {
+              master = true;
+            };
+        }];
+        serviceSettings = [{
+            features = {
+                audio = true; 
+                networking = true; 
+            };
+            services = {
+                docker = true;
+                xdg = true;
+            };
+        }];
       };
 
       # pi server
-      pi = helper.mkServer {
+      pi = helper.mkMachine {
         username = "admin";
         hostname = "pi";
         platform = "aarch64-linux";
-        isMasterNode = false;
-        isWorkerNode = true;
+        roleSettings = [{
+            server = true;
+            k3s = {
+              worker = true;
+            };
+        }];
+        serviceSettings = [{
+            features = {
+                audio = true; 
+                networking = true; 
+            };
+            services = {
+                docker = true;
+                xdg = true;
+            };
+        }];
       };
     };
 

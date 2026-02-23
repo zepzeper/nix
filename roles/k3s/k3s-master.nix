@@ -4,60 +4,54 @@
   lib,
   username,
   ...
-}: {
-  imports = [
-    ./manifests/nginx-ingress.nix
-    ./manifests/home-assistant.nix
-    ./manifests/cert-manager.nix
-    ./manifests/vaultwarden.nix
-    ./manifests/pihole.nix
-    ./manifests/tuliprox.nix
-    ./manifests/mealie.nix
-    ./manifests/monitoring.nix
-    ./manifests/homepage.nix
-  ];
+}:
 
-  # Tailscale on master host
-  services.tailscale = {
-    enable = true;
-    authKeyFile = config.sops.secrets."tailscale-authkey".path;
-    authKeyParameters = {
-      ephemeral = false;
-      preauthorized = true;
+let
+  cfg = config.k3s;
+in {
+  options.k3s = {
+    master = lib.mkEnableOption "K3s master node";
+  };
+
+  config = lib.mkIf cfg.master {
+    services.tailscale = {
+      enable = true;
+      authKeyFile = config.sops.secrets."tailscale-authkey".path;
+      authKeyParameters = {
+        ephemeral = false;
+        preauthorized = true;
+      };
+      extraUpFlags = [
+        "--advertise-routes=192.168.1.0/24"
+      ];
     };
-    extraUpFlags = [
-      "--advertise-routes=192.168.1.0/24"
-    ];
-  };
 
-  # K3s server (control plane)
-  services.k3s = {
-    enable = true;
-    role = "server";
-    tokenFile = config.sops.secrets."k3s-token".path;
-    extraFlags = "--disable traefik --write-kubeconfig-mode 644";
-  };
+    services.k3s = {
+      enable = true;
+      role = "server";
+      tokenFile = config.sops.secrets."k3s-token".path;
+      extraFlags = "--disable traefik --write-kubeconfig-mode 644";
+    };
 
-  # Kubernetes tools
-  environment.systemPackages = with pkgs; [
-    k3s
-    kubectl
-    k9s
-    kubernetes-helm
-  ];
+    environment.systemPackages = with pkgs; [
+      k3s
+      kubectl
+      k9s
+      kubernetes-helm
+    ];
 
-  # Firewall ports for k3s
-  networking.firewall = {
-    allowedTCPPorts = [
-      6443 # Kubernetes API server
-      10250 # Kubelet metrics
-      10251 # kube-scheduler
-      10252 # kube-controller-manager
-      53 # Pi hole
-    ];
-    allowedUDPPorts = [
-      8472 # VXLAN/Flannel networking
-      53 # Pi hole
-    ];
+    networking.firewall = {
+      allowedTCPPorts = [
+        6443
+        10250
+        10251
+        10252
+        53
+      ];
+      allowedUDPPorts = [
+        8472
+        53
+      ];
+    };
   };
 }

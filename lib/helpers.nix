@@ -36,14 +36,14 @@
         ++ extraHomeModules;
     };
 
-  # Helper for workstation/desktop machines with full desktop environment
-  mkWorkstation = {
+  # Helper for machines 
+  mkMachine = {
     hostname,
     username,
     platform,
-    extraModules ? [], # Additional host-specific modules
+    roleSettings ? [],
+    serviceSettings ? [],
   }: let
-    isVM = false;
   in
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -54,95 +54,15 @@
           platform
           username
           stateVersion
-          isVM
           ;
       };
       modules =
         [
-          ../roles/workstation
-        ]
-        ++ extraModules
-        ++ [
+          ../roles/default.nix
+          ../modules/nixos/default.nix
           ../hosts/${hostname}
-        ];
+        ]
+        ++ roleSettings
+        ++ serviceSettings;
     };
-
-  # Helper for servers - minimal config, no GUI
-  mkServer = {
-    hostname,
-    username,
-    platform,
-    extraModules ? [], # Additional host-specific modules
-    isMasterNode,
-    isWorkerNode,
-  }: let
-    isVM = false;
-    isMaster = isMasterNode;
-    isWorker = isWorkerNode;
-  in
-    inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inherit
-          inputs
-          outputs
-          hostname
-          platform
-          username
-          stateVersion
-          isVM
-          isMaster
-          isWorker
-          ;
-      };
-      modules =
-        [
-          ../roles/server
-        ]
-        ++ extraModules
-        ++ lib.optionals isMaster [
-          ../roles/k3s/k3s-master.nix
-        ]
-        ++ lib.optionals isWorker [
-          ../roles/k3s/k3s-worker.nix
-        ]
-        ++ [
-          ../hosts/${hostname}
-        ];
-    };
-
-  # Helper for minimal headless systems
-  mkMinimal = {
-    hostname,
-    username,
-    platform,
-    extraModules ? [],
-  }: let
-    isVM = false;
-  in
-    inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inherit
-          inputs
-          outputs
-          hostname
-          platform
-          username
-          stateVersion
-          isVM
-          ;
-      };
-      modules =
-        [
-          ../roles/minimal
-        ]
-        ++ extraModules
-        ++ [
-          ../hosts/${hostname}
-        ];
-    };
-
-  forAllSystems = inputs.nixpkgs.lib.genAttrs [
-    "aarch64-linux"
-    "x86_64-linux"
-  ];
 }

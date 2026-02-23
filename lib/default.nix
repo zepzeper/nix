@@ -10,9 +10,6 @@ in {
   inherit
     (helpers)
     mkHome
-    mkWorkstation
-    mkServer
-    mkMinimal
-    forAllSystems
+    mkMachine
     ;
 }

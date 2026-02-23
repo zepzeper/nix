@@ -15,7 +15,7 @@
   # Networking
   networking = {
     hostName = hostname;
-    networkmanager.enable = lib.mkDefault true;
+    networkmanager.enable = true;
   };
 
   # Locale
@@ -73,8 +73,6 @@
     openssh.authorizedKeys.keys = [];
   };
 
-  # Enable zsh system-wide
-  programs.zsh.enable = true;
 
   # Nix settings
   nix.settings = {
@@ -82,6 +80,7 @@
     auto-optimise-store = true;
   };
 
-  # System-wide zsh
+  # Enable zsh system-wide
+  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 }

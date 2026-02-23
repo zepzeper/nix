@@ -97,6 +97,9 @@
         kubernetes = {
           enable = lib.mkDefault true;
         };
+        ai = {
+          opencode.enable = lib.mkDefault true;
+        };
       };
       dotfiles = {
         enable = lib.mkDefault true;
