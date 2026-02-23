@@ -66,7 +66,7 @@ case $option in
         NIX_SSHOPTS="-o StrictHostKeyChecking=no -o IdentityFile=$HOME/.ssh/id_ed25519" \
         nixos-rebuild switch \
             --flake ".#${MACHINE}" \
-            --target-host "nixos@${IP}" \
+            --target-host "admin@${IP}" \
             --ask-sudo-password
         ;;
     3)

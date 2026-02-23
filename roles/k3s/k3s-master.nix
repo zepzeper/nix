@@ -35,7 +35,7 @@
     enable = true;
     role = "server";
     tokenFile = config.sops.secrets."k3s-token".path;
-    extraFlags = "--disable traefik";
+    extraFlags = "--disable traefik --write-kubeconfig-mode 644";
   };
 
   # Kubernetes tools
