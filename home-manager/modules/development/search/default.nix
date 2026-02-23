@@ -4,10 +4,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.shell;
+  cfg = config.modules.development.search;
 in {
   imports = [
-    ./ssh
-    ./zsh
+    ./ripgrep
   ];
 }

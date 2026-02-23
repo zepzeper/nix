@@ -1,27 +1,16 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    bluetui
-    impala
-    wiremix
-    btop
-    wayfreeze
-    walker
-    libnotify
-    gtk3
-    hyprsunset
-    bat
-    jq
-    yq
-    pandoc
-    w3m
+{
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.modules.cliTools.terminal.utils;
+in {
+  imports = [
+    ./monitoring
+    ./file-manager
+    ./notifications
+    ./bluetooth
+    ./nightlight
+    ./core-utils
   ];
-
-  services.mako = {
-    enable = true;
-    settings = {
-      default-timeout = 5000; # 5 seconds
-      background-color = "#1e1e2e";
-      font = "JetBrainsMono Nerd Font";
-    };
-  };
 }

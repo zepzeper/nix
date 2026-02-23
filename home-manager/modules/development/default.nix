@@ -10,9 +10,8 @@ in {
     ./database
     ./languages
     ./lsp
+    ./formatters
+    ./search
+    ./kubernetes
   ];
-
-  options.modules.development = {
-    enable = lib.mkEnableOption "development environment";
-  };
 }

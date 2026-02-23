@@ -1,17 +1,12 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    ghostty
-    fzf
-    ripgrep
-    alejandra
+{
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.modules.cliTools.terminal.core;
+in {
+  imports = [
+    ./ghostty
+    ./fzf
   ];
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.ghostty = {
-    enable = true;
-  };
 }

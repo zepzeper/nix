@@ -1,40 +1,48 @@
 {
   config,
+  lib,
   pkgs,
   ...
-}: {
-  programs.zsh = {
-    enable = true;
+}: let
+  cfg = config.modules.shell.zsh;
+in {
+  options.modules.shell.zsh = {
+    enable = lib.mkEnableOption "zsh configuration";
+  };
 
-    syntaxHighlighting.enable = true;
-    autosuggestion.enable = true;
-
-    shellAliases = {
-      cat = "bat --paging=never";
-    };
-
-    plugins = [
-      {
-        name = "vi-mode";
-        src = pkgs.zsh-vi-mode;
-        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-      }
-    ];
-
-    initContent = ''
-      # Custom tmux sessionizer keybinding
-      bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
-    '';
-
-    oh-my-zsh = {
+  config = lib.mkIf cfg.enable {
+    programs.zsh = {
       enable = true;
-      theme = "robbyrussell";
+
+      syntaxHighlighting.enable = true;
+      autosuggestion.enable = true;
+
+      shellAliases = {
+        cat = "bat --paging=never";
+      };
+
       plugins = [
-        "git"
-        "fzf"
-        "docker"
-        "sudo"
+        {
+          name = "vi-mode";
+          src = pkgs.zsh-vi-mode;
+          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+        }
       ];
+
+      initContent = ''
+        bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
+      '';
+
+      oh-my-zsh = {
+        enable = true;
+        theme = "robbyrussell";
+        plugins = [
+          "git"
+          "fzf"
+          "docker"
+          "sudo"
+        ];
+      };
     };
   };
 }

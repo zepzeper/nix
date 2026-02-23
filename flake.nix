@@ -45,7 +45,7 @@
   in {
     # Home configurations
     homeConfigurations = {
-      # Desktop workstation
+      # Desktop workstation - uses role defaults from home-manager/default.nix
       desktop = helper.mkHome {
         username = "zepzeper";
         hostname = "desktop";
@@ -53,12 +53,167 @@
         role = "workstation";
       };
 
-      # Laptop
+      # Laptop - uses role defaults from home-manager/default.nix
       laptop = helper.mkHome {
         username = "zepzeper";
         hostname = "laptop";
         platform = "x86_64-linux";
         role = "workstation";
+      };
+
+      # ds10u server - minimal home-manager config
+      ds10u = helper.mkHome {
+        username = "admin";
+        hostname = "ds10u";
+        platform = "x86_64-linux";
+        role = "server";
+        extraHomeModules = [
+          {
+            modules = {
+              dotfiles = {
+                enable = true;
+                nvim = true;
+                tmux = true;
+                ghostty = false;
+                hypr = false;
+                waybar = false;
+                walker = false;
+              };
+              shell = {
+                ssh = true;
+                zsh = true;
+              };
+              cliTools = {
+                git = true;
+                tmux = true;
+                screenshot = false;
+                recording = false;
+                terminal = {
+                  enable = true;
+                  core = true;
+                  utils = false;
+                };
+              };
+              development = {
+                docker = true;
+                database = false;
+                languages = {
+                  enable = true;
+                  nix = true;
+                  go = true;
+                  rust = false;
+                  c = false;
+                  zig = false;
+                  typescript = false;
+                  lua = false;
+                  php = false;
+                  haskell = false;
+                };
+                lsp = {
+                  common = {
+                    enable = true;
+                  };
+                };
+                formatters = {
+                  alejandra = true;
+                  shfmt = true;
+                };
+                search = {
+                  ripgrep = true;
+                };
+                kubernetes = {
+                  enable = true;
+                };
+              };
+              fonts = {
+                enable = true;
+              };
+              scripts = {
+                enable = true;
+              };
+              sops = {
+                enable = true;
+              };
+            };
+          }
+        ];
+      };
+
+      # pi server - minimal home-manager config
+      pi = helper.mkHome {
+        username = "admin";
+        hostname = "pi";
+        platform = "aarch64-linux";
+        role = "server";
+        extraHomeModules = [
+          {
+            modules = {
+              dotfiles = {
+                enable = true;
+                nvim = true;
+                tmux = true;
+                hypr = false;
+                ghostty = false;
+                waybar = false;
+                walker = false;
+              };
+              shell = {
+                ssh = true;
+                zsh = true;
+              };
+              cliTools = {
+                git = true;
+                tmux = true;
+                screenshot = false;
+                recording = false;
+                terminal = {
+                  enable = true;
+                  core = true;
+                  utils = false;
+                };
+              };
+              development = {
+                docker = true;
+                database = false;
+                languages = {
+                  nix = true;
+                  go = true;
+                  rust = false;
+                  c = false;
+                  zig = false;
+                  typescript = false;
+                  lua = false;
+                  php = false;
+                  haskell = false;
+                };
+                lsp = {
+                  common = {
+                    enable = true;
+                  };
+                };
+                formatters = {
+                  alejandra = true;
+                  shfmt = true;
+                };
+                search = {
+                  ripgrep = true;
+                };
+                kubernetes = {
+                  enable = true;
+                };
+              };
+              fonts = {
+                enable = true;
+              };
+              scripts = {
+                enable = true;
+              };
+              sops = {
+                enable = true;
+              };
+            };
+          }
+        ];
       };
     };
 
@@ -73,6 +228,7 @@
           # Desktop-specific hardware
           ./modules/nixos/features/desktop/graphics
           {modules.graphics.gpu = "nvidia";}
+          {desktopSettings.bar = true;}
         ];
       };
 
@@ -82,6 +238,7 @@
         hostname = "laptop";
         platform = "aarch64-linux";
         extraModules = [
+          {desktopSettings.bar = true;}
         ];
       };
 

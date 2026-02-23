@@ -1,4 +1,10 @@
-_: {
+{
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.modules.cliTools;
+in {
   imports = [
     ./git
     ./tmux

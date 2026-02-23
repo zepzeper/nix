@@ -1,15 +1,28 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    git
-  ];
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.cliTools.git;
+in {
+  options.modules.cliTools.git = {
+    enable = lib.mkEnableOption "git tools";
+  };
 
-  programs.git = {
-    enable = true;
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      git
+    ];
 
-    settings = {
-      user = {
-        name = "zepzeper";
-        email = "wouterschiedam@hotmail.com";
+    programs.git = {
+      enable = true;
+
+      settings = {
+        user = {
+          name = "zepzeper";
+          email = "wouterschiedam@hotmail.com";
+        };
       };
     };
   };

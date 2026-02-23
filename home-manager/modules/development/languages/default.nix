@@ -16,8 +16,4 @@ in {
     ./php
     ./nix
   ];
-
-  options.modules.development.languages = {
-    enable = lib.mkEnableOption "programming languages";
-  };
 }

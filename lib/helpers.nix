@@ -10,7 +10,8 @@
     hostname,
     username,
     platform,
-    role ? "workstation", # workstation, minimal, or custom
+    role ? "workstation",
+    extraHomeModules ? [],
   }: let
     isNixOS = true;
   in
@@ -28,7 +29,11 @@
           role
           ;
       };
-      modules = [../home-manager];
+      modules =
+        [
+          ../home-manager
+        ]
+        ++ extraHomeModules;
     };
 
   # Helper for workstation/desktop machines with full desktop environment

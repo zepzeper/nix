@@ -13,5 +13,6 @@
     ./peripherals # Bluetooth and input devices
     ./networking # Desktop networking
     ./graphics
+    ./bar # Status bar
   ];
 }

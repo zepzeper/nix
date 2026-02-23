@@ -1,13 +1,12 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-copying path '/nix/store/n6qqmv6g7p6i01bwh7qda4piqdm4n1r9-source' from 'https://nix-community.cachix.org'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
 Activating writeBoundary
 Activating installPackages
-nix profile remove /nix/store/xjrvq4kba2bxp7adq34h35k945h94h6p-home-manager-path
+nix profile remove /nix/store/3fqa9mfxgrgaf2y4fxl4dyhc86cxkfy0-home-manager-path
 removing 'home-manager-path'
 removed 1 packages, kept 1 packages
 warning: 'install' is a deprecated alias for 'add'
