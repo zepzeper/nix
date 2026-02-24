@@ -161,6 +161,7 @@
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
             "nginx.ingress.kubernetes.io/ssl-redirect" = "true";
             "nginx.ingress.kubernetes.io/proxy-body-size" = "0";
+            "external-dns.alpha.kubernetes.io/hostname" = "mealie.krugten.org";
           };
         };
         spec = {

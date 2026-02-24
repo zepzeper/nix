@@ -81,6 +81,7 @@
         };
         spec = {
           replicas = 1;
+          strategy.type = "Recreate";
           selector.matchLabels.app = "homepage";
           template = {
             metadata.labels.app = "homepage";

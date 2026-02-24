@@ -1,34 +1,34 @@
 {...}: {
   systemd.tmpfiles.rules = [
-    "d /var/lib/vaultwarden 0755 root root -"
+    "d /var/lib/kuma 0755 root root -"
   ];
 
-  services.k3s.manifests.vaultwarden = {
+  services.k3s.manifests.kuma = {
     enable = true;
     content = [
       {
         apiVersion = "apps/v1";
         kind = "Deployment";
         metadata = {
-          name = "vaultwarden";
-          namespace = "vaultwarden";
+          name = "kuma";
+          namespace = "kuma";
         };
         spec = {
           replicas = 1;
           strategy.type = "Recreate";
-          selector.matchLabels.app = "vaultwarden";
+          selector.matchLabels.app = "kuma";
           template = {
-            metadata.labels.app = "vaultwarden";
+            metadata.labels.app = "kuma";
             spec = {
               containers = [
                 {
-                  name = "vaultwarden";
-                  image = "vaultwarden/server:1.35.3";
-                  ports = [{containerPort = 80;}];
+                  name = "kuma";
+                  image = "louislam/uptime-kuma:1.23.16";
+                  ports = [{containerPort = 3001;}];
                   volumeMounts = [
                     {
                       name = "data";
-                      mountPath = "/data";
+                      mountPath = "/app/data";
                     }
                   ];
                 }
@@ -36,7 +36,7 @@
               volumes = [
                 {
                   name = "data";
-                  hostPath.path = "/var/lib/vaultwarden";
+                  hostPath.path = "/var/lib/kuma";
                 }
               ];
             };
@@ -47,15 +47,15 @@
         apiVersion = "v1";
         kind = "Service";
         metadata = {
-          name = "vaultwarden";
-          namespace = "vaultwarden";
+          name = "kuma";
+          namespace = "kuma";
         };
         spec = {
-          selector.app = "vaultwarden";
+          selector.app = "kuma";
           ports = [
             {
-              port = 80;
-              targetPort = 80;
+              port = 3001;
+              targetPort = 3001;
             }
           ];
         };
@@ -64,31 +64,31 @@
         apiVersion = "networking.k8s.io/v1";
         kind = "Ingress";
         metadata = {
-          name = "vaultwarden";
-          namespace = "vaultwarden";
+          name = "kuma";
+          namespace = "kuma";
           annotations = {
             "kubernetes.io/ingress.class" = "nginx";
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
-            "external-dns.alpha.kubernetes.io/hostname" = "vaultwarden.krugten.org";
+            "external-dns.alpha.kubernetes.io/hostname" = "kuma.krugten.org";
           };
         };
         spec = {
           tls = [
             {
-              hosts = ["vaultwarden.krugten.org"];
-              secretName = "vaultwarden-tls";
+              hosts = ["kuma.krugten.org"];
+              secretName = "kuma-tls";
             }
           ];
           rules = [
             {
-              host = "vaultwarden.krugten.org";
+              host = "kuma.krugten.org";
               http.paths = [
                 {
                   path = "/";
                   pathType = "Prefix";
                   backend.service = {
-                    name = "vaultwarden";
-                    port.number = 80;
+                    name = "kuma";
+                    port.number = 3001;
                   };
                 }
               ];

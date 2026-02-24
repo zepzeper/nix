@@ -133,6 +133,7 @@
         };
         spec = {
           replicas = 1;
+          strategy.type = "Recreate";
           selector.matchLabels.app = "tuliprox";
           template = {
             metadata.labels.app = "tuliprox";

@@ -111,6 +111,7 @@ in {
           annotations = {
             "kubernetes.io/ingress.class" = "nginx";
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
+            "external-dns.alpha.kubernetes.io/hostname" = "homeassistant.krugten.org";
           };
         };
         spec = {

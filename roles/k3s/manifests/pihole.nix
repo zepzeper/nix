@@ -16,6 +16,7 @@
         };
         spec = {
           replicas = 1;
+          strategy.type = "Recreate"; # Host port is in use
           selector.matchLabels.app = "pihole";
           template = {
             metadata.labels.app = "pihole";
@@ -119,6 +120,7 @@
           annotations = {
             "kubernetes.io/ingress.class" = "nginx";
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
+            "external-dns.alpha.kubernetes.io/hostname" = "pihole.krugten.org";
           };
         };
         spec = {

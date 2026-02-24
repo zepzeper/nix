@@ -89,6 +89,32 @@
     path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-mealie.json";
   };
 
+  sops.templates.cloudflare-secret-kuma = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "kuma";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-kuma.json";
+  };
+
+  sops.templates.cloudflare-secret-external-dns = {
+    content = builtins.toJSON {
+      apiVersion = "v1";
+      kind = "Secret";
+      metadata = {
+        name = "cloudflare-api-token";
+        namespace = "external-dns";
+      };
+      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
+    };
+    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-external-dns.json";
+  };
+
   services.k3s.manifests.namespaces = {
     enable = true;
     content = [
@@ -126,6 +152,11 @@
         apiVersion = "v1";
         kind = "Namespace";
         metadata.name = "mealie";
+      }
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "kuma";
       }
     ];
   };

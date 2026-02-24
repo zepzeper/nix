@@ -1,67 +1,37 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
 Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-these 8 derivations will be built:
-  /nix/store/3x4xzk2a38f9h8pyf5p6p8lcyz1wr5qv-manifest.json.drv
-  /nix/store/0mlrdr0p67q5v5az9bnkbydf643fzy71-sops-nix-user.drv
-  /nix/store/bixyc8dpkd40fmnz8nx3xidvj0krqaz0-home-manager-path.drv
-  /nix/store/ir5qp2vf7a0i2yrmf09rgz6qh2xs1vx7-hm_fontconfigconf.d10hmfonts.conf.drv
-  /nix/store/lbykli925vd8rjk9ykgj17dji45a4z1k-activation-script.drv
-  /nix/store/y9yill9hxc9mll0p00pqjicr7g9ai72n-sops-nix.service.drv
-  /nix/store/xdpny4mj6nq45wvny9qps25p42567slz-home-manager-files.drv
-  /nix/store/v4f3kbrhddz29c6f7rj088w741rwl7gi-home-manager-generation.drv
-these 15 paths will be fetched (137.01 MiB download, 487.35 MiB unpacked):
-  /nix/store/vw87yalwqrq8k0rcmvnsrdklywgv29vw-golangci-lint-2.10.1
-  /nix/store/sxnqk68x7h8ahqwbmplmfm2d6n74ricq-gopls-0.21.1
-  /nix/store/kyfl8l63isk7hrn312in844p676dkzra-graphql-language-service-cli-3.5.0
-  /nix/store/565h04980gi8j5iy0mm61g9cj4wr2dak-home-configuration-reference-manpage
-  /nix/store/i2v76z76zfnd6ydcpp9c0371gkxy442i-hyprland-0.53.3
-  /nix/store/ym5j9v7g11zn0fbd5gysmdywdk4yq76z-hyprpicker-0.4.6
-  /nix/store/djck6hqq7fz16fgdjqajrnxpkax6z1g1-hyprshot-1.3.0
-  /nix/store/49nbpzr2vghkj7ly80w5lpsifcw0aias-nil-2025-06-13
-  /nix/store/3y8vr4wi7klpviyqrpzlcmmr0g4g9c4l-opencode-1.2.5
-  /nix/store/q2927fmqd76kycribjd163q6adipasbn-prettierd-0.27.0
-  /nix/store/7k6903kwanysggnpw44m8p6ssqmbah1j-rust-analyzer-2026-02-16
-  /nix/store/zk5zzngd963zy77zp0ja5ap52572bj2v-rust-analyzer-unwrapped-2026-02-16
-  /nix/store/6s9p8hjfnsd9m56h8a4afg0yzx65c6xz-typescript-language-server-5.1.3
-  /nix/store/km0hdyga7j3gr5pwgbh64izlgnd0jadq-vscode-langservers-extracted-4.10.0
-  /nix/store/51m88n91zd16qc97bwnlfmszzyark8l7-walker-2.14.2
-copying path '/nix/store/565h04980gi8j5iy0mm61g9cj4wr2dak-home-configuration-reference-manpage' from 'https://nix-community.cachix.org'...
-copying path '/nix/store/vw87yalwqrq8k0rcmvnsrdklywgv29vw-golangci-lint-2.10.1' from 'https://cache.nixos.org'...
-copying path '/nix/store/sxnqk68x7h8ahqwbmplmfm2d6n74ricq-gopls-0.21.1' from 'https://cache.nixos.org'...
-copying path '/nix/store/kyfl8l63isk7hrn312in844p676dkzra-graphql-language-service-cli-3.5.0' from 'https://cache.nixos.org'...
-copying path '/nix/store/49nbpzr2vghkj7ly80w5lpsifcw0aias-nil-2025-06-13' from 'https://cache.nixos.org'...
-copying path '/nix/store/3y8vr4wi7klpviyqrpzlcmmr0g4g9c4l-opencode-1.2.5' from 'https://cache.nixos.org'...
-copying path '/nix/store/q2927fmqd76kycribjd163q6adipasbn-prettierd-0.27.0' from 'https://cache.nixos.org'...
-copying path '/nix/store/6s9p8hjfnsd9m56h8a4afg0yzx65c6xz-typescript-language-server-5.1.3' from 'https://cache.nixos.org'...
-copying path '/nix/store/km0hdyga7j3gr5pwgbh64izlgnd0jadq-vscode-langservers-extracted-4.10.0' from 'https://cache.nixos.org'...
-copying path '/nix/store/51m88n91zd16qc97bwnlfmszzyark8l7-walker-2.14.2' from 'https://cache.nixos.org'...
-copying path '/nix/store/i2v76z76zfnd6ydcpp9c0371gkxy442i-hyprland-0.53.3' from 'https://cache.nixos.org'...
-copying path '/nix/store/ym5j9v7g11zn0fbd5gysmdywdk4yq76z-hyprpicker-0.4.6' from 'https://cache.nixos.org'...
-copying path '/nix/store/zk5zzngd963zy77zp0ja5ap52572bj2v-rust-analyzer-unwrapped-2026-02-16' from 'https://cache.nixos.org'...
-building '/nix/store/3x4xzk2a38f9h8pyf5p6p8lcyz1wr5qv-manifest.json.drv'...
-building '/nix/store/0mlrdr0p67q5v5az9bnkbydf643fzy71-sops-nix-user.drv'...
-building '/nix/store/y9yill9hxc9mll0p00pqjicr7g9ai72n-sops-nix.service.drv'...
-copying path '/nix/store/7k6903kwanysggnpw44m8p6ssqmbah1j-rust-analyzer-2026-02-16' from 'https://cache.nixos.org'...
-copying path '/nix/store/djck6hqq7fz16fgdjqajrnxpkax6z1g1-hyprshot-1.3.0' from 'https://cache.nixos.org'...
-building '/nix/store/bixyc8dpkd40fmnz8nx3xidvj0krqaz0-home-manager-path.drv'...
-building '/nix/store/lbykli925vd8rjk9ykgj17dji45a4z1k-activation-script.drv'...
-building '/nix/store/ir5qp2vf7a0i2yrmf09rgz6qh2xs1vx7-hm_fontconfigconf.d10hmfonts.conf.drv'...
-building '/nix/store/xdpny4mj6nq45wvny9qps25p42567slz-home-manager-files.drv'...
-building '/nix/store/v4f3kbrhddz29c6f7rj088w741rwl7gi-home-manager-generation.drv'...
+these 2 derivations will be built:
+  /nix/store/v92i4qxz9v5wkrrg7yw0m74850fpg1bd-home-manager-files.drv
+  /nix/store/hfb71zz66f1hlgpvgmdn4ch77wx04jc9-home-manager-generation.drv
+building '/nix/store/v92i4qxz9v5wkrrg7yw0m74850fpg1bd-home-manager-files.drv'...
+building '/nix/store/hfb71zz66f1hlgpvgmdn4ch77wx04jc9-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
 Activating writeBoundary
 Activating installPackages
-nix profile remove /nix/store/94lflclp837im951qin563acxlj37h90-home-manager-path
+nix profile remove /nix/store/r0x6dkp4gva9612ywx457gzh1hplqr9j-home-manager-path
 removing 'home-manager-path'
 removed 1 packages, kept 1 packages
-Activating linkGeneration
-Cleaning up orphan links from /home/zepzeper
-Creating home file links in /home/zepzeper
-Activating onFilesChange
-Activating reloadSystemd
-Starting units: sops-nix.service
-Activating sops-nix
-warning: Git tree '/home/zepzeper/personal/nix' is dirty
+error:
+       … while decoding key named '' with raw value ''
+
+       error: key is corrupt
+error:
+       … while decoding key named '' with raw value ''
+
+       error: key is corrupt
+
+Oops, Nix failed to install your new Home Manager profile!
+
+Perhaps there is a conflict with a package that was installed using
+"nix profile add"? Try running
+
+    nix profile list
+
+and if there is a conflicting package you can remove it with
+
+    nix profile remove {number | store path}
+
+Then try activating your Home Manager configuration again.
