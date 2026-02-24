@@ -12,6 +12,11 @@
     content = [
       {
         apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "mealie";
+      }
+      {
+        apiVersion = "v1";
         kind = "PersistentVolumeClaim";
         metadata = {
           name = "mealie-data";

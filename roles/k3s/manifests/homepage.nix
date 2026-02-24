@@ -40,6 +40,10 @@
               href: https://mealie.krugten.org
               description: Recipe Manager
               icon: mealie.png
+          - Kuma:
+              href: https://kuma.krugten.org/status/all
+              description: Uptime kuma
+              icon: uptime-kuma.png
     '';
     path = "/var/lib/homepage/services.yaml";
   };
@@ -47,8 +51,9 @@
   sops.templates."homepage-bookmarks" = {
     content = ''
       - Developer:
-          - GitHub:
-              href: https://github.com
+          - Github:
+              href: https://github.com/zepzeper
+              description: Personal github
               icon: github.png
     '';
     path = "/var/lib/homepage/bookmarks.yaml";
@@ -89,7 +94,7 @@
               containers = [
                 {
                   name = "homepage";
-                  image = "ghcr.io/gethomepage/homepage:1.10.1";
+                  image = "ghcr.io/gethomepage/homepage:v1.10.1";
                   ports = [{containerPort = 3000;}];
                   env = [
                     {

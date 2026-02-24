@@ -1,11 +1,25 @@
 {...}: {
-  systemd.tmpfiles.rules = [
-    "d /var/lib/kuma 0755 root root -"
-  ];
-
   services.k3s.manifests.kuma = {
     enable = true;
     content = [
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "kuma";
+      }
+      {
+        apiVersion = "v1";
+        kind = "PersistentVolumeClaim";
+        metadata = {
+          name = "kuma-data";
+          namespace = "kuma";
+        };
+        spec = {
+          accessModes = ["ReadWriteOnce"];
+          storageClassName = "local-path";
+          resources.requests.storage = "1Gi";
+        };
+      }
       {
         apiVersion = "apps/v1";
         kind = "Deployment";
@@ -36,7 +50,7 @@
               volumes = [
                 {
                   name = "data";
-                  hostPath.path = "/var/lib/kuma";
+                  persistentVolumeClaim.claimName = "kuma-data";
                 }
               ];
             };

@@ -141,22 +141,7 @@
       {
         apiVersion = "v1";
         kind = "Namespace";
-        metadata.name = "tuliprox";
-      }
-      {
-        apiVersion = "v1";
-        kind = "Namespace";
         metadata.name = "homepage";
-      }
-      {
-        apiVersion = "v1";
-        kind = "Namespace";
-        metadata.name = "mealie";
-      }
-      {
-        apiVersion = "v1";
-        kind = "Namespace";
-        metadata.name = "kuma";
       }
     ];
   };

@@ -7,27 +7,32 @@
 }: let
   cfg = config.k3s;
 in {
-  imports = [
-    ./manifests/cert-manager.nix
-    ./manifests/home-assistant.nix
-    ./manifests/homepage.nix
-    ./manifests/mealie.nix
-    ./manifests/nginx-ingress.nix
-    ./manifests/pihole.nix
-    ./manifests/tuliprox.nix
-    ./manifests/vaultwarden.nix
-    ./manifests/external-dns.nix
-    ./manifests/uptimekuma.nix
-  ];
+  # imports = [
+  #   ./manifests/cert-manager.nix
+  #   ./manifests/home-assistant.nix
+  #   ./manifests/homepage.nix
+  #   ./manifests/mealie.nix
+  #   ./manifests/nginx-ingress.nix
+  #   ./manifests/pihole.nix
+  #   ./manifests/tuliprox.nix
+  #   ./manifests/vaultwarden.nix
+  #   ./manifests/external-dns.nix
+  #   ./manifests/uptimekuma.nix
+  # ];
 
   options.k3s = {
     master = lib.mkEnableOption "K3s master node";
   };
 
   config = lib.mkIf cfg.master {
-    # Dont restart services for downtime
-    systemd.services.containerd.restartIfChanged = false;
-    systemd.services.kubelet.restartIfChanged = false;
+    system.activationScripts.reloadK3s = {
+      text = ''
+        if systemctl is-active k3s > /dev/null 2>&1; then
+            systemctl restart k3s
+                fi
+      '';
+      deps = [];
+    };
 
     services.tailscale = {
       enable = true;
