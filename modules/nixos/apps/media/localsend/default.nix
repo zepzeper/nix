@@ -5,16 +5,15 @@
   inputs,
   ...
 }: let
-    cfg = config.apps.media;
+  cfg = config.apps.media;
 in {
-
-options.apps.media = {
+  options.apps.media = {
     localsend = lib.mkEnableOption "Air drop alternative";
-};
+  };
 
-config = lib.mkIf cfg.localsend {
-  environment.systemPackages = with pkgs; [
-    localsend
-  ];
-};
+  config = lib.mkIf cfg.localsend {
+    environment.systemPackages = with pkgs; [
+      localsend
+    ];
+  };
 }

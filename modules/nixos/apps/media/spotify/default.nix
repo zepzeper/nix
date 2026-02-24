@@ -5,16 +5,15 @@
   inputs,
   ...
 }: let
-    cfg = config.apps.media;
+  cfg = config.apps.media;
 in {
-
-options.apps.media = {
+  options.apps.media = {
     spotify = lib.mkEnableOption "Music player";
-};
+  };
 
-config = lib.mkIf cfg.spotify {
-  environment.systemPackages = with pkgs; [
-    spotify
-  ];
-};
+  config = lib.mkIf cfg.spotify {
+    environment.systemPackages = with pkgs; [
+      spotify
+    ];
+  };
 }

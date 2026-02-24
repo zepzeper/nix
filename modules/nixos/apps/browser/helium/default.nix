@@ -5,17 +5,15 @@
   inputs,
   ...
 }: let
-    cfg = config.apps.browser;
+  cfg = config.apps.browser;
 in {
-
   options.apps.browser = {
-   helium = lib.mkEnableOption "Helium browser"; 
+    helium = lib.mkEnableOption "Helium browser";
   };
 
   config = lib.mkIf cfg.helium {
-      environment.systemPackages = with pkgs; [
-        nur.repos.forkprince.helium-nightly
-      ];
+    environment.systemPackages = with pkgs; [
+      nur.repos.forkprince.helium-nightly
+    ];
   };
-
 }

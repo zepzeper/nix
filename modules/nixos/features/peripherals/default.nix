@@ -13,15 +13,15 @@ in {
   };
 
   config = lib.mkIf cfg.peripherals {
-      # Bluetooth
-      hardware.bluetooth = {
-        enable = true;
-      };
+    # Bluetooth
+    hardware.bluetooth = {
+      enable = true;
+    };
 
-      # Additional peripheral packages
-      environment.systemPackages = with pkgs; [
-        bluez
-        bluez-tools
-      ];
+    # Additional peripheral packages
+    environment.systemPackages = with pkgs; [
+      bluez
+      bluez-tools
+    ];
   };
 }

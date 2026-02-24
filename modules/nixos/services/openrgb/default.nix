@@ -20,26 +20,25 @@ in {
   };
 
   config = lib.mkIf cfg.openrgb {
-      # Hardware support
-      hardware.i2c.enable = true; # Required for RGB device communication
-      # Common kernel modules
-      boot.kernelModules = ["i2c-dev"]; # Required for RGB control
-      # ===== RGB LIGHTING CONTROL =====
-      services.hardware.openrgb.enable = true;
-      services.udev.packages = [pkgs.openrgb];
+    # Hardware support
+    hardware.i2c.enable = true; # Required for RGB device communication
+    # Common kernel modules
+    boot.kernelModules = ["i2c-dev"]; # Required for RGB control
+    # ===== RGB LIGHTING CONTROL =====
+    services.hardware.openrgb.enable = true;
+    services.udev.packages = [pkgs.openrgb];
 
-      # System service to disable RGB on boot
-      systemd.services.no-rgb = {
-        description = "Disable all RGB devices on boot";
-        serviceConfig = {
-          ExecStart = "${no-rgb}/bin/no-rgb";
-          Type = "oneshot";
-        };
-        wantedBy = ["multi-user.target"];
+    # System service to disable RGB on boot
+    systemd.services.no-rgb = {
+      description = "Disable all RGB devices on boot";
+      serviceConfig = {
+        ExecStart = "${no-rgb}/bin/no-rgb";
+        Type = "oneshot";
       };
+      wantedBy = ["multi-user.target"];
+    };
 
-      # Add the script to system packages for manual use
-      environment.systemPackages = [no-rgb];
+    # Add the script to system packages for manual use
+    environment.systemPackages = [no-rgb];
   };
-
 }

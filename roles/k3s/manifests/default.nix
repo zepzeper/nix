@@ -2,9 +2,7 @@
   config,
   lib,
   ...
-}:
-
-let
+}: let
   cfg = config.k3sManifests;
 in {
   options.k3sManifests = {

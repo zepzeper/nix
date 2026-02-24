@@ -1,8 +1,8 @@
 {
   config,
   lib,
-   pkgs,
- username,
+  pkgs,
+  username,
   ...
 }: let
   cfg = config;

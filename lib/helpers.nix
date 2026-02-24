@@ -36,7 +36,7 @@
         ++ extraHomeModules;
     };
 
-  # Helper for machines 
+  # Helper for machines
   mkMachine = {
     hostname,
     username,

@@ -1,8 +1,11 @@
 {
   config,
   pkgs,
+  lib,
   ...
-}: {
+}: let
+  grafanaPasswordFile = config.sops.secrets."grafana-password".path or "/dev/null";
+in {
   systemd.services.k3s-monitoring = {
     description = "Deploy Prometheus, Grafana and Loki";
     after = ["k3s.service" "sops-nix.service"];
@@ -26,7 +29,7 @@
         prometheus-community/kube-prometheus-stack \
         --namespace monitoring \
         --create-namespace \
-        --set grafana.adminPassword=$(cat ${config.sops.secrets."grafana-password".path}) \
+        --set grafana.adminPassword=$(cat ${grafanaPasswordFile}) \
         --set grafana.ingress.enabled=true \
         --set grafana.ingress.ingressClassName=nginx \
         --set "grafana.ingress.annotations.cert-manager\.io/cluster-issuer=letsencrypt-prod" \

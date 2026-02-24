@@ -5,9 +5,9 @@
   pkgs,
   lib,
   ...
-}: let 
+}: let
   cfg = config.features;
-in{
+in {
   options.features = {
     gpu = lib.mkOption {
       type = lib.types.enum ["none" "nvidia" "amd" "intel"];

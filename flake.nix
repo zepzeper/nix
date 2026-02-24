@@ -221,44 +221,48 @@
         username = "zepzeper";
         hostname = "desktop";
         platform = "x86_64-linux";
-        roleSettings = [{
+        roleSettings = [
+          {
             workstation = true;
-        }];
-        serviceSettings = [{
+          }
+        ];
+        serviceSettings = [
+          {
             features = {
-                audio = true; 
-                waybar = true; 
-                dm = true; 
-                gpu = "nvidia";
-                networking = true; 
-                peripherals = true; 
+              audio = true;
+              waybar = true;
+              dm = true;
+              gpu = "nvidia";
+              networking = true;
+              peripherals = true;
             };
             services = {
-                docker = true;
-                openrgb = true;
-                xdg = true;
+              docker = true;
+              openrgb = true;
+              xdg = true;
             };
             apps = {
-                browser = {
-                    helium = true;
+              browser = {
+                helium = true;
+              };
+              creative = {
+                gimp = true;
+              };
+              media = {
+                hypnotix = true;
+                localsend = true;
+                spotify = true;
+                vlc = true;
+              };
+              reader = {
+                files = {
+                  nautilus = true;
                 };
-                creative = {
-                    gimp = true;
-                };
-                media = {
-                    hypnotix = true;
-                    localsend = true;
-                    spotify = true;
-                    vlc = true;
-                };
-                reader = {
-                    files = {
-                        nautilus = true;
-                    };
-                };
-                steam = true;
+              };
+              steam = true;
             };
-        }];
+          }
+        ];
       };
 
       # Laptop
@@ -266,42 +270,46 @@
         username = "zepzeper";
         hostname = "laptop";
         platform = "aarch64-linux";
-        roleSettings = [{
+        roleSettings = [
+          {
             workstation = true;
-        }];
-        serviceSettings = [{
+          }
+        ];
+        serviceSettings = [
+          {
             features = {
-                audio = true; 
-                waybar = true; 
-                dm = true; 
-                gpu = "none";
-                networking = true; 
-                peripherals = true; 
+              audio = true;
+              waybar = true;
+              dm = true;
+              gpu = "none";
+              networking = true;
+              peripherals = true;
             };
             services = {
-                docker = true;
-                xdg = true;
+              docker = true;
+              xdg = true;
             };
             apps = {
-                browser = {
-                    helium = true;
+              browser = {
+                helium = true;
+              };
+              creative = {
+                gimp = true;
+              };
+              media = {
+                hypnotix = true;
+                localsend = true;
+                spotify = true;
+                vlc = true;
+              };
+              reader = {
+                files = {
+                  nautilus = true;
                 };
-                creative = {
-                    gimp = true;
-                };
-                media = {
-                    hypnotix = true;
-                    localsend = true;
-                    spotify = true;
-                    vlc = true;
-                };
-                reader = {
-                    files = {
-                        nautilus = true;
-                    };
-                };
+              };
             };
-        }];
+          }
+        ];
       };
 
       # ds10u server
@@ -309,22 +317,26 @@
         username = "admin";
         hostname = "ds10u";
         platform = "x86_64-linux";
-        roleSettings = [{
+        roleSettings = [
+          {
             server = true;
             k3s = {
               master = true;
             };
-        }];
-        serviceSettings = [{
+          }
+        ];
+        serviceSettings = [
+          {
             features = {
-                audio = true; 
-                networking = true; 
+              audio = false;
+              networking = true;
             };
             services = {
-                docker = true;
-                xdg = true;
+              docker = false;
+              xdg = false;
             };
-        }];
+          }
+        ];
       };
 
       # pi server
@@ -332,22 +344,26 @@
         username = "admin";
         hostname = "pi";
         platform = "aarch64-linux";
-        roleSettings = [{
+        roleSettings = [
+          {
             server = true;
             k3s = {
               worker = true;
             };
-        }];
-        serviceSettings = [{
+          }
+        ];
+        serviceSettings = [
+          {
             features = {
-                audio = true; 
-                networking = true; 
+              audio = true;
+              networking = true;
             };
             services = {
-                docker = true;
-                xdg = true;
+              docker = true;
+              xdg = true;
             };
-        }];
+          }
+        ];
       };
     };
 

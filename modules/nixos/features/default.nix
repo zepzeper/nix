@@ -1,4 +1,8 @@
-{lib, config, ...}: let
+{
+  lib,
+  config,
+  ...
+}: let
   currentDir = ./.;
   isDirectoryAndNotTemplate = name: type: type == "directory";
   directories = lib.filterAttrs isDirectoryAndNotTemplate (builtins.readDir currentDir);
@@ -7,4 +11,3 @@
 in {
   imports = lib.mapAttrsToList (name: _: importDirectory name) directories;
 }
-

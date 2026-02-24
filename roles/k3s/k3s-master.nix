@@ -4,9 +4,7 @@
   lib,
   username,
   ...
-}:
-
-let
+}: let
   cfg = config.k3s;
 in {
   options.k3s = {
