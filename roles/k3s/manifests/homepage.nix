@@ -40,10 +40,6 @@
               href: https://mealie.krugten.org
               description: Recipe Manager
               icon: mealie.png
-          - Grafana:
-              href: https://grafana.krugten.org
-              description: Monitoring
-              icon: grafana.png
     '';
     path = "/var/lib/homepage/services.yaml";
   };
@@ -92,7 +88,7 @@
               containers = [
                 {
                   name = "homepage";
-                  image = "ghcr.io/gethomepage/homepage:latest";
+                  image = "ghcr.io/gethomepage/homepage:1.10.1";
                   ports = [{containerPort = 3000;}];
                   env = [
                     {

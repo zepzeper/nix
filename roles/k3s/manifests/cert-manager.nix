@@ -63,19 +63,6 @@
     path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-tuliprox.json";
   };
 
-  sops.templates.cloudflare-secret-monitoring = {
-    content = builtins.toJSON {
-      apiVersion = "v1";
-      kind = "Secret";
-      metadata = {
-        name = "cloudflare-api-token";
-        namespace = "monitoring";
-      };
-      stringData."api-token" = config.sops.placeholder.cloudflare-api-token;
-    };
-    path = "/var/lib/rancher/k3s/server/manifests/cloudflare-secret-monitoring.json";
-  };
-
   sops.templates.cloudflare-secret-homepage = {
     content = builtins.toJSON {
       apiVersion = "v1";
@@ -129,11 +116,6 @@
         apiVersion = "v1";
         kind = "Namespace";
         metadata.name = "tuliprox";
-      }
-      {
-        apiVersion = "v1";
-        kind = "Namespace";
-        metadata.name = "monitoring";
       }
       {
         apiVersion = "v1";

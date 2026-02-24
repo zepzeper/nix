@@ -41,7 +41,7 @@
               containers = [
                 {
                   name = "mealie";
-                  image = "ghcr.io/mealie-recipes/mealie:latest";
+                  image = "ghcr.io/mealie-recipes/mealie:3.10.2";
                   ports = [{containerPort = 9000;}];
                   env = [
                     {

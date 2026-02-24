@@ -25,7 +25,7 @@
               containers = [
                 {
                   name = "pihole";
-                  image = "pihole/pihole:latest";
+                  image = "pihole/pihole:2025.11.1";
                   env = [
                     {
                       name = "TZ";

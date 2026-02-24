@@ -140,7 +140,7 @@
               containers = [
                 {
                   name = "tuliprox";
-                  image = "ghcr.io/euzu/tuliprox:latest";
+                  image = "ghcr.io/euzu/tuliprox:3.2.0";
                   command = ["/app/tuliprox"];
                   args = ["-s" "-p" "/app/config"];
                   ports = [{containerPort = 8080;}];

@@ -22,7 +22,7 @@
               containers = [
                 {
                   name = "vaultwarden";
-                  image = "vaultwarden/server:latest";
+                  image = "vaultwarden/server:1.35.3";
                   ports = [{containerPort = 80;}];
                   volumeMounts = [
                     {

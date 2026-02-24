@@ -70,13 +70,13 @@
     group = "users";
     extraGroups = ["wheel"];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keys = [];
   };
 
   # Nix settings
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
     auto-optimise-store = true;
+    trusted-public-keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5BpOI02Rb5C104fjwAK4sIQB6xY64DCqQYNTzGRwQl wouterschiedam98@gmail.com"];
   };
 
   # Enable zsh system-wide
