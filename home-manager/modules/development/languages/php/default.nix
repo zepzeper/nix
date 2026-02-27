@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.php;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.php = {
-    enable = lib.mkEnableOption "PHP development";
+  options.modules.development.languages = {
+    php = lib.mkEnableOption "PHP development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.php {
     home.packages = with pkgs; [
       php84
       php84Packages.composer

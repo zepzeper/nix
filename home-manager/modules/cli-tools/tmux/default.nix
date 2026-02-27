@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.tmux;
+  cfg = config.modules.cliTools;
 in {
-  options.modules.cliTools.tmux = {
-    enable = lib.mkEnableOption "tmux tools";
+  options.modules.cliTools = {
+    tmux = lib.mkEnableOption "tmux tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.tmux {
     home.packages = with pkgs; [
       tmux
     ];

@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.scripts;
+  cfg = config.modules;
 in {
-  options.modules.scripts = {
-    enable = lib.mkEnableOption "custom scripts";
+  options.modules = {
+    scripts = lib.mkEnableOption "custom scripts";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.scripts {
     home.file = {
       ".local/bin/nix-rebuild" = {
         source = ../../../scripts/nix-rebuild;

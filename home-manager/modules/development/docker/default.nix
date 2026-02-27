@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.docker;
+  cfg = config.modules.development;
 in {
-  options.modules.development.docker = {
-    enable = lib.mkEnableOption "docker support";
+  options.modules.development = {
+    docker = lib.mkEnableOption "docker support";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.docker {
     home.packages = with pkgs; [
       docker-compose
     ];

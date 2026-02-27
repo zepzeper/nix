@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.terminal.utils.notifications;
+  cfg = config.modules.cliTools.terminal.utils;
 in {
-  options.modules.cliTools.terminal.utils.notifications = {
-    enable = lib.mkEnableOption "notification daemon (mako)";
+  options.modules.cliTools.terminal.utils = {
+    notifications = lib.mkEnableOption "notification daemon (mako)";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.notifications {
     services.mako = {
       enable = true;
       settings = {

@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.c;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.c = {
-    enable = lib.mkEnableOption "C/C++ development";
+  options.modules.development.languages = {
+    c = lib.mkEnableOption "C/C++ development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.c {
     home.packages = with pkgs; [
       gcc
       clang-tools # clangd LSP

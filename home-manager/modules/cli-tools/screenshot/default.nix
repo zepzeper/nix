@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.screenshot;
+  cfg = config.modules.cliTools;
 in {
-  options.modules.cliTools.screenshot = {
-    enable = lib.mkEnableOption "screenshot tools";
+  options.modules.cliTools = {
+    screenshot = lib.mkEnableOption "screenshot tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.screenshot {
     home.packages = with pkgs; [
       grim
       slurp

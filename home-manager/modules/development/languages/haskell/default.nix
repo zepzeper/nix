@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.haskell;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.haskell = {
-    enable = lib.mkEnableOption "Haskell development";
+  options.modules.development.languages = {
+    haskell = lib.mkEnableOption "Haskell development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.haskell {
     home.packages = with pkgs; [
       haskellPackages.ghc
       haskellPackages.cabal-install

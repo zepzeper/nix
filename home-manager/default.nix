@@ -48,57 +48,49 @@
   modules = lib.mkMerge [
     {
       shell = {
-        ssh.enable = lib.mkDefault true;
-        zsh.enable = lib.mkDefault true;
+        ssh = lib.mkDefault true;
+        zsh = lib.mkDefault true;
       };
       cliTools = {
-        git.enable = lib.mkDefault true;
-        tmux.enable = lib.mkDefault true;
-        screenshot.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-        recording.enable = lib.mkDefault (role == "workstation" || role == "desktop");
+        git = lib.mkDefault true;
+        tmux = lib.mkDefault true;
+        screenshot = lib.mkDefault (role == "workstation" || role == "desktop");
+        recording = lib.mkDefault (role == "workstation" || role == "desktop");
         terminal = {
-          fzf.enable = lib.mkDefault true;
-          ghostty.enable = lib.mkDefault true;
+          fzf = lib.mkDefault true;
+          ghostty = lib.mkDefault true;
           utils = {
-            notifications.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-            bluetooth.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-            fileManager.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-            monitoring.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-            nightlight.enable = lib.mkDefault (role == "workstation" || role == "desktop");
-            coreUtils.enable = lib.mkDefault true;
+            notifications = lib.mkDefault (role == "workstation" || role == "desktop");
+            bluetooth = lib.mkDefault (role == "workstation" || role == "desktop");
+            fileManager = lib.mkDefault (role == "workstation" || role == "desktop");
+            monitoring = lib.mkDefault (role == "workstation" || role == "desktop");
+            nightlight = lib.mkDefault (role == "workstation" || role == "desktop");
+            coreUtils = lib.mkDefault true;
           };
         };
       };
-      fonts = {
-        enable = lib.mkDefault true;
-      };
-      scripts = {
-        enable = lib.mkDefault true;
-      };
-      sops = {
-        enable = lib.mkDefault true;
-      };
+      fonts = lib.mkDefault true;
+      scripts = lib.mkDefault true;
+      sops = lib.mkDefault true;
       development = {
-        docker.enable = lib.mkDefault true;
-        database.enable = lib.mkDefault (role == "workstation" || role == "desktop");
+        docker = lib.mkDefault true;
+        database = lib.mkDefault (role == "workstation" || role == "desktop");
         lsp = {
-          common.enable = lib.mkDefault true;
+          common = lib.mkDefault true;
         };
         languages = {
-          nix.enable = lib.mkDefault true;
+          nix = lib.mkDefault true;
         };
         formatters = {
-          alejandra.enable = lib.mkDefault true;
-          shfmt.enable = lib.mkDefault true;
+          alejandra = lib.mkDefault true;
+          shfmt = lib.mkDefault true;
         };
         search = {
-          ripgrep.enable = lib.mkDefault true;
+          ripgrep = lib.mkDefault true;
         };
-        kubernetes = {
-          enable = lib.mkDefault true;
-        };
+        kubernetes = lib.mkDefault true;
         ai = {
-          opencode.enable = lib.mkDefault true;
+          opencode = lib.mkDefault true;
         };
       };
       dotfiles = {
@@ -113,15 +105,15 @@
     }
     (lib.mkIf (role == "workstation" || role == "desktop") {
       development.languages = {
-        c.enable = lib.mkDefault true;
-        zig.enable = lib.mkDefault true;
-        go.enable = lib.mkDefault true;
-        rust.enable = lib.mkDefault true;
-        typescript.enable = lib.mkDefault true;
-        lua.enable = lib.mkDefault true;
-        php.enable = lib.mkDefault true;
-        nix.enable = lib.mkDefault true;
-        haskell.enable = lib.mkDefault true;
+        c = lib.mkDefault true;
+        zig = lib.mkDefault true;
+        go = lib.mkDefault true;
+        rust = lib.mkDefault true;
+        typescript = lib.mkDefault true;
+        lua = lib.mkDefault true;
+        php = lib.mkDefault true;
+        nix = lib.mkDefault true;
+        haskell = lib.mkDefault true;
       };
     })
   ];

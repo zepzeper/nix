@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.database;
+  cfg = config.modules.development;
 in {
-  options.modules.development.database = {
-    enable = lib.mkEnableOption "database tools";
+  options.modules.development = {
+    database = lib.mkEnableOption "database tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.database {
     home.packages = with pkgs; [
       beekeeper-studio
     ];

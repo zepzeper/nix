@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.terminal.utils.monitoring;
+  cfg = config.modules.cliTools.terminal.utils;
 in {
-  options.modules.cliTools.terminal.utils.monitoring = {
-    enable = lib.mkEnableOption "system monitoring (btop)";
+  options.modules.cliTools.terminal.utils = {
+    monitoring = lib.mkEnableOption "system monitoring (btop)";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.monitoring {
     home.packages = with pkgs; [
       btop
     ];

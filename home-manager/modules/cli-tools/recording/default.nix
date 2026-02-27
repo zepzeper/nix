@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.recording;
+  cfg = config.modules.cliTools;
 in {
-  options.modules.cliTools.recording = {
-    enable = lib.mkEnableOption "recording tools";
+  options.modules.cliTools = {
+    recording = lib.mkEnableOption "recording tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.recording {
     home.packages = with pkgs; [
       wf-recorder
       gpu-screen-recorder

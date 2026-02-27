@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.go;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.go = {
-    enable = lib.mkEnableOption "Go development";
+  options.modules.development.languages = {
+    go = lib.mkEnableOption "Go development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.go {
     home.packages = with pkgs; [
       go
       gopls

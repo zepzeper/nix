@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.search.ripgrep;
+  cfg = config.modules.development.search;
 in {
-  options.modules.development.search.ripgrep = {
-    enable = lib.mkEnableOption "ripgrep search tool";
+  options.modules.development.search = {
+    ripgrep = lib.mkEnableOption "ripgrep search tool";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.ripgrep {
     home.packages = with pkgs; [
       ripgrep
     ];

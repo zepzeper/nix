@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.git;
+  cfg = config.modules.cliTools;
 in {
-  options.modules.cliTools.git = {
-    enable = lib.mkEnableOption "git tools";
+  options.modules.cliTools = {
+    git = lib.mkEnableOption "git tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.git {
     home.packages = with pkgs; [
       git
     ];

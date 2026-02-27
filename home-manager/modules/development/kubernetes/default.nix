@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.kubernetes;
+  cfg = config.modules.development;
 in {
-  options.modules.development.kubernetes = {
-    enable = lib.mkEnableOption "kubernetes tools";
+  options.modules.development = {
+    kubernetes = lib.mkEnableOption "kubernetes tools";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.kubernetes {
     home.packages = with pkgs; [
       kubectl
       kubernetes-helm

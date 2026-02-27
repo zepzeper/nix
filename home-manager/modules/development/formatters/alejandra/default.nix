@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.formatters.alejandra;
+  cfg = config.modules.development.formatters;
 in {
-  options.modules.development.formatters.alejandra = {
-    enable = lib.mkEnableOption "alejandra nix formatter";
+  options.modules.development.formatters = {
+    alejandra = lib.mkEnableOption "alejandra nix formatter";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.alejandra {
     home.packages = with pkgs; [
       alejandra
     ];

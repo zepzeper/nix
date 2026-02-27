@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.typescript;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.typescript = {
-    enable = lib.mkEnableOption "TypeScript/JavaScript development";
+  options.modules.development.languages = {
+    typescript = lib.mkEnableOption "TypeScript/JavaScript development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.typescript {
     home.packages = with pkgs; [
       nodePackages.npm
       nodePackages.pnpm

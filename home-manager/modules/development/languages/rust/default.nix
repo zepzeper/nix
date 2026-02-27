@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.rust;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.rust = {
-    enable = lib.mkEnableOption "Rust development";
+  options.modules.development.languages = {
+    rust = lib.mkEnableOption "Rust development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.rust {
     home.packages = with pkgs; [
       rustc
       cargo

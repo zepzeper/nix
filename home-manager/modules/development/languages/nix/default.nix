@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.nix;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.nix = {
-    enable = lib.mkEnableOption "Nix development";
+  options.modules.development.languages = {
+    nix = lib.mkEnableOption "Nix development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.nix {
     home.packages = with pkgs; [
       nil
       alejandra

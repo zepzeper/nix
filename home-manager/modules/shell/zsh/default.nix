@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.shell.zsh;
+  cfg = config.modules.shell;
 in {
-  options.modules.shell.zsh = {
-    enable = lib.mkEnableOption "zsh configuration";
+  options.modules.shell = {
+    zsh = lib.mkEnableOption "zsh configuration";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.zsh {
     programs.zsh = {
       enable = true;
 

@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.lsp.common;
+  cfg = config.modules.development.lsp;
 in {
   options.modules.development.lsp.common = {
-    enable = lib.mkEnableOption "Common LSPs for various file types";
+    common = lib.mkEnableOption "Common LSPs for various file types";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.common {
     home.packages = with pkgs; [
       nodePackages.bash-language-server
       shellcheck

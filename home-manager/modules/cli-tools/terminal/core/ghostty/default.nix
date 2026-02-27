@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.terminal.ghostty;
+  cfg = config.modules.cliTools.terminal;
 in {
-  options.modules.cliTools.terminal.ghostty = {
-    enable = lib.mkEnableOption "ghostty terminal emulator";
+  options.modules.cliTools.terminal = {
+    ghostty = lib.mkEnableOption "ghostty terminal emulator";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.ghostty {
     home.packages = with pkgs; [
       ghostty
     ];

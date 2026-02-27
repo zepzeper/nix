@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.fonts;
+  cfg = config.modules;
 in {
-  options.modules.fonts = {
-    enable = lib.mkEnableOption "fonts configuration";
+  options.modules = {
+    fonts = lib.mkEnableOption "fonts configuration";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.fonts {
     home.packages = with pkgs; [
       nerd-fonts.jetbrains-mono
     ];

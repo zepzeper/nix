@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.languages.lua;
+  cfg = config.modules.development.languages;
 in {
-  options.modules.development.languages.lua = {
-    enable = lib.mkEnableOption "Lua development";
+  options.modules.development.languages = {
+    lua = lib.mkEnableOption "Lua development";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.lua {
     home.packages = with pkgs; [
       luajit
       luarocks

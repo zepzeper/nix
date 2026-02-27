@@ -3,13 +3,13 @@
   lib,
   ...
 }: let
-  cfg = config.modules.sops;
+  cfg = config.modules;
 in {
-  options.modules.sops = {
-    enable = lib.mkEnableOption "SOPS secret management";
+  options.modules = {
+    sops = lib.mkEnableOption "SOPS secret management";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.sops {
     sops = {
       age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 

@@ -4,13 +4,13 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.development.formatters.shfmt;
+  cfg = config.modules.development.formatters;
 in {
-  options.modules.development.formatters.shfmt = {
-    enable = lib.mkEnableOption "shfmt shell formatter";
+  options.modules.development.formatters = {
+    shfmt = lib.mkEnableOption "shfmt shell formatter";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.shfmt {
     home.packages = with pkgs; [
       shfmt
     ];
