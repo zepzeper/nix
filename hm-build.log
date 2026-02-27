@@ -1,19 +1,17 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
-error:
-       … in the left operand of the update (//) operator
-         at /nix/store/xd1y3lpb8iga15p16vpsdnlm0qjrn7gg-source/modules/default.nix:61:5:
-           60|     module
-           61|     // {
-             |     ^
-           62|       activationPackage = module.config.home.activationPackage;
-
-       … while evaluating a branch condition
-         at /nix/store/dx2qikyb4dyb6hbdfywbmsyla0z5a1h3-source/lib/lists.nix:141:18:
-          140|       len = length list;
-          141|       fold' = n: if n == len then nul else op (elemAt list n) (fold' (n + 1));
-             |                  ^
-          142|     in
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: expected a set but found a Boolean: true
+Starting Home Manager activation
+Activating checkFilesChanged
+Activating checkLinkTargets
+Activating writeBoundary
+Activating installPackages
+nix profile remove /nix/store/r0x6dkp4gva9612ywx457gzh1hplqr9j-home-manager-path
+removing 'home-manager-path'
+removed 1 packages, kept 0 packages
+Activating linkGeneration
+Cleaning up orphan links from /home/zepzeper
+Creating home file links in /home/zepzeper
+Activating onFilesChange
+Activating reloadSystemd
+Starting units: sops-nix.service
+Activating sops-nix
+warning: Git tree '/home/zepzeper/personal/nix' is dirty

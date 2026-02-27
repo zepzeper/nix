@@ -6,7 +6,7 @@
 }: let
   cfg = config.modules.development.lsp;
 in {
-  options.modules.development.lsp.common = {
+  options.modules.development.lsp = {
     common = lib.mkEnableOption "Common LSPs for various file types";
   };
 
