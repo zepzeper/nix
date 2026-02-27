@@ -1,5 +1,3 @@
 building the system configuration...
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
-Using saved setting for 'extra-substituters = https://nix-community.cachix.org' from ~/.local/share/nix/trusted-settings.json.
-Using saved setting for 'extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=' from ~/.local/share/nix/trusted-settings.json.
-Done. The new configuration is /nix/store/5k65mvw7vrapaypi3kakczgwbp0cbn97-nixos-system-desktop-26.05.20260217.0182a36
+Done. The new configuration is /nix/store/m5p1f7scd87q4lb3256b9ri5kninip8p-nixos-system-desktop-26.05.20260217.0182a36
