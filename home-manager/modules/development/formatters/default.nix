@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.modules.cliTools.formatters;
+  cfg = config.modules.development.formatters;
 in {
   imports = [
     ./alejandra

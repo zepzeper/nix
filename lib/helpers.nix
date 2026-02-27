@@ -13,7 +13,7 @@
     role ? "workstation",
     extraHomeModules ? [],
   }: let
-    isNixOS = true;
+    isNixOS = (role == "workstation");
   in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${platform};
