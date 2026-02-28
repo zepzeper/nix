@@ -98,9 +98,7 @@
                   haskell = false;
                 };
                 lsp = {
-                  common = {
-                    enable = true;
-                  };
+                  common = true;
                 };
                 formatters = {
                   alejandra = true;
@@ -109,19 +107,11 @@
                 search = {
                   ripgrep = true;
                 };
-                kubernetes = {
-                  enable = true;
-                };
+                kubernetes = true;
               };
-              fonts = {
-                enable = true;
-              };
-              scripts = {
-                enable = true;
-              };
-              sops = {
-                enable = true;
-              };
+              fonts = true;
+              scripts = true;
+              sops = true;
             };
           }
         ];
