@@ -80,8 +80,7 @@
                 screenshot = false;
                 recording = false;
                 terminal = {
-                  core = true;
-                  utils = false;
+                  fzf = true;
                 };
               };
               development = {
@@ -156,8 +155,7 @@
                 screenshot = false;
                 recording = false;
                 terminal = {
-                  core = true;
-                  utils = false;
+                  fzf = true;
                 };
               };
               development = {
