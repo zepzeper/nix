@@ -1,7 +1,7 @@
 keys:
   - &users
     - &zepzeper age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
-    - &ds10u-server age16p0yc7k5cwy8vpj28qujfr2e6xxy4fzwfenc7s4p9l50jq0ls9zswnzn6l
+    - &ds10u-server age1nsxvxpnegvaxvunr8h6zm3vqkt8fnhnxnnjv0x2z2vca88c8td7sh3fhrr
   - &hosts
     - &desktop age17k6cvpgyjcda35epql3804wyq77zmtmpvwrjyetvcttr50j8e5xqj98cfv
 creation_rules:
