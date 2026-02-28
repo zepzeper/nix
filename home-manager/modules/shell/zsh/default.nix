@@ -31,6 +31,8 @@ in {
 
       initContent = ''
         bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
+
+        PROMPT="[%m] $PROMPT"
       '';
 
       oh-my-zsh = {
