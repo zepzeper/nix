@@ -79,7 +79,6 @@ sops.secrets."tuliprox/password" = {};
                 groups:
                   order: asc
     '';
-    path = "/var/lib/tuliprox/config/source.yml";
   };
 
   sops.templates."tuliprox-config" = {
@@ -101,7 +100,6 @@ sops.secrets."tuliprox/password" = {};
             targets:
               - filtered_iptv
     '';
-    path = "/var/lib/tuliprox/config/config.yml";
   };
 
   sops.templates."tuliprox-api-proxy" = {
@@ -121,7 +119,6 @@ sops.secrets."tuliprox/password" = {};
               proxy: redirect
               server: default
     '';
-    path = "/var/lib/tuliprox/config/api-proxy.yml";
   };
 
   services.k3s.manifests.tuliprox = {
@@ -170,7 +167,7 @@ sops.secrets."tuliprox/password" = {};
               volumes = [
                 {
                   name = "config";
-                  hostPath.path = "/var/lib/tuliprox/config";
+                  hostPath.path = "/run/secrets/rendered";
                 }
                 {
                   name = "secrets";
