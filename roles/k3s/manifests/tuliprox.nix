@@ -3,50 +3,33 @@
   pkgs,
   ...
 }: {
-  sops.secrets."tuliprox/url" = {};
-  sops.secrets."tuliprox/username" = {};
-  sops.secrets."tuliprox/password" = {};
-
   systemd.tmpfiles.rules = [
     "d /var/lib/tuliprox/config 0755 root root -"
-    "d /var/lib/tuliprox/data 0755 root root -"
-    "d /var/lib/tuliprox/backup 0755 root root -"
   ];
 
-  # Create a systemd service to generate config files from secrets
-  systemd.services.tuliprox-config-generator = {
-    description = "Generate tuliprox config files";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "sops-nix.service" ];
-    
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-
-    script = ''
-      # Read secrets
-      URL=$(cat /run/secrets/tuliprox/url)
-      USERNAME=$(cat /run/secrets/tuliprox/username)
-      PASSWORD=$(cat /run/secrets/tuliprox/password)
-
-      # Generate source.yml
-      cat > /var/lib/tuliprox/config/source.yml << 'EOF'
+  sops.templates."tuliprox-source" = {
+    content = ''
       templates:
+        # Live channels format: EN| or NL| or A|
         - name: NL_LIVE
           value: '^NL\|.*'
         - name: EN_LIVE
           value: '^EN\|.*'
         - name: A_LIVE
           value: '^A\|.*'
+
+        # VOD/Series format: NL - or EN - or A -
         - name: NL_VOD
           value: '^NL\s-\s.*'
         - name: EN_VOD
           value: '^EN\s-\s.*'
         - name: A_VOD
           value: '^A\s-\s.*'
+
         - name: ADULT_CONTENT
           value: '(?i).*(XXX|Adult|18\+).*'
+
+        # Combined filters
         - name: NL_ALL
           value: '(Title ~ "!NL_LIVE!" OR Title ~ "!NL_VOD!")'
         - name: EN_ALL
@@ -57,9 +40,9 @@
         - inputs:
             - name: darktv
               type: xtream
-              url: "$URL"
-              username: "$USERNAME"
-              password: "$PASSWORD"
+              url: "${config.sops.placeholder."tuliprox/url"}"
+              username: "${config.sops.placeholder."tuliprox/username"}"
+              password: "${config.sops.placeholder."tuliprox/password"}"
               persist: "./playlist_"
               epg:
                 sources:
@@ -75,6 +58,7 @@
                 xtream_skip_live: false
                 xtream_skip_vod: false
                 xtream_skip_series: false
+
           targets:
             - name: filtered_iptv
               output:
@@ -82,32 +66,41 @@
                   skip_live_direct_source: true
                   skip_video_direct_source: true
                   skip_series_direct_source: true
+
               filter: "(!NL_ALL! OR !EN_ALL! OR !A_ALL!) AND NOT(Title ~ \"!ADULT_CONTENT!\")"
+
               sort:
                 match_as_ascii: true
                 groups:
                   order: asc
-      EOF
+    '';
+    path = "/var/lib/tuliprox/config/source.yml";
+  };
 
-      # Generate config.yml
-      cat > /var/lib/tuliprox/config/config.yml << 'EOF'
+  sops.templates."tuliprox-config" = {
+    content = ''
       api:
         host: 0.0.0.0
         port: 8080
         web_root: ./web
       working_dir: ./data
-      update_on_boot: false
-      schedules:
-          - schedule: "0 0 6 * * * *"
-            targets:
-              - filtered_iptv
-          - schedule: "0 0 18 * * * *"
-            targets:
-              - filtered_iptv
-      EOF
+      # Update on startup
+      update_on_boot: false  # Changed to false - only update on schedule
 
-      # Generate api-proxy.yml
-      cat > /var/lib/tuliprox/config/api-proxy.yml << 'EOF'
+      # Update EPG twice daily (morning and evening)
+      schedules:
+          - schedule: "0 0 6 * * * *"   # 6 AM
+            targets:
+              - filtered_iptv
+          - schedule: "0 0 18 * * * *"  # 6 PM
+            targets:
+              - filtered_iptv
+    '';
+    path = "/var/lib/tuliprox/config/config.yml";
+  };
+
+  sops.templates."tuliprox-api-proxy" = {
+    content = ''
       server:
         - name: default
           protocol: https
@@ -122,15 +115,44 @@
               password: local123
               proxy: redirect
               server: default
-      EOF
-
-      chmod 644 /var/lib/tuliprox/config/*.yml
     '';
+    path = "/var/lib/tuliprox/config/api-proxy.yml";
   };
 
   services.k3s.manifests.tuliprox = {
     enable = true;
     content = [
+      {
+        apiVersion = "v1";
+        kind = "Namespace";
+        metadata.name = "tuliprox";
+      }
+      {
+        apiVersion = "v1";
+        kind = "PersistentVolumeClaim";
+        metadata = {
+          name = "tuliprox-data";
+          namespace = "tuliprox";
+        };
+        spec = {
+          accessModes = ["ReadWriteOnce"];
+          storageClassName = "local-path";
+          resources.requests.storage = "2Gi";
+        };
+      }
+      {
+        apiVersion = "v1";
+        kind = "PersistentVolumeClaim";
+        metadata = {
+          name = "tuliprox-backup";
+          namespace = "tuliprox";
+        };
+        spec = {
+          accessModes = ["ReadWriteOnce"];
+          storageClassName = "local-path";
+          resources.requests.storage = "1Gi";
+        };
+      }
       {
         apiVersion = "apps/v1";
         kind = "Deployment";
@@ -140,14 +162,16 @@
         };
         spec = {
           replicas = 1;
+          strategy.type = "Recreate";
           selector.matchLabels.app = "tuliprox";
           template = {
             metadata.labels.app = "tuliprox";
             spec = {
+              nodeSelector."kubernetes.io/hostname" = "ds10u";
               containers = [
                 {
                   name = "tuliprox";
-                  image = "ghcr.io/euzu/tuliprox:latest";
+                  image = "ghcr.io/euzu/tuliprox:3.2.0";
                   command = ["/app/tuliprox"];
                   args = ["-s" "-p" "/app/config"];
                   ports = [{containerPort = 8080;}];
@@ -174,7 +198,7 @@
               volumes = [
                 {
                   name = "config";
-                  hostPath.path = "/run/secrets/rendered";
+                  hostPath.path = "/var/lib/tuliprox/config";
                 }
                 {
                   name = "secrets";
@@ -182,11 +206,11 @@
                 }
                 {
                   name = "data";
-                  hostPath.path = "/var/lib/tuliprox/data";
+                  persistentVolumeClaim.claimName = "tuliprox-data";
                 }
                 {
                   name = "backup";
-                  hostPath.path = "/var/lib/tuliprox/backup";
+                  persistentVolumeClaim.claimName = "tuliprox-backup";
                 }
               ];
             };
@@ -221,6 +245,7 @@
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
             "nginx.ingress.kubernetes.io/proxy-buffering" = "off";
             "nginx.ingress.kubernetes.io/proxy-request-buffering" = "off";
+            "external-dns.alpha.kubernetes.io/hostname" = "iptv.krugten.org";
           };
         };
         spec = {
