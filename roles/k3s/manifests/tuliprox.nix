@@ -3,6 +3,9 @@
   pkgs,
   ...
 }: {
+sops.secrets."tuliprox/url" = {};
+sops.secrets."tuliprox/username" = {};
+sops.secrets."tuliprox/password" = {};
   systemd.tmpfiles.rules = [
     "d /var/lib/tuliprox/config 0755 root root -"
     "d /var/lib/tuliprox/data 0755 root root -"
