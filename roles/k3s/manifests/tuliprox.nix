@@ -5,6 +5,8 @@
 }: {
   systemd.tmpfiles.rules = [
     "d /var/lib/tuliprox/config 0755 root root -"
+    "d /var/lib/tuliprox/data 0755 root root -"
+    "d /var/lib/tuliprox/backup 0755 root root -"
   ];
 
   sops.templates."tuliprox-source" = {
@@ -123,37 +125,6 @@
     enable = true;
     content = [
       {
-        apiVersion = "v1";
-        kind = "Namespace";
-        metadata.name = "tuliprox";
-      }
-      {
-        apiVersion = "v1";
-        kind = "PersistentVolumeClaim";
-        metadata = {
-          name = "tuliprox-data";
-          namespace = "tuliprox";
-        };
-        spec = {
-          accessModes = ["ReadWriteOnce"];
-          storageClassName = "local-path";
-          resources.requests.storage = "2Gi";
-        };
-      }
-      {
-        apiVersion = "v1";
-        kind = "PersistentVolumeClaim";
-        metadata = {
-          name = "tuliprox-backup";
-          namespace = "tuliprox";
-        };
-        spec = {
-          accessModes = ["ReadWriteOnce"];
-          storageClassName = "local-path";
-          resources.requests.storage = "1Gi";
-        };
-      }
-      {
         apiVersion = "apps/v1";
         kind = "Deployment";
         metadata = {
@@ -162,16 +133,14 @@
         };
         spec = {
           replicas = 1;
-          strategy.type = "Recreate";
           selector.matchLabels.app = "tuliprox";
           template = {
             metadata.labels.app = "tuliprox";
             spec = {
-              nodeSelector."kubernetes.io/hostname" = "ds10u";
               containers = [
                 {
                   name = "tuliprox";
-                  image = "ghcr.io/euzu/tuliprox:3.2.0";
+                  image = "ghcr.io/euzu/tuliprox:latest";
                   command = ["/app/tuliprox"];
                   args = ["-s" "-p" "/app/config"];
                   ports = [{containerPort = 8080;}];
@@ -206,11 +175,11 @@
                 }
                 {
                   name = "data";
-                  persistentVolumeClaim.claimName = "tuliprox-data";
+                  hostPath.path = "/var/lib/tuliprox/data";
                 }
                 {
                   name = "backup";
-                  persistentVolumeClaim.claimName = "tuliprox-backup";
+                  hostPath.path = "/var/lib/tuliprox/backup";
                 }
               ];
             };
@@ -245,7 +214,6 @@
             "cert-manager.io/cluster-issuer" = "letsencrypt-prod";
             "nginx.ingress.kubernetes.io/proxy-buffering" = "off";
             "nginx.ingress.kubernetes.io/proxy-request-buffering" = "off";
-            "external-dns.alpha.kubernetes.io/hostname" = "iptv.krugten.org";
           };
         };
         spec = {
