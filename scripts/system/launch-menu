@@ -35,15 +35,15 @@ show_localsend_menu() {
     case $(show_menu "LocalSend" "Clipboard\nFile\nFolder") in
         *Clipboard*) 
             notify-send "LocalSend" "Sending clipboard"
-             localsend send --clipboard
+            localsend send --clipboard
             ;;
         *File*) 
             notify-send "LocalSend" "Select file to send"
-             localsend send --file
+            localsend send --file
             ;;
         *Folder*) 
             notify-send "LocalSend" "Select folder to send"
-             localsend send --folder
+            localsend send --folder
             ;;
         *) 
             exit 0

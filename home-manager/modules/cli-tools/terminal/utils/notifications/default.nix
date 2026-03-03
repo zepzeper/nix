@@ -11,6 +11,10 @@ in {
   };
 
   config = lib.mkIf cfg.notifications {
+    home.packages = with pkgs; [
+      libnotify
+    ];
+
     services.mako = {
       enable = true;
       settings = {

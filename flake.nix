@@ -226,11 +226,11 @@
                 helium = true;
               };
               creative = {
-                gimp = true;
+                gimp = false;
               };
               media = {
-                hypnotix = true;
                 localsend = true;
+                hypnotix = true;
                 spotify = true;
                 vlc = true;
               };

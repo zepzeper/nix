@@ -31,7 +31,7 @@
         USER = username;
         EDITOR = "nvim";
       }
-      (lib.mkIf (role == "workstation" || role == "desktop") {
+      (lib.mkIf (role == "workstation") {
         SCREENSHOT_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
         SCREENRECORD_DIR = "${config.home.homeDirectory}/Videos/Recordings";
       })
@@ -54,17 +54,17 @@
       cliTools = {
         git = lib.mkDefault true;
         tmux = lib.mkDefault true;
-        screenshot = lib.mkDefault (role == "workstation" || role == "desktop");
-        recording = lib.mkDefault (role == "workstation" || role == "desktop");
+        screenshot = lib.mkDefault (role == "workstation");
+        recording = lib.mkDefault (role == "workstation");
         terminal = {
           fzf = lib.mkDefault true;
           ghostty = lib.mkDefault true;
           utils = {
-            notifications = lib.mkDefault (role == "workstation" || role == "desktop");
-            bluetooth = lib.mkDefault (role == "workstation" || role == "desktop");
-            fileManager = lib.mkDefault (role == "workstation" || role == "desktop");
-            monitoring = lib.mkDefault (role == "workstation" || role == "desktop");
-            nightlight = lib.mkDefault (role == "workstation" || role == "desktop");
+            notifications = lib.mkDefault (role == "workstation");
+            bluetooth = lib.mkDefault (role == "workstation");
+            fileManager = lib.mkDefault (role == "workstation");
+            monitoring = lib.mkDefault (role == "workstation");
+            nightlight = lib.mkDefault (role == "workstation");
             coreUtils = lib.mkDefault true;
           };
         };
@@ -74,7 +74,7 @@
       sops = lib.mkDefault true;
       development = {
         docker = lib.mkDefault true;
-        database = lib.mkDefault (role == "workstation" || role == "desktop");
+        database = lib.mkDefault (role == "workstation");
         lsp = {
           common = lib.mkDefault true;
         };
@@ -97,13 +97,13 @@
         enable = lib.mkDefault true;
         nvim = lib.mkDefault true;
         tmux = lib.mkDefault true;
-        hypr = lib.mkDefault (role == "workstation" || role == "desktop");
-        ghostty = lib.mkDefault (role == "workstation" || role == "desktop");
-        waybar = lib.mkDefault (role == "workstation" || role == "desktop");
-        walker = lib.mkDefault (role == "workstation" || role == "desktop");
+        hypr = lib.mkDefault (role == "workstation");
+        ghostty = lib.mkDefault (role == "workstation");
+        waybar = lib.mkDefault (role == "workstation");
+        walker = lib.mkDefault (role == "workstation");
       };
     }
-    (lib.mkIf (role == "workstation" || role == "desktop") {
+    (lib.mkIf (role == "workstation") {
       development.languages = {
         c = lib.mkDefault true;
         zig = lib.mkDefault true;
