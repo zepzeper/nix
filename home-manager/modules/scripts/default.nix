@@ -27,6 +27,15 @@ in {
         executable = true;
       };
 
+      ".local/bin/resources/.tmux-cht-languages" = {
+        source = ../../../scripts/misc/resources/.tmux-cht-languages;
+        executable = true;
+      };
+      ".local/bin/resources/.tmux-cht-command" = {
+        source = ../../../scripts/misc/resources/.tmux-cht-command;
+        executable = true;
+      };
+
       ".local/bin/llm" = {
         source = ../../../scripts/misc/llm;
         executable = true;

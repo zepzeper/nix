@@ -37,8 +37,8 @@ if ! grep -q "${HOSTNAME} = " flake.nix; then
 fi
 
 # Check if there are uncommitted changes in dotfiles submodule
-if git submodule status | grep -q "^-"; then
-    echo -e "${YELLOW}⚠️  Dotfiles submodule not initialized!${NC}"
+if git submodule status --recursive | grep -qE '^[-+]'; then
+    echo -e "${YELLOW}⚠️  Dotfiles submodule not clean or not initialized!${NC}"
     echo "Running: git submodule update --init --recursive"
     git submodule update --init --recursive
 fi

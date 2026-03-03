@@ -35,3 +35,6 @@ stow
 chmod
 chown
 make
+kubectl
+kubectl-apply
+kubectl-config

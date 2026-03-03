@@ -6,9 +6,12 @@
   ...
 }: let
   cfg = config.modules.shell;
-  
+
   # Define prompt color based on role
-  promptColor = if role == "workstation" then "green" else "red";
+  promptColor =
+    if role == "workstation"
+    then "green"
+    else "red";
 in {
   options.modules.shell = {
     zsh = lib.mkEnableOption "zsh configuration";
@@ -35,7 +38,7 @@ in {
       ];
       initContent = ''
         bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
-        
+
         # Add hostname to prompt with color
         PROMPT="%F{${promptColor}}[%m]%f $PROMPT"
       '';

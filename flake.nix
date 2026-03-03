@@ -218,6 +218,7 @@
             services = {
               docker = true;
               openrgb = true;
+              ollama-c = true;
               xdg = true;
             };
             apps = {
