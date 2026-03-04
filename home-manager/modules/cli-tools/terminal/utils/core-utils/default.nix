@@ -16,6 +16,8 @@ in {
       jq
       yq
       wtype
+      tldr
+      gtk3
     ];
   };
 }

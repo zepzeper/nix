@@ -15,15 +15,15 @@ show_screenrecord_menu() {
     case $(show_menu "Screenrecord" "With desktop audio\nWith microphone audio\nWith webcam") in
         *desktop*) 
             notify-send "Starting recording" "Desktop audio only"
-            omarchy-cmd-screenrecord --with-desktop-audio
+            launch-screenrecorder --with-desktop-audio
             ;;
         *microphone*) 
             notify-send "Starting recording" "Desktop + microphone audio"
-            omarchy-cmd-screenrecord --with-desktop-audio --with-microphone-audio
+            launch-screenrecorder --with-desktop-audio --with-microphone-audio
             ;;
         *webcam*) 
             notify-send "Starting recording" "Desktop + microphone + webcam"
-            omarchy-cmd-screenrecord --with-desktop-audio --with-microphone-audio --with-webcam
+            launch-screenrecorder --with-desktop-audio --with-microphone-audio --with-webcam
             ;;
         *) 
             exit 0
@@ -32,23 +32,7 @@ show_screenrecord_menu() {
 }
 
 show_localsend_menu() {
-    case $(show_menu "LocalSend" "Clipboard\nFile\nFolder") in
-        *Clipboard*) 
-            notify-send "LocalSend" "Sending clipboard"
-            localsend send --clipboard
-            ;;
-        *File*) 
-            notify-send "LocalSend" "Select file to send"
-            localsend send --file
-            ;;
-        *Folder*) 
-            notify-send "LocalSend" "Select folder to send"
-            localsend send --folder
-            ;;
-        *) 
-            exit 0
-            ;;
-    esac
+    localsend_app
 }
 
 show_apps_menu() {

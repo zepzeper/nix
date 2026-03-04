@@ -281,8 +281,8 @@
                 gimp = true;
               };
               media = {
-                hypnotix = true;
                 localsend = true;
+                hypnotix = true;
                 spotify = true;
                 vlc = true;
               };

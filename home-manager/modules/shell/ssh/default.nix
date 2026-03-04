@@ -24,7 +24,7 @@ in {
 
         gitlab = {
           host = "gitlab.com";
-          user = "git";
+          user = "Wouter van Krugten";
           identityFile = "~/.ssh/id_ed25519.chartbuddy";
         };
       };
