@@ -15,6 +15,7 @@ in {
       bat
       jq
       yq
+      wtype
     ];
   };
 }

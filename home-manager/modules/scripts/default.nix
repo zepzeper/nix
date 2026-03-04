@@ -110,6 +110,11 @@ in {
         source = ../../../scripts/system/launch-nightlight;
         executable = true;
       };
+
+      ".local/bin/launch-window-pop" = {
+        source = ../../../scripts/system/launch-window-pop;
+        executable = true;
+      };
     };
 
     home.sessionPath = [

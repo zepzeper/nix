@@ -30,6 +30,11 @@ in {
       jack.enable = true;
     };
 
+    # Environment variables for Hyprland
+    environment.sessionVariables = {
+      NIXOS_XDG_OPEN_USE_PORTAL = "1";
+    };
+
     security.wrappers.ffmpeg = {
       owner = "root";
       group = "video";
