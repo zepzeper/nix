@@ -1,61 +1,20 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 warning: Nix search path entry '/nix/var/nix/profiles/per-user/root/channels' does not exist, ignoring
 error:
-       … while calling the 'derivationStrict' builtin
-         at <nix/derivation-internal.nix>:37:12:
-           36|
-           37|   strict = derivationStrict drvAttrs;
-             |            ^
-           38|
+       … in the left operand of the update (//) operator
+         at /nix/store/56790dvx2fs9dxp488v886ks40y2pcs0-source/modules/default.nix:61:5:
+           60|     module
+           61|     // {
+             |     ^
+           62|       activationPackage = module.config.home.activationPackage;
 
-       … while evaluating derivation 'home-manager-generation'
-         whose name attribute is located at /nix/store/s08d9f5avsqs69r1y2gyivxgfwv4a88c-source/pkgs/stdenv/generic/make-derivation.nix:536:13
-
-       … while evaluating attribute 'buildCommand' of derivation 'home-manager-generation'
-         at /nix/store/s08d9f5avsqs69r1y2gyivxgfwv4a88c-source/pkgs/build-support/trivial-builders/default.nix:80:17:
-           79|         enableParallelBuilding = true;
-           80|         inherit buildCommand name;
-             |                 ^
-           81|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
-
-       … while evaluating the option `home.activation.installPackages.data':
-
-       … while evaluating definitions from `/nix/store/56790dvx2fs9dxp488v886ks40y2pcs0-source/modules/home-environment.nix':
+       … while evaluating a branch condition
+         at /nix/store/s08d9f5avsqs69r1y2gyivxgfwv4a88c-source/lib/lists.nix:141:18:
+          140|       len = length list;
+          141|       fold' = n: if n == len then nul else op (elemAt list n) (fold' (n + 1));
+             |                  ^
+          142|     in
 
        (stack trace truncated; use '--show-trace' to show the full, detailed trace)
 
-       error: Refusing to evaluate package 'beekeeper-studio-5.5.7' in /nix/store/s08d9f5avsqs69r1y2gyivxgfwv4a88c-source/pkgs/by-name/be/beekeeper-studio/package.nix:146 because it is marked as insecure
-
-       Known issues:
-        - Electron version 32 is EOL
-
-       You can install it anyway by allowing this package, using the
-       following methods:
-
-       a) To temporarily allow all insecure packages, you can use an environment
-          variable for a single invocation of the nix tools:
-
-            $ export NIXPKGS_ALLOW_INSECURE=1
-
-          Note: When using `nix shell`, `nix build`, `nix develop`, etc with a flake,
-                then pass `--impure` in order to allow use of environment variables.
-
-       b) for `nixos-rebuild` you can add ‘beekeeper-studio-5.5.7’ to
-          `nixpkgs.config.permittedInsecurePackages` in the configuration.nix,
-          like so:
-
-            {
-              nixpkgs.config.permittedInsecurePackages = [
-                "beekeeper-studio-5.5.7"
-              ];
-            }
-
-       c) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
-          ‘beekeeper-studio-5.5.7’ to `permittedInsecurePackages` in
-          ~/.config/nixpkgs/config.nix, like so:
-
-            {
-              permittedInsecurePackages = [
-                "beekeeper-studio-5.5.7"
-              ];
-            }
+       error: Module `/nix/store/dbn3frar3ffbwmls1wh4ddb1cf5fk1s4-source/home-manager/modules/development/database' has an unsupported attribute `nixpkgs'. This is caused by introducing a top-level `config' or `options' attribute. Add configuration attributes immediately on the top level instead, or move all of them (namely: nixpkgs) into the explicit `config' attribute.
