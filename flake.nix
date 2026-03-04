@@ -34,6 +34,10 @@
       lib = nixpkgs.lib;
     };
   in {
+    nixpkgs.config.permittedInsecurePackages = [
+      "beekeeper-studio-5.5.7"
+    ];
+
     # Home configurations
     homeConfigurations = {
       # Desktop workstation - uses role defaults from home-manager/default.nix
