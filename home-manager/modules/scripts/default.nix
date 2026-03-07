@@ -111,6 +111,11 @@ in {
         executable = true;
       };
 
+      ".local/bin/launch-workspace-toggle" = {
+        source = ../../../scripts/system/launch-workspace-toggle;
+        executable = true;
+      };
+
       ".local/bin/launch-window-pop" = {
         source = ../../../scripts/system/launch-window-pop;
         executable = true;

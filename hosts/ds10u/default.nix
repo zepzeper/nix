@@ -75,6 +75,7 @@
     # SSH public key for login
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF5BpOI02Rb5C104fjwAK4sIQB6xY64DCqQYNTzGRwQl wouterschiedam98@gmail.com"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD5WB8PM5rtjJ6EFI/qC1BYEUtHZjmYQIGh7kpPjsfHRb2yWoBBT5ZFPIr/8VQNkRwZFhKVXZo+nmyF9CycwqxHtEgSSuCTHrBXRmJXd6dcRKYUxhc7CsWOGyGDuvAsROa4HEUMxw5TjVEQi6DFd3YOmjG+DA5LlCp6+oa4ZQH8kYSZf59pqSvTM1OZXLCQce+/iFI+6Mag0m60277dypAGjGhXL4jnu0Csh1sGSSmxsYlrP2JYVzQBrKfPZL0q7Xx2VsP+MfIyN7/DGe/E9juwESjEhW3VVAUVav35Di6UUM3zLdMObZZvfTwq4awofHMgr2dzCwRv+kDbtLSxV4Aj"
     ];
 
     hashedPasswordFile = config.sops.secrets.ds10u-admin-password.path;

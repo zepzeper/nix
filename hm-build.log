@@ -1,12 +1,10 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 warning: Nix search path entry '/nix/var/nix/profiles/per-user/root/channels' does not exist, ignoring
-these 3 derivations will be built:
-  /nix/store/pa3gf7rhqish5qlnfa7q6m6ycay86z1p-hm_.sshconfig.drv
-  /nix/store/sf892q0yx7zljrik8lqaf08nn4zzcm1l-home-manager-files.drv
-  /nix/store/ba855370dc7k5mgd51438nb4q8vgjapx-home-manager-generation.drv
-building '/nix/store/pa3gf7rhqish5qlnfa7q6m6ycay86z1p-hm_.sshconfig.drv'...
-building '/nix/store/sf892q0yx7zljrik8lqaf08nn4zzcm1l-home-manager-files.drv'...
-building '/nix/store/ba855370dc7k5mgd51438nb4q8vgjapx-home-manager-generation.drv'...
+these 2 derivations will be built:
+  /nix/store/z8yfgk9yxrah63dfjvk93qr0p0zrdnvr-home-manager-files.drv
+  /nix/store/xpid6flj9nnmkzjrzchanlh3x3r5xdh7-home-manager-generation.drv
+building '/nix/store/z8yfgk9yxrah63dfjvk93qr0p0zrdnvr-home-manager-files.drv'...
+building '/nix/store/xpid6flj9nnmkzjrzchanlh3x3r5xdh7-home-manager-generation.drv'...
 Starting Home Manager activation
 Activating checkFilesChanged
 Activating checkLinkTargets
