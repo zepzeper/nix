@@ -38,7 +38,7 @@ in {
       ];
       initContent = ''
         bindkey -s '^f' "$HOME/.local/bin/tmux-sessionizer\n"
-
+        eval "$(tv init zsh)"
         # Add hostname to prompt with color
         PROMPT="%F{${promptColor}}[%m]%f $PROMPT"
       '';
@@ -47,7 +47,6 @@ in {
         theme = "robbyrussell";
         plugins = [
           "git"
-          "fzf"
           "docker"
           "sudo"
         ];
