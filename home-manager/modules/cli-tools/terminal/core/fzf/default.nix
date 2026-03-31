@@ -13,7 +13,6 @@ in {
   config = lib.mkIf cfg.fzf {
     home.packages = with pkgs; [
       fzf
-      television
       fd
     ];
 
