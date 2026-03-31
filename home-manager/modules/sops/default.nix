@@ -20,11 +20,6 @@ in {
           path = "${config.home.homeDirectory}/.ssh/id_ed25519";
           mode = "0600";
         };
-
-        "ssh_keys/id_ed25519_chartbuddy" = {
-          path = "${config.home.homeDirectory}/.ssh/id_ed25519.chartbuddy";
-          mode = "0600";
-        };
       };
     };
 
