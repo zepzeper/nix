@@ -46,6 +46,7 @@ in {
     environment.systemPackages = with pkgs; [
       pavucontrol
       pulseaudio # for pactl command
+      wiremix
     ];
   };
 }

@@ -24,7 +24,7 @@ error:
 
        … while evaluating the option `home.packages':
 
-       … while evaluating definitions from `/nix/store/7sr48ndx9gc4vssbdrq7b9x3n5hni2sw-source/home-manager/modules/development/languages/typescript':
+       … while evaluating definitions from `/nix/store/fmsmzrx4355xa2fkf6ihg301ljr8mn1j-source/home-manager/modules/development/languages/typescript':
 
        (stack trace truncated; use '--show-trace' to show the full, detailed trace)
 
