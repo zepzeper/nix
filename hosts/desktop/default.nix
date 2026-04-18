@@ -57,6 +57,8 @@
     home-manager
   ];
 
+  services.flatpak.enable = true;
+
   # Keyboard layout
   services.xserver.xkb = {
     layout = "us";

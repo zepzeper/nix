@@ -1,31 +1,134 @@
 warning: Git tree '/home/zepzeper/personal/nix' is dirty
 warning: Nix search path entry '/nix/var/nix/profiles/per-user/root/channels' does not exist, ignoring
-error:
-       … while calling the 'derivationStrict' builtin
-         at <nix/derivation-internal.nix>:37:12:
-           36|
-           37|   strict = derivationStrict drvAttrs;
-             |            ^
-           38|
-
-       … while evaluating derivation 'home-manager-generation'
-         whose name attribute is located at /nix/store/xaknai40sz4yyy5658prwrwmfycj4xvm-source/pkgs/stdenv/generic/make-derivation.nix:536:13
-
-       … while evaluating attribute 'buildCommand' of derivation 'home-manager-generation'
-         at /nix/store/xaknai40sz4yyy5658prwrwmfycj4xvm-source/pkgs/build-support/trivial-builders/default.nix:80:17:
-           79|         enableParallelBuilding = true;
-           80|         inherit buildCommand name;
-             |                 ^
-           81|         passAsFile = [ "buildCommand" ] ++ (derivationArgs.passAsFile or [ ]);
-
-       … while evaluating the option `home.activation.installPackages.data':
-
-       … while evaluating definitions from `/nix/store/v69dk80s3m62iks1qmpddr4b3xjb7r1z-source/modules/home-environment.nix':
-
-       … while evaluating the option `home.packages':
-
-       … while evaluating definitions from `/nix/store/fmsmzrx4355xa2fkf6ihg301ljr8mn1j-source/home-manager/modules/development/languages/typescript':
-
-       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
-
-       error: nodePackages has been removed because it was unmaintainable within nixpkgs
+these 19 derivations will be built:
+  /nix/store/7d29ys28i9v7qdj4jzzqhgn9rifmdi26-dummy-fc-dir2.drv
+  /nix/store/aldcfwx6n1w5fg9xvz3xyyzc4mknhasa-sops-install-secrets-0.0.1-go-modules.drv
+  /nix/store/b53z9b48c99jsd521ap7qwwz3ys6g1gl-options.json.drv
+  /nix/store/ffxfm0miccyy444sw96jki3jnsiahj5a-user-dbus-services.drv
+  /nix/store/ivfkp5n8qm0rmc8745a43xvqiq4g0iq7-dummy-xdg-mime-dirs1.drv
+  /nix/store/jmssfd8wirik6ag22gg1qfj817kg0niw-dummy-fc-dir1.drv
+  /nix/store/p05qkmnk6ffhfznap1idczk31hxv9g3g-dummy-xdg-mime-dirs2.drv
+  /nix/store/p3xdnnca5fpf2i7xfb6wmfivrq1g04zw-home-configuration-reference-manpage.drv
+  /nix/store/zzna2hinpa4qdsrp4wk5wy9rvrgvbb7b-home-manager-path.drv
+  /nix/store/gng7zdfzn1gi6acq6rajkmlg5n167qm2-hm_fontconfigconf.d10hmfonts.conf.drv
+  /nix/store/sf2hdgbgwc8m3yrzs9kk0872h4439fyv-sops-install-secrets-0.0.1.drv
+  /nix/store/hy4ai7qsjraffw7lqvs61xr9ycfs7san-manifest.json.drv
+  /nix/store/i7mlnvjjx5xz3g3z8xkfhbfjhx5010bn-sops-nix-user.drv
+  /nix/store/is8flxmhrja4n5zm0hsswxc8k2j9qrsq-activation-script.drv
+  /nix/store/j7v61w2vs186igcrsqv0r1s1f24v6wfi-sops-nix.service.drv
+  /nix/store/jpj5gfjrg8mcyfxkpgcy2zghh6mbrjm9-hm_..zshrc.drv
+  /nix/store/mbz4y19cm841ld7lf2iy7c38w8yzsigm-hm_..zshenv.drv
+  /nix/store/rj3nh6xn7956kz0is550j6mxz4zbz14q-home-manager-files.drv
+  /nix/store/kvlndhbzq9d6v9da65nzaar0mzjqjx5w-home-manager-generation.drv
+these 37 paths will be fetched (425.5 MiB download, 2.1 GiB unpacked):
+  /nix/store/av0ikmmir6xdm5q2110m9ydgcddgbbnw-aquamarine-0.10.0
+  /nix/store/wm1fzzr576jjawiimhwkfw7w0h1sn75k-beekeeper-studio-5.6.5
+  /nix/store/r3qpfrd40087nwr1glsd09gk1yiai9xl-btop-1.4.6
+  /nix/store/ks4xiahi7m0fm839xkln4lxdk1jpf8w4-delve-1.26.1
+  /nix/store/m916vizl4wkninl4gi72dw7b560bfzcr-fzf-0.71.0
+  /nix/store/kxw2nn0nnyc9zm5xlr9zj183d7xxa2is-fzf-0.71.0-man
+  /nix/store/2h6h0w391mrbn2ghwp5bp23c80xn9702-ghostty-1.3.1
+  /nix/store/ck93542np4x5hddybk5zgxb4kiyjffs3-ghostty-1.3.1-man
+  /nix/store/zslikbvad1810pga0n93w08l5bw6nmw7-ghostty-1.3.1-shell_integration
+  /nix/store/38jnjfgz913qkbv8bgjmafbmc8452132-ghostty-1.3.1-terminfo
+  /nix/store/v8mh4r3avdn4m5zwwkwc3bpg5dzg8hsv-ghostty-1.3.1-vim
+  /nix/store/2k5y0fw56cc0zdzqa9a666xayankb39x-go-1.25.9
+  /nix/store/pzlp7h1f9kx44fv458xrbj7faxav0kvq-gotools-0.44.0
+  /nix/store/bcw3gk0pjlqcam4sk0yj742wsjbizdcj-hyprcursor-0.1.13-lib
+  /nix/store/54wx1v752lixqmsdnxagym8ir392kikw-hyprgraphics-0.5.0
+  /nix/store/qwwjx2jbdw14al948hqxn1bzkvk6c4j5-hyprland-0.54.3
+  /nix/store/09fcinh7b1k5qj74yhijn5k3i4icbxsh-hyprland-qt-support-0.1.0
+  /nix/store/f8j1c3xsrqbambkwr5f581ykhk6l68vi-hyprland-qtutils-0.1.5
+  /nix/store/91a53rfzyxdg24ixdcfn6cw5qznrk8ac-hyprlang-0.6.8
+  /nix/store/8g69zz04ifn3zxswgnb5kbxcl778lgja-hyprpicker-0.4.6
+  /nix/store/p7afg5z5y45rvh1pnh5dfmsw4hja15rs-hyprshot-1.3.0
+  /nix/store/n8c1kww5v0g0vf1lfa9bpsjaf8cxa9r4-hyprsunset-0.3.3
+  /nix/store/4a67s1a98n7p54fhs8q386isjaqig3l0-hyprutils-0.12.0
+  /nix/store/pzqm9jj502gvc7fjqq618fhygpn01nr8-hyprwire-0.3.0
+  /nix/store/852aq3qbnhhdz5vwmfp2p74ky2rli31j-kubernetes-helm-3.20.1
+  /nix/store/hl02x2zjzg4j3rsx76l592mi48172kmn-lua-language-server-3.18.1
+  /nix/store/2sanpicqlxli3mgq7ylpgindr1yw9hh9-nil-2025-06-13
+  /nix/store/3wcqhircc071zn7r538mx7paxjv6pys9-nixos-render-docs-0.0
+  /nix/store/ycldsq4r0a0gfaz2q3qi6knzli6799l4-opencode-1.4.3
+  /nix/store/id41a2mbbbylv2xxh4gwsc3dgy0013bn-python3.13-markdown-it-py-4.0.0
+  /nix/store/ix3hplhfmwn5siyrck4y2p3ffbyybs9r-python3.13-mdit-py-plugins-0.5.0
+  /nix/store/0jj2m64wa6i12xsbhb1daswaywqyh96r-python3.13-mdurl-0.1.2
+  /nix/store/1baa9cw5lga4ynkps32x6f81jrmwvbkq-rust-analyzer-2026-04-06
+  /nix/store/m3gbwm7gjgibla2gfqcwc0pv34d2xhsr-rust-analyzer-unwrapped-2026-04-06
+  /nix/store/3fqbb9m25zbkg1cs19bl9w6yi0yjvd7q-shfmt-3.13.1
+  /nix/store/3lz2npxc62d7jzgpnzjb558gd5k2b358-stylua-2.4.1
+  /nix/store/25f7sxfxxdmvrc4sak8138grx3nlhc2k-walker-2.16.0
+copying path '/nix/store/kxw2nn0nnyc9zm5xlr9zj183d7xxa2is-fzf-0.71.0-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/ck93542np4x5hddybk5zgxb4kiyjffs3-ghostty-1.3.1-man' from 'https://cache.nixos.org'...
+copying path '/nix/store/zslikbvad1810pga0n93w08l5bw6nmw7-ghostty-1.3.1-shell_integration' from 'https://cache.nixos.org'...
+copying path '/nix/store/38jnjfgz913qkbv8bgjmafbmc8452132-ghostty-1.3.1-terminfo' from 'https://cache.nixos.org'...
+copying path '/nix/store/v8mh4r3avdn4m5zwwkwc3bpg5dzg8hsv-ghostty-1.3.1-vim' from 'https://cache.nixos.org'...
+copying path '/nix/store/wm1fzzr576jjawiimhwkfw7w0h1sn75k-beekeeper-studio-5.6.5' from 'https://cache.nixos.org'...
+copying path '/nix/store/r3qpfrd40087nwr1glsd09gk1yiai9xl-btop-1.4.6' from 'https://cache.nixos.org'...
+copying path '/nix/store/ks4xiahi7m0fm839xkln4lxdk1jpf8w4-delve-1.26.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/m916vizl4wkninl4gi72dw7b560bfzcr-fzf-0.71.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/pzlp7h1f9kx44fv458xrbj7faxav0kvq-gotools-0.44.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/852aq3qbnhhdz5vwmfp2p74ky2rli31j-kubernetes-helm-3.20.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/ycldsq4r0a0gfaz2q3qi6knzli6799l4-opencode-1.4.3' from 'https://cache.nixos.org'...
+copying path '/nix/store/hl02x2zjzg4j3rsx76l592mi48172kmn-lua-language-server-3.18.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/2sanpicqlxli3mgq7ylpgindr1yw9hh9-nil-2025-06-13' from 'https://cache.nixos.org'...
+copying path '/nix/store/3fqbb9m25zbkg1cs19bl9w6yi0yjvd7q-shfmt-3.13.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/3lz2npxc62d7jzgpnzjb558gd5k2b358-stylua-2.4.1' from 'https://cache.nixos.org'...
+building '/nix/store/jmssfd8wirik6ag22gg1qfj817kg0niw-dummy-fc-dir1.drv'...
+building '/nix/store/7d29ys28i9v7qdj4jzzqhgn9rifmdi26-dummy-fc-dir2.drv'...
+building '/nix/store/ivfkp5n8qm0rmc8745a43xvqiq4g0iq7-dummy-xdg-mime-dirs1.drv'...
+building '/nix/store/p05qkmnk6ffhfznap1idczk31hxv9g3g-dummy-xdg-mime-dirs2.drv'...
+building '/nix/store/mbz4y19cm841ld7lf2iy7c38w8yzsigm-hm_..zshenv.drv'...
+building '/nix/store/b53z9b48c99jsd521ap7qwwz3ys6g1gl-options.json.drv'...
+copying path '/nix/store/2k5y0fw56cc0zdzqa9a666xayankb39x-go-1.25.9' from 'https://cache.nixos.org'...
+copying path '/nix/store/4a67s1a98n7p54fhs8q386isjaqig3l0-hyprutils-0.12.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/0jj2m64wa6i12xsbhb1daswaywqyh96r-python3.13-mdurl-0.1.2' from 'https://cache.nixos.org'...
+copying path '/nix/store/m3gbwm7gjgibla2gfqcwc0pv34d2xhsr-rust-analyzer-unwrapped-2026-04-06' from 'https://cache.nixos.org'...
+copying path '/nix/store/25f7sxfxxdmvrc4sak8138grx3nlhc2k-walker-2.16.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/2h6h0w391mrbn2ghwp5bp23c80xn9702-ghostty-1.3.1' from 'https://cache.nixos.org'...
+copying path '/nix/store/id41a2mbbbylv2xxh4gwsc3dgy0013bn-python3.13-markdown-it-py-4.0.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/ix3hplhfmwn5siyrck4y2p3ffbyybs9r-python3.13-mdit-py-plugins-0.5.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/av0ikmmir6xdm5q2110m9ydgcddgbbnw-aquamarine-0.10.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/54wx1v752lixqmsdnxagym8ir392kikw-hyprgraphics-0.5.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/91a53rfzyxdg24ixdcfn6cw5qznrk8ac-hyprlang-0.6.8' from 'https://cache.nixos.org'...
+copying path '/nix/store/8g69zz04ifn3zxswgnb5kbxcl778lgja-hyprpicker-0.4.6' from 'https://cache.nixos.org'...
+copying path '/nix/store/pzqm9jj502gvc7fjqq618fhygpn01nr8-hyprwire-0.3.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/3wcqhircc071zn7r538mx7paxjv6pys9-nixos-render-docs-0.0' from 'https://cache.nixos.org'...
+copying path '/nix/store/bcw3gk0pjlqcam4sk0yj742wsjbizdcj-hyprcursor-0.1.13-lib' from 'https://cache.nixos.org'...
+copying path '/nix/store/09fcinh7b1k5qj74yhijn5k3i4icbxsh-hyprland-qt-support-0.1.0' from 'https://cache.nixos.org'...
+building '/nix/store/jpj5gfjrg8mcyfxkpgcy2zghh6mbrjm9-hm_..zshrc.drv'...
+copying path '/nix/store/n8c1kww5v0g0vf1lfa9bpsjaf8cxa9r4-hyprsunset-0.3.3' from 'https://cache.nixos.org'...
+building '/nix/store/p3xdnnca5fpf2i7xfb6wmfivrq1g04zw-home-configuration-reference-manpage.drv'...
+copying path '/nix/store/f8j1c3xsrqbambkwr5f581ykhk6l68vi-hyprland-qtutils-0.1.5' from 'https://cache.nixos.org'...
+copying path '/nix/store/qwwjx2jbdw14al948hqxn1bzkvk6c4j5-hyprland-0.54.3' from 'https://cache.nixos.org'...
+copying path '/nix/store/1baa9cw5lga4ynkps32x6f81jrmwvbkq-rust-analyzer-2026-04-06' from 'https://cache.nixos.org'...
+building '/nix/store/ffxfm0miccyy444sw96jki3jnsiahj5a-user-dbus-services.drv'...
+copying path '/nix/store/p7afg5z5y45rvh1pnh5dfmsw4hja15rs-hyprshot-1.3.0' from 'https://cache.nixos.org'...
+building '/nix/store/aldcfwx6n1w5fg9xvz3xyyzc4mknhasa-sops-install-secrets-0.0.1-go-modules.drv'...
+building '/nix/store/sf2hdgbgwc8m3yrzs9kk0872h4439fyv-sops-install-secrets-0.0.1.drv'...
+building '/nix/store/zzna2hinpa4qdsrp4wk5wy9rvrgvbb7b-home-manager-path.drv'...
+error: Cannot build '/nix/store/zzna2hinpa4qdsrp4wk5wy9rvrgvbb7b-home-manager-path.drv'.
+       Reason: builder failed with exit code 25.
+       Output paths:
+         /nix/store/4l2y4xk54yk0l2h9kmhmiml0anvscws3-home-manager-path
+       Last 5 log lines:
+       > pkgs.buildEnv error: two given paths contain a conflicting subpath:
+       >   `/nix/store/pzlp7h1f9kx44fv458xrbj7faxav0kvq-gotools-0.44.0/bin/modernize' and
+       >   `/nix/store/27gfim2iij5ydh7r750q2ja5ljpv5ihl-gopls-0.21.1/bin/modernize'
+       > hint: this may be caused by two different versions of the same package in buildEnv's `paths` parameter
+       > hint: `pkgs.nix-diff` can be used to compare derivations
+       For full logs, run:
+         nix log /nix/store/zzna2hinpa4qdsrp4wk5wy9rvrgvbb7b-home-manager-path.drv
+error: Cannot build '/nix/store/is8flxmhrja4n5zm0hsswxc8k2j9qrsq-activation-script.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/njx71w47b0jgqghz1b3fcybrgb5x7l2p-activation-script
+error: Cannot build '/nix/store/gng7zdfzn1gi6acq6rajkmlg5n167qm2-hm_fontconfigconf.d10hmfonts.conf.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/xf5cqx59xr6h5a974ysd3nhmdrmygn20-hm_fontconfigconf.d10hmfonts.conf
+error: Cannot build '/nix/store/kvlndhbzq9d6v9da65nzaar0mzjqjx5w-home-manager-generation.drv'.
+       Reason: 1 dependency failed.
+       Output paths:
+         /nix/store/b2dbg8kasbi3l8lpbzd0vnpgb7j27a3h-home-manager-generation
+error: Build failed due to failed dependency

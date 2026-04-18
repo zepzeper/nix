@@ -109,7 +109,7 @@
         zig = lib.mkDefault true;
         go = lib.mkDefault true;
         rust = lib.mkDefault true;
-        typescript = lib.mkDefault true;
+        typescript = lib.mkDefault false;
         lua = lib.mkDefault true;
         php = lib.mkDefault true;
         nix = lib.mkDefault true;

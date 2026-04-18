@@ -12,20 +12,18 @@ in {
 
   config = lib.mkIf cfg.common {
     home.packages = with pkgs; [
-      nodePackages.bash-language-server
+      # nodePackages.bash-language-server
       shellcheck
       shfmt
       yaml-language-server
       yamllint
       taplo
       marksman
-      nodePackages.markdownlint-cli
       dockerfile-language-server
       hadolint
       sqls
       lemminx
       terraform-ls
-      nodePackages.graphql-language-service-cli
     ];
   };
 }
