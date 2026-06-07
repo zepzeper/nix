@@ -7,18 +7,18 @@
 }: let
   cfg = config.k3s;
 in {
-  # imports = [
-  #   ./manifests/cert-manager.nix
-  #   ./manifests/home-assistant.nix
-  #   ./manifests/homepage.nix
-  #   ./manifests/mealie.nix
-  #   ./manifests/nginx-ingress.nix
-  #   ./manifests/pihole.nix
-  #   ./manifests/tuliprox.nix
-  #   ./manifests/vaultwarden.nix
-  #   ./manifests/external-dns.nix
-  #   ./manifests/uptimekuma.nix
-  # ];
+  imports = [
+    ./manifests/cert-manager.nix
+    ./manifests/home-assistant.nix
+    ./manifests/homepage.nix
+    ./manifests/mealie.nix
+    ./manifests/nginx-ingress.nix
+    ./manifests/pihole.nix
+    ./manifests/tuliprox.nix
+    ./manifests/vaultwarden.nix
+    ./manifests/external-dns.nix
+    ./manifests/uptimekuma.nix
+  ];
 
   options.k3s = {
     master = lib.mkEnableOption "K3s master node";
