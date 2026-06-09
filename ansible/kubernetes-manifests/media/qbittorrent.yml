@@ -2,41 +2,53 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: calibre-library
-  namespace: books
+  name: qbittorrent-config
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
-      storage: 50Gi
+      storage: 1Gi
 
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-downloads
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 100Gi
 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calibre
-  namespace: books
+  name: qbittorrent
+  namespace: media
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: calibre
+      app: qbittorrent
   template:
     metadata:
       labels:
-        app: calibre
+        app: qbittorrent
     spec:
       containers:
-        - name: calibre
-          image: lscr.io/linuxserver/calibre:latest
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
           ports:
             - containerPort: 8080
-            - containerPort: 8081
           env:
             - name: PUID
               value: "1000"
@@ -45,75 +57,70 @@ spec:
             - name: TZ
               value: "Europe/Amsterdam"
           volumeMounts:
-            - name: library
+            - name: config
               mountPath: /config
-            - name: books
-              mountPath: /books
+            - name: downloads
+              mountPath: /downloads
       volumes:
-        - name: library
+        - name: config
           persistentVolumeClaim:
-            claimName: calibre-library
-        - name: books
+            claimName: qbittorrent-config
+        - name: downloads
           persistentVolumeClaim:
-            claimName: calibre-library
+            claimName: media-downloads
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: calibre
-  namespace: books
+  name: qbittorrent
+  namespace: media
 spec:
   selector:
-    app: calibre
+    app: qbittorrent
   ports:
-    - name: web
-      port: 8080
+    - port: 8080
       targetPort: 8080
-    - name: content
-      port: 8081
-      targetPort: 8081
 
 ---
 
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: calibre-tls
-  namespace: books
+  name: qbittorrent-tls
+  namespace: media
 spec:
-  secretName: calibre-tls
+  secretName: qbittorrent-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - calibre.krugten.org
+    - qbittorrent.krugten.org
 
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: calibre
-  namespace: books
+  name: qbittorrent
+  namespace: media
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/hostname: calibre.krugten.org
+    external-dns.alpha.kubernetes.io/hostname: qbittorrent.krugten.org
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - calibre.krugten.org
-      secretName: calibre-tls
+        - qbittorrent.krugten.org
+      secretName: qbittorrent-tls
   rules:
-    - host: calibre.krugten.org
+    - host: qbittorrent.krugten.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: calibre
+                name: qbittorrent
                 port:
                   number: 8080

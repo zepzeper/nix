@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: calibre-web-config
-  namespace: books
+  name: readarr-config
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
@@ -13,29 +13,28 @@ spec:
       storage: 1Gi
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calibre-web
-  namespace: books
+  name: readarr
+  namespace: media
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: calibre-web
+      app: readarr
   template:
     metadata:
       labels:
-        app: calibre-web
+        app: readarr
     spec:
       containers:
-        - name: calibre-web
-          image: lscr.io/linuxserver/calibre-web:latest
+        - name: readarr
+          image: lscr.io/linuxserver/readarr:0.4.18-develop
           ports:
-            - containerPort: 8083
+            - containerPort: 8787
           env:
             - name: PUID
               value: "1000"
@@ -44,71 +43,70 @@ spec:
             - name: TZ
               value: "Europe/Amsterdam"
           volumeMounts:
-            - name: books
-              mountPath: /books
             - name: config
               mountPath: /config
+            - name: downloads
+              mountPath: /downloads
       volumes:
-        - name: books
-          persistentVolumeClaim:
-            claimName: calibre-library
         - name: config
           persistentVolumeClaim:
-            claimName: calibre-web-config
+            claimName: readarr-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: media-downloads
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: calibre-web
-  namespace: books
+  name: readarr
+  namespace: media
 spec:
   selector:
-    app: calibre-web
+    app: readarr
   ports:
-    - port: 8083
-      targetPort: 8083
+    - port: 8787
+      targetPort: 8787
 
 ---
 
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: books-tls
-  namespace: books
+  name: readarr-tls
+  namespace: media
 spec:
-  secretName: books-tls
+  secretName: readarr-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - books.krugten.org
+    - readarr.krugten.org
 
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: books
-  namespace: books
+  name: readarr
+  namespace: media
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/hostname: books.krugten.org
+    external-dns.alpha.kubernetes.io/hostname: readarr.krugten.org
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - books.krugten.org
-      secretName: books-tls
+        - readarr.krugten.org
+      secretName: readarr-tls
   rules:
-    - host: books.krugten.org
+    - host: readarr.krugten.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: calibre-web
+                name: readarr
                 port:
-                  number: 8083
+                  number: 8787

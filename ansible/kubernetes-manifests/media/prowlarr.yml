@@ -2,41 +2,39 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: calibre-library
-  namespace: books
+  name: prowlarr-config
+  namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
-      storage: 50Gi
+      storage: 1Gi
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calibre
-  namespace: books
+  name: prowlarr
+  namespace: media
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: calibre
+      app: prowlarr
   template:
     metadata:
       labels:
-        app: calibre
+        app: prowlarr
     spec:
       containers:
-        - name: calibre
-          image: lscr.io/linuxserver/calibre:latest
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:latest
           ports:
-            - containerPort: 8080
-            - containerPort: 8081
+            - containerPort: 9696
           env:
             - name: PUID
               value: "1000"
@@ -45,75 +43,65 @@ spec:
             - name: TZ
               value: "Europe/Amsterdam"
           volumeMounts:
-            - name: library
+            - name: config
               mountPath: /config
-            - name: books
-              mountPath: /books
       volumes:
-        - name: library
+        - name: config
           persistentVolumeClaim:
-            claimName: calibre-library
-        - name: books
-          persistentVolumeClaim:
-            claimName: calibre-library
+            claimName: prowlarr-config
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: calibre
-  namespace: books
+  name: prowlarr
+  namespace: media
 spec:
   selector:
-    app: calibre
+    app: prowlarr
   ports:
-    - name: web
-      port: 8080
-      targetPort: 8080
-    - name: content
-      port: 8081
-      targetPort: 8081
+    - port: 9696
+      targetPort: 9696
 
 ---
 
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: calibre-tls
-  namespace: books
+  name: prowlarr-tls
+  namespace: media
 spec:
-  secretName: calibre-tls
+  secretName: prowlarr-tls
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-    - calibre.krugten.org
+    - prowlarr.krugten.org
 
 ---
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: calibre
-  namespace: books
+  name: prowlarr
+  namespace: media
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    external-dns.alpha.kubernetes.io/hostname: calibre.krugten.org
+    external-dns.alpha.kubernetes.io/hostname: prowlarr.krugten.org
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - calibre.krugten.org
-      secretName: calibre-tls
+        - prowlarr.krugten.org
+      secretName: prowlarr-tls
   rules:
-    - host: calibre.krugten.org
+    - host: prowlarr.krugten.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: calibre
+                name: prowlarr
                 port:
-                  number: 8080
+                  number: 9696

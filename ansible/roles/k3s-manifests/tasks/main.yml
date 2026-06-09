@@ -1,4 +1,18 @@
 ---
+- name: Fix kubeconfig permissions
+  file:
+    path: /etc/rancher/k3s/k3s.yaml
+    mode: "0644"
+
+- name: Copy kubeconfig to admin user
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "/home/{{ admin_username }}/.kube/config"
+    owner: "{{ admin_username }}"
+    group: "{{ admin_group }}"
+    mode: "0600"
+    remote_src: yes
+
 - name: Copy Kubernetes manifests to target host
   synchronize:
     src: "{{ playbook_dir }}/../kubernetes-manifests/"
@@ -89,6 +103,8 @@
     - tuliprox
     - external-dns
     - books
+    - media
+    - paperless
     #- factorio
 
 - name: Apply cert-manager
@@ -122,6 +138,8 @@
     - mealie
     - kuma
     - books
+    - media
+    - paperless
 
 - name: Apply ClusterIssuer
   shell: kubectl apply -f /home/{{ admin_username }}/kubernetes-manifests/cert-manager/cluster-issuer.yml
@@ -159,5 +177,8 @@
     - homepage/homepage.yml
     - tuliprox/tuliprox.yml
     - calibre/calibre.yml
-    - calibre/calibre-web.yml
+    - media/qbittorrent.yml
+    - media/prowlarr.yml
+    - media/readarr.yml
+    - paperless/paperless.yml
     # - factorio/factorio.yml
