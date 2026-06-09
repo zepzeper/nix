@@ -154,6 +154,8 @@ spec:
               value: https://paperless.krugten.org
             - name: PAPERLESS_TIME_ZONE
               value: Europe/Amsterdam
+            - name: PAPERLESS_PORT
+              value: "8000"
             - name: PAPERLESS_SECRET_KEY
               value: changeme-in-vault
             - name: USERMAP_UID
