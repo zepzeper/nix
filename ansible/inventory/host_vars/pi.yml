@@ -1,0 +1,12 @@
+---
+hostname: "pi"
+platform: "aarch64"
+
+# SSH public keys for admin user
+admin_ssh_keys:
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILw5Pf5z3KZ8Q6m0q9v2x1R4H7JkY3Wt8BnLpX9cVf2a zepzeper@desktop"
+
+# Boot configuration
+boot_loader: "generic-extlinux-compatible"
+boot_efi: false
+disk_device: "/dev/mmcblk1"

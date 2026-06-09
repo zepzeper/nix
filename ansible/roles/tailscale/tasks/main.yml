@@ -1,0 +1,38 @@
+---
+- name: Install curl if needed
+  apt:
+    name: curl
+    state: present
+    update_cache: yes
+
+- name: Add Tailscale repository key
+  apt_key:
+    url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.noarmor.gpg
+    state: present
+
+- name: Add Tailscale repository
+  apt_repository:
+    repo: "deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }} {{ ansible_distribution_release }} main"
+    state: present
+
+- name: Install Tailscale
+  apt:
+    name: tailscale
+    state: present
+    update_cache: yes
+
+- name: Authenticate and start Tailscale
+  command: >
+    tailscale up
+    --authkey={{ vault_tailscale_authkey }}
+    --advertise-routes={{ k3s_advertise_routes }}
+    --accept-routes=false
+  args:
+    creates: /var/lib/tailscale/tailscaled.state
+  notify: restart tailscaled
+
+- name: Enable and start tailscaled
+  systemd:
+    name: tailscaled
+    enabled: yes
+    state: started

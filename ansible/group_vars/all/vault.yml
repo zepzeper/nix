@@ -1,0 +1,20 @@
+---
+# Encrypt with: ansible-vault encrypt group_vars/all/vault.yml
+# Or use: ansible-vault encrypt_string <value> --name vault_tailscale_authkey
+
+# Tailscale
+vault_tailscale_authkey: "" # Replace and encrypt
+
+# K3s
+vault_k3s_token: "" # Replace and encrypt
+
+# Cloudflare
+vault_cloudflare_api_token: "" # Replace and encrypt
+
+# TuliProx
+vault_tuliprox_url: "" # Replace and encrypt
+vault_tuliprox_username: "" # Replace and encrypt
+vault_tuliprox_password: "" # Replace and encrypt
+
+# Admin password (hashed)
+vault_admin_password: "" # mkpasswd --method=SHA-512, then encrypt
