@@ -16,9 +16,5 @@ k3s_master_udp_ports:
   - 8472
   - 53
 
-# K3s packages
-k3s_packages:
-  - k3s
-  - kubectl
-  - k9s
-  - kubernetes-helm
+# K3s packages (kubectl installed by k3s, helm/k9s optional)
+k3s_packages: []

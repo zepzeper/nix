@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-web-config
+  namespace: books
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calibre-web
+  namespace: books
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: calibre-web
+  template:
+    metadata:
+      labels:
+        app: calibre-web
+    spec:
+      containers:
+        - name: calibre-web
+          image: lscr.io/linuxserver/calibre-web:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Amsterdam"
+          volumeMounts:
+            - name: books
+              mountPath: /books
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: books
+          persistentVolumeClaim:
+            claimName: calibre-library
+        - name: config
+          persistentVolumeClaim:
+            claimName: calibre-web-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibre-web
+  namespace: books
+spec:
+  selector:
+    app: calibre-web
+  ports:
+    - port: 8083
+      targetPort: 8083
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: books-tls
+  namespace: books
+spec:
+  secretName: books-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - books.krugten.org
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: books
+  namespace: books
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    external-dns.alpha.kubernetes.io/hostname: books.krugten.org
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - books.krugten.org
+      secretName: books-tls
+  rules:
+    - host: books.krugten.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: calibre-web
+                port:
+                  number: 8083

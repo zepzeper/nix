@@ -18,6 +18,7 @@ base_packages:
   - htop
   - vim
   - sudo
+  - rsync
   - ca-certificates
   - gnupg
   - lsb-release

@@ -45,10 +45,10 @@ metadata:
   name: home-assistant
   namespace: home-assistant
   annotations:
-    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     external-dns.alpha.kubernetes.io/hostname: homeassistant.krugten.org
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - homeassistant.krugten.org

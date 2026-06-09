@@ -1,5 +1,5 @@
 ---
-hostname: "pi"
+server_hostname: "pi"
 platform: "aarch64"
 
 # SSH public keys for admin user

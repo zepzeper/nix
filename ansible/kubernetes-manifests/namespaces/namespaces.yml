@@ -47,4 +47,10 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: factorio
+  name: books
+
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: factorio

@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: mealie
-          image: ghcr.io/mealie-recipes/mealie:3.10.2
+          image: ghcr.io/mealie-recipes/mealie:latest
           ports:
             - containerPort: 9000
           env:
@@ -109,7 +109,6 @@ metadata:
   name: mealie
   namespace: mealie
   annotations:
-    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "0"

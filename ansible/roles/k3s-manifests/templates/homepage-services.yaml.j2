@@ -1,21 +1,72 @@
-- Services:
+- Infrastructure:
+    - Pi-hole:
+        icon: pi-hole.png
+        href: https://pihole.krugten.org
+        description: Ad Blocker & DNS
+        siteMonitor: https://pihole.krugten.org
+        widget:
+          type: pihole
+          url: http://pihole.pihole.svc.cluster.local:80
+          version: 6
+          key: changeme
+    - Kuma:
+        icon: uptime-kuma.png
+        href: https://kuma.krugten.org/status/all
+        description: Uptime Monitoring
+        siteMonitor: https://kuma.krugten.org
+        widget:
+          type: uptimekuma
+          url: http://kuma.kuma.svc.cluster.local:3001
+          slug: all
+
+- Home:
     - Home Assistant:
+        icon: home-assistant.png
         href: https://homeassistant.krugten.org
         description: Home Automation
-        icon: home-assistant.png
-    - Vaultwarden:
-        href: https://vaultwarden.krugten.org
-        description: Password Manager
-        icon: vaultwarden.png
-    - Pi-hole:
-        href: https://pihole.krugten.org
-        description: Ad Blocker
-        icon: pi-hole.png
+        siteMonitor: https://homeassistant.krugten.org
+        widget:
+          type: homeassistant
+          url: http://home-assistant.home-assistant.svc.cluster.local:8123
+          key: {{ vault_homepage_homeassistant_token }}
     - Mealie:
+        icon: mealie.png
         href: https://mealie.krugten.org
         description: Recipe Manager
-        icon: mealie.png
-    - Kuma:
-        href: https://kuma.krugten.org/status/all
-        description: Uptime kuma
-        icon: uptime-kuma.png
+        siteMonitor: https://mealie.krugten.org
+        widget:
+          type: mealie
+          url: http://mealie.mealie.svc.cluster.local:9000
+          key: {{ vault_homepage_mealie_token }}
+          version: 2
+
+- Books:
+    - Calibre:
+        icon: calibre.png
+        href: https://calibre.krugten.org
+        description: Ebook Library Manager
+        siteMonitor: https://calibre.krugten.org
+    - Books:
+        icon: calibre-web.png
+        href: https://books.krugten.org
+        description: Ebook Reader
+        siteMonitor: https://books.krugten.org
+
+- Tools:
+    - Vaultwarden:
+        icon: vaultwarden.png
+        href: https://vaultwarden.krugten.org
+        description: Password Manager
+        siteMonitor: https://vaultwarden.krugten.org
+    - Tuliprox:
+        icon: iptv.png
+        href: https://iptv.krugten.org
+        description: IPTV Proxy
+        siteMonitor: https://iptv.krugten.org
+
+#- Gaming:
+#    - Factorio:
+#        icon: factorio.png
+#        href: http://192.168.1.191:34197
+#        description: Factorio Server
+#        ping: 192.168.1.191

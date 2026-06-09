@@ -60,10 +60,10 @@ metadata:
   name: kuma
   namespace: kuma
   annotations:
-    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     external-dns.alpha.kubernetes.io/hostname: kuma.krugten.org
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - kuma.krugten.org

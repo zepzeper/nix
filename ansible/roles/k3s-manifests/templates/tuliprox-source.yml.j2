@@ -23,13 +23,16 @@ sources:
   - inputs:
       - name: darktv
         type: xtream
-        url: {{ vault_tuliprox_url }}
+        url: http://line.darktv-pro.cc
         username: {{ vault_tuliprox_username }}
         password: {{ vault_tuliprox_password }}
+        headers:
+          User-Agent: "Mozilla/5.0 (AppleTV; U; CPU OS 14_2 like Mac OS X; en-us) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15"
+          Accept: "application/json"
         persist: "./playlist_"
         epg:
           sources:
-            - url: "http://epg.darktv-pro.cc/xmltv.php?username=89a0837da0&password=1537d53cd78e"
+            - url: {{ vault_tuliprox_remote_url }}
               priority: 0
               logo_override: false
           smart_match:

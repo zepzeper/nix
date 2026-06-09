@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: vaultwarden
-          image: vaultwarden/server:1.35.3
+          image: vaultwarden/server:1.36.0
           ports:
             - containerPort: 80
           volumeMounts:
@@ -47,10 +47,10 @@ metadata:
   name: vaultwarden
   namespace: vaultwarden
   annotations:
-    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     external-dns.alpha.kubernetes.io/hostname: vaultwarden.krugten.org
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - vaultwarden.krugten.org

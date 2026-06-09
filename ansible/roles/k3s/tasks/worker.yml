@@ -23,7 +23,6 @@
     /usr/local/bin/k3s-install.sh
   args:
     creates: /usr/local/bin/k3s
-    warn: no
 
 - name: Add k3s worker firewall rules
   shell: |
