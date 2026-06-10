@@ -1,5 +1,0 @@
----
-# Collections for community modules
-collections:
-  - name: ansible.posix
-  - name: community.general
