@@ -3,15 +3,37 @@ let
   inherit (config.flake) nixosConfigurations;
   inherit (config.flake.modules) nixos;
 
-  # A stand-in machine per profile, so the base is checked before any real
-  # machine exists: every profile has to produce a system that evaluates,
-  # assertions included.
+  # A stand-in machine per profile (and per desktop), so the base is checked
+  # before any real machine exists: every combination has to produce a
+  # system that evaluates, assertions included.
+  variants = {
+    workstation-niri = {
+      profile = "workstation";
+      settings.zep.desktop.options.environment = "niri";
+    };
+    laptop-plasma = {
+      profile = "laptop";
+      settings = { };
+    };
+    laptop-gnome = {
+      profile = "laptop";
+      settings.zep.desktop.options.environment = "gnome";
+    };
+    server = {
+      profile = "server";
+      settings = { };
+    };
+  };
+
   stubs =
     system:
-    lib.genAttrs [ "workstation" "laptop" "server" ] (
-      profile:
-      config.flake.lib.mkHost "check-${profile}" {
-        imports = [ nixos."profiles-${profile}" ];
+    lib.mapAttrs (
+      name: variant:
+      config.flake.lib.mkHost "check-${name}" {
+        imports = [
+          nixos."profiles-${variant.profile}"
+          variant.settings
+        ];
         nixpkgs.hostPlatform = system;
         system.stateVersion = "26.05";
         zep = {
@@ -24,7 +46,7 @@ let
           };
         };
       }
-    );
+    ) variants;
 in
 {
   # `nix flake check` evaluates every host and every profile, not just some

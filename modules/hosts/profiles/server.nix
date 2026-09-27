@@ -9,6 +9,7 @@
 
       zep = {
         networking.options.mode = lib.mkDefault "networkd";
+        desktop.enable = lib.mkForce false;
 
         autoUpdate = {
           enable = lib.mkDefault true;

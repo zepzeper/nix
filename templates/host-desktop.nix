@@ -17,6 +17,8 @@
     system.stateVersion = "26.05"; # the release it was installed with; never change
 
     zep = {
+      desktop.options.environment = "niri";
+
       disk.options = {
         device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
         encrypt = true;

@@ -18,6 +18,9 @@
     zep = {
       disk.options.device = "/dev/disk/by-id/CHANGE-ME";
 
+      # Plasma unless this colleague prefers GNOME:
+      # desktop.options.environment = "gnome";
+
       users.options = {
         admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
         people.anna.description = "Anna";

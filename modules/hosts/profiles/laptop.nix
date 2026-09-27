@@ -3,6 +3,8 @@
   # An employee laptop. A workstation, plus what a machine that leaves the
   # office needs:
   #
+  # - Plasma by default, the easiest switch from Windows; a laptop can set
+  #   zep.desktop.options.environment = "gnome" instead;
   # - the disk is encrypted, forced: a lost laptop must not be a data breach;
   # - it updates itself from this repository, so you never have to reach it;
   #   it never reboots on its own, the person decides when.
@@ -12,6 +14,8 @@
       imports = [ config.flake.modules.nixos.profiles-workstation ];
 
       zep = {
+        desktop.options.environment = lib.mkDefault "plasma";
+
         disk.options.encrypt = lib.mkForce true;
 
         autoUpdate = {

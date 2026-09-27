@@ -21,6 +21,7 @@ modules/
   flake-parts/               how the flake itself is wired (no machine config)
   base/                      every machine: nix, users, ssh, locale, hardening
   boot/                      boot loader
+  desktops/                  niri (mine), Plasma and GNOME (colleagues)
   disk/                      disko layout: BTRFS, optional LUKS
   hardware/                  firmware, fwupd, zram
   networking/                NetworkManager or systemd-networkd
@@ -39,9 +40,9 @@ configurations go.
 
 | Profile | For | Adds to base |
 | --- | --- | --- |
-| `profiles-workstation` | my desktop | NetworkManager |
-| `profiles-laptop` | employee laptops | workstation + forced disk encryption, daily auto-update, never reboots on its own |
-| `profiles-server` | servers, the Pi | systemd-networkd, auto-update with reboots between 03:00 and 05:00, no audio or bluetooth |
+| `profiles-workstation` | my desktop | NetworkManager, a desktop (niri on mine) |
+| `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), forced disk encryption, daily auto-update, never reboots on its own |
+| `profiles-server` | servers, the Pi | shell only: no desktop, audio or bluetooth; systemd-networkd, auto-update with reboots between 03:00 and 05:00 |
 
 Every profile includes `profiles-base`: key-only SSH, locked root, at least
 one admin with an SSH key (a build error otherwise), firewall, sudo for wheel

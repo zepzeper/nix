@@ -18,6 +18,10 @@
         base-ssh
         base-users
         boot-loader
+        desktop
+        desktops-gnome
+        desktops-niri
+        desktops-plasma
         disk-layout
         hardware-base
         networking
