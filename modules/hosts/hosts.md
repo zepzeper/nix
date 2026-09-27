@@ -3,16 +3,17 @@
 One file per machine, registered as `flake.modules.nixos."hosts/<name>"`,
 which becomes `nixosConfigurations.<name>`.
 
-- `profiles/` - sets of blocks a host imports. `base.nix` is imported by
-  every machine.
-- `clients/` - desktop, laptop (to be added).
-- `servers/` - ds10u, pi (to be added).
+- `profiles/` - machine types a host imports (see `profiles/profiles.md`).
+- `clients/` - my own machines (desktop).
+- `laptops/` - employee laptops.
+- `servers/` - ds10u, the Pi.
 
 ## Adding a machine
 
-1. Copy `templates/host.nix` to `modules/hosts/<clients|servers>/<name>.nix`
-   and replace `example` with the machine's name.
-2. Put its generated hardware configuration next to it as
-   `_<name>-hardware.nix` and import it from the host file.
-3. Set `nixpkgs.hostPlatform` and `system.stateVersion`.
-4. `nix flake check`, then `nh os switch . -H <name>`.
+1. Copy the matching template from `templates/` (`host-desktop.nix`,
+   `host-laptop.nix`, `host-server.nix`) into the right folder and rename.
+2. Fill in every `CHANGE-ME`: the disk (`ls -l /dev/disk/by-id/`) and the
+   admin SSH keys.
+3. Generate its hardware configuration on the machine as
+   `_<name>-hardware.nix` next to the host file and import it.
+4. `nix flake check`, then install (see the README).

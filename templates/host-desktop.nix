@@ -1,0 +1,30 @@
+# Template: your own desktop. Copy to modules/hosts/clients/<name>.nix and
+# replace "desktop" with the machine's name.
+#
+# Hardware: on the machine, run
+#   nixos-generate-config --no-filesystems --show-hardware-config
+# and save it next to this file as _<name>-hardware.nix. Files starting with
+# "_" are not loaded automatically, only through the import below.
+{ config, ... }:
+{
+  flake.modules.nixos."hosts/desktop" = {
+    imports = [
+      config.flake.modules.nixos.profiles-workstation
+      # ./_desktop-hardware.nix
+    ];
+
+    nixpkgs.hostPlatform = "x86_64-linux";
+    system.stateVersion = "26.05"; # the release it was installed with; never change
+
+    zep = {
+      disk.options = {
+        device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
+        encrypt = true;
+      };
+
+      users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
+    };
+
+    home-manager.users.zepzeper.home.stateVersion = "26.05";
+  };
+}

@@ -6,6 +6,27 @@
 }:
 let
   prefix = "hosts/";
+
+  # One NixOS system from one host module, with Home Manager wired in.
+  mkHost =
+    hostName: module:
+    let
+      specialArgs = {
+        inherit inputs;
+        hostConfig.name = hostName;
+      };
+    in
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit specialArgs;
+      modules = [
+        module
+        inputs.home-manager.nixosModules.home-manager
+        {
+          networking.hostName = lib.mkDefault hostName;
+          home-manager.extraSpecialArgs = specialArgs;
+        }
+      ];
+    };
 in
 {
   # Every module registered as `flake.modules.nixos."hosts/<name>"` becomes
@@ -21,25 +42,11 @@ in
       name: module:
       let
         hostName = lib.removePrefix prefix name;
-        specialArgs = {
-          inherit inputs;
-          hostConfig.name = hostName;
-        };
       in
-      {
-        name = hostName;
-        value = inputs.nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          modules = [
-            module
-            inputs.home-manager.nixosModules.home-manager
-            {
-              networking.hostName = lib.mkDefault hostName;
-              home-manager.extraSpecialArgs = specialArgs;
-            }
-          ];
-        };
-      }
+      lib.nameValuePair hostName (mkHost hostName module)
     ))
   ];
+
+  # Exposed for checks.nix, which builds stand-in machines from each profile.
+  flake.lib.mkHost = mkHost;
 }

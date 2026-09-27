@@ -14,33 +14,49 @@
 ## Blocks, profiles, hosts
 
 ```
-block      one capability           zep.<name>.enable + zep.<name>.options.*
-profile    a set of blocks          profiles-base (every machine), later
-                                    profiles-workstation, profiles-server
-host       one machine              imports profiles + hardware, enables blocks
+block      one capability       zep.<name>.enable + zep.<name>.options.*
+profile    a machine type       base -> workstation -> laptop
+                                base -> server
+host       one machine          one profile + hardware + its own settings
 ```
 
-The base profile imports every block, so a host can switch any block on
+`profiles-base` imports every block, so a host can switch any block on
 without importing it itself. Importing a block never enables it.
 
 ## Decisions
 
 ### Blocks are switched, not imported
-A host file reads like a settings page: which profile, which hardware, which
-blocks are on. The alternative, importing a module to enable it, keeps option
-declarations out of hosts that do not use them but spreads the list of what a
-machine has across import lists.
+A host file reads like a settings page: which profile, which hardware, what
+is specific to it. The alternative, importing a module to enable it, spreads
+the list of what a machine has across import lists.
 
 ### mkForce for mandatory, mkDefault for suggested
-The few things every machine must have are forced in the base profile, so a
-host cannot lose them by accident. Everything else is a default a host can
-override. A setting that would break a machine when empty asserts at build
-time.
+What a machine type must have is forced in its profile, so a host cannot lose
+it by accident: SSH hardening, the firewall and a locked root on every
+machine; disk encryption on every laptop. Everything else is a default a host
+can override. A setting that would break a machine when empty (no admin, no
+disk) asserts at build time.
+
+### Machine types are profiles, layered
+Employee laptops are workstations with stricter rules, so `profiles-laptop`
+imports `profiles-workstation` and adds to it. Servers share only the base.
+One place per rule: encryption is decided in the laptop profile, not on each
+laptop.
+
+### No passwords in the repository
+Admins log in with SSH keys. People (employees) get an account without a
+password, and the password is set on the machine at handover. Users are
+mutable, so it survives rebuilds.
+
+### Machines update themselves from main
+Laptops and servers pull this flake on a schedule and switch
+(`system.autoUpgrade`). Nobody has to reach a laptop to update it. The
+cost is that `main` is trusted by every machine, so it must be protected.
 
 ### Home Manager as a NixOS module
-The system and the user environment build, switch and roll back together. No
-separate `home-manager switch`, no `--impure`.
+The system and the user environment build, switch and roll back together.
 
-### Every host is evaluated by `nix flake check`
-A host that stops evaluating fails the check by name, rather than surfacing
-the next time that machine is rebuilt.
+### Every host and every profile is evaluated by `nix flake check`
+Each profile is evaluated on a stand-in machine, so the base is checked
+before any real machine exists, and a host that stops evaluating fails the
+check by name.
