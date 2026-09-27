@@ -1,0 +1,21 @@
+{ inputs, ... }:
+{
+  imports = [ inputs.treefmt-nix.flakeModule ];
+
+  # `nix fmt` formats the tree, and `nix flake check` fails when it is not
+  # formatted, so style is settled by a tool rather than by memory.
+  #
+  # nixfmt   - one style for every file.
+  # statix   - lints for common Nix footguns (and can fix them).
+  # deadnix  - unused bindings left behind by a refactor.
+  perSystem = {
+    treefmt = {
+      projectRootFile = "flake.nix";
+      programs = {
+        nixfmt.enable = true;
+        statix.enable = true;
+        deadnix.enable = true;
+      };
+    };
+  };
+}
