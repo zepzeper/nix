@@ -12,6 +12,7 @@
       soft = lib.mkOverride 900;
     in
     {
+      key = "zep#base-hardening";
       options.zep.hardening = {
         enable = lib.mkEnableOption "baseline hardening (firewall, sudo, sysctl)";
       };

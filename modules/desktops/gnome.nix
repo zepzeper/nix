@@ -12,6 +12,7 @@
       cfg = config.zep.desktop;
     in
     {
+      key = "zep#desktops-gnome";
       config = lib.mkIf (cfg.enable && cfg.options.environment == "gnome") {
         services.desktopManager.gnome.enable = true;
         services.displayManager.gdm.enable = true;

@@ -1,0 +1,15 @@
+# Every push and pull request: formatting, lints, and every host and variant
+# must evaluate (`nix flake check`). Employee laptops install whatever lands
+# on main, so make this a required status check for main in the repository
+# settings (Settings -> Branches -> Branch protection rules).
+name: check
+on:
+  push:
+  pull_request:
+jobs:
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - run: nix flake check --print-build-logs

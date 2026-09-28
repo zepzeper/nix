@@ -8,6 +8,7 @@
       cfg = config.zep.locale;
     in
     {
+      key = "zep#base-locale";
       options.zep.locale = {
         enable = lib.mkEnableOption "time zone, language and keyboard";
 
@@ -29,6 +30,15 @@
           keyboardLayout = lib.mkOption {
             type = lib.types.str;
             default = "us";
+          };
+          keyboardVariant = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+            example = "intl";
+            description = ''
+              e.g. "intl" or "altgr-intl" for accents (é, ë) on a US keyboard.
+              Also the layout of the disk passphrase prompt at boot.
+            '';
           };
         };
       };
@@ -52,7 +62,10 @@
         };
 
         console.useXkbConfig = true;
-        services.xserver.xkb.layout = lib.mkDefault cfg.options.keyboardLayout;
+        services.xserver.xkb = {
+          layout = lib.mkDefault cfg.options.keyboardLayout;
+          variant = lib.mkDefault cfg.options.keyboardVariant;
+        };
       };
     };
 }

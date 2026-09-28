@@ -7,13 +7,30 @@
   # nixpkgs.flake.setFlakeRegistry/setNixPath pin them to whichever channel
   # the host was built from, so `nix shell nixpkgs#foo` matches the system.
   flake.modules.nixos.base-nix =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      hostConfig,
+      ...
+    }:
     let
       cfg = config.zep.nix;
     in
     {
+      key = "zep#base-nix";
       options.zep.nix = {
         enable = lib.mkEnableOption "Nix settings and garbage collection";
+
+        options.trustAdmins = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+          description = ''
+            Make wheel a trusted Nix user, so an admin can push unsigned
+            closures with `nixos-rebuild --target-host`. That is root without
+            a password (a trusted user can import arbitrary store paths), so
+            only machines that are deployed to remotely - servers - turn it on.
+          '';
+        };
 
         options.keepGenerationsDays = lib.mkOption {
           type = lib.types.ints.positive;
@@ -29,12 +46,7 @@
               "nix-command"
               "flakes"
             ];
-            # Admins in wheel can copy closures to this machine, which
-            # `nixos-rebuild --target-host` needs.
-            trusted-users = [
-              "root"
-              "@wheel"
-            ];
+            trusted-users = lib.mkIf cfg.options.trustAdmins [ "@wheel" ];
           };
 
           gc = {
@@ -54,13 +66,17 @@
           config.allowUnfree = lib.mkDefault true;
 
           # environment.systemPackages = [ pkgs.unstable.<name> ];
-          # On an unstable host this is the same nixpkgs again.
+          # On an unstable host that is simply pkgs itself.
           overlays = [
             (final: _: {
-              unstable = import inputs.nixpkgs-unstable {
-                inherit (final.stdenv.hostPlatform) system;
-                inherit (final) config;
-              };
+              unstable =
+                if hostConfig.channel == "unstable" then
+                  final
+                else
+                  import inputs.nixpkgs-unstable {
+                    inherit (final.stdenv.hostPlatform) system;
+                    inherit (final) config;
+                  };
             })
           ];
         };

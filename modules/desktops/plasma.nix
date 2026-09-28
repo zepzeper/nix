@@ -8,6 +8,7 @@
       cfg = config.zep.desktop;
     in
     {
+      key = "zep#desktops-plasma";
       config = lib.mkIf (cfg.enable && cfg.options.environment == "plasma") {
         services.desktopManager.plasma6.enable = true;
 

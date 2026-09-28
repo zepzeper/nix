@@ -2,8 +2,10 @@
 # "server" with the machine's name.
 #
 # The server profile: shell only, stable channel, systemd-networkd (DHCP on
-# wired ports), and no automatic updates. Deploy changes from your machine:
-#   nixos-rebuild switch --flake .#server --target-host server --sudo
+# wired ports), unencrypted disk, and no automatic updates. Deploy changes
+# from your own machine:
+#   nixos-rebuild switch --flake .#server --target-host server --ask-sudo-password
+# For a Raspberry Pi use templates/host-pi.nix instead.
 { config, ... }:
 {
   flake.modules.nixos."hosts/server" = {
@@ -13,19 +15,12 @@
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
-    system.stateVersion = "26.05"; # the release it was installed with; never change
+    system.stateVersion = "26.05"; # `nixos-version` at install time (first two numbers); never change
 
     zep = {
       disk.options.device = "/dev/disk/by-id/CHANGE-ME";
 
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
-
-    # A Raspberry Pi instead: aarch64, U-Boot, and the SD image's own
-    # filesystem rather than disko.
-    #   nixpkgs.hostPlatform = "aarch64-linux";
-    #   zep.boot.options.loader = "extlinux";
-    #   zep.disk.enable = false;
-    #   fileSystems."/" = { device = "/dev/disk/by-label/NIXOS_SD"; fsType = "ext4"; };
   };
 }

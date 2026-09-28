@@ -8,6 +8,7 @@
       cfg = config.zep.boot;
     in
     {
+      key = "zep#boot-loader";
       options.zep.boot = {
         enable = lib.mkEnableOption "boot loader";
 
@@ -49,8 +50,9 @@
             };
           })
           {
-            # systemd in the initrd: needed for TPM2/FIDO2 disk unlock later.
-            boot.initrd.systemd.enable = lib.mkDefault (cfg.options.loader == "systemd-boot");
+            # systemd in the initrd, for every loader: the scripted initrd is
+            # deprecated (removed in 26.11), and TPM2/FIDO2 unlock need this.
+            boot.initrd.systemd.enable = lib.mkDefault true;
           }
         ]
       );

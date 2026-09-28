@@ -9,8 +9,8 @@ let
   # included.
   variants = {
     workstation-niri = {
-      profile = "workstation";
       channel = "unstable";
+      profile = "workstation";
       settings.zep.desktop.options.environment = "niri";
     };
     laptop-plasma = {
@@ -52,32 +52,39 @@ let
         };
       }
     ) variants;
+
+  # zep.hosts.<name> for a name with no host module is a typo.
+  hostNames = lib.attrNames nixosConfigurations;
+  unknown = lib.subtractLists hostNames (lib.attrNames config.zep.hosts);
+
+  # Forces the whole system (assertions included) without building it: the
+  # drvPath is taken with its string context dropped. Warnings fail too - a
+  # warning today is usually an error in the next release.
+  evaluate =
+    name: host:
+    let
+      inherit (host.config) warnings;
+    in
+    lib.throwIf (warnings != [ ]) "${name}: ${lib.concatStringsSep "\n" warnings}"
+      "${name} ${builtins.unsafeDiscardStringContext host.config.system.build.toplevel.drvPath}";
 in
 {
-  # `nix flake check` evaluates every host and every profile, not just some
-  # of them. A machine that stops evaluating fails the check by name instead
-  # of going unnoticed until the next rebuild.
-  #
-  # Only evaluation, no build: the drvPath is forced with its string context
-  # dropped, so the check does not depend on (and build) the whole system.
+  # `nix flake check` evaluates every host - of every architecture, from
+  # whatever machine runs it - and every stand-in variant. A machine that
+  # stops evaluating, or starts warning, fails the check by name.
   perSystem =
     { pkgs, system, ... }:
-    let
-      hosts = lib.filterAttrs (
-        _: host: host.pkgs.stdenv.hostPlatform.system == system
-      ) nixosConfigurations;
-
-      line =
-        name: host:
-        "${name} ${builtins.unsafeDiscardStringContext host.config.system.build.toplevel.drvPath}";
-    in
     {
       checks.hosts-evaluate = pkgs.writeText "hosts-evaluate" (
-        lib.concatLines (
-          [ "evaluated on ${system}:" ]
-          ++ lib.mapAttrsToList line hosts
-          ++ lib.mapAttrsToList (profile: line "profile ${profile}") (stubs system)
-        )
+        lib.throwIf (unknown != [ ])
+          "zep.hosts is set for ${lib.concatStringsSep ", " unknown}, but there is no host by that name (typo?)"
+          (
+            lib.concatLines (
+              [ "evaluated from ${system}:" ]
+              ++ lib.mapAttrsToList evaluate nixosConfigurations
+              ++ lib.mapAttrsToList (name: evaluate "variant ${name}") (stubs system)
+            )
+          )
       );
     };
 }

@@ -3,10 +3,11 @@
 # Every block has the same interface:
 #   zep.<name>.enable            turns it on
 #   zep.<name>.options.<...>     its settings
-# and its whole body sits inside `lib.mkIf cfg.enable`.
+# and its whole body sits inside `lib.mkIf cfg.enable`. The `key` lets it be
+# imported more than once without "option declared twice" errors.
 #
-# Then add `<category>-<name>` to the imports in
-# modules/hosts/profiles/base.nix so the option exists on every host.
+# profiles-base picks the block up automatically, so its option exists on
+# every host. Switch it on in a profile or host.
 {
   flake.modules.nixos.category-example =
     { config, lib, ... }:
@@ -14,6 +15,7 @@
       cfg = config.zep.example;
     in
     {
+      key = "zep#category-example";
       options.zep.example = {
         enable = lib.mkEnableOption "an example block";
 
@@ -38,6 +40,11 @@
       };
     };
 
-  # A block can carry the user side too, in the same file:
-  # flake.modules.homeManager.category-example = { ... }: { ... };
+  # A block can carry the user side too, in the same file. It is given to
+  # every Home Manager user, so gate it the same way:
+  # flake.modules.homeManager.category-example = { config, lib, ... }: {
+  #   key = "zep#hm-category-example";
+  #   options.zep.example.enable = lib.mkEnableOption "...";
+  #   config = lib.mkIf config.zep.example.enable { ... };
+  # };
 }

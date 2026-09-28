@@ -47,8 +47,6 @@ let
     };
 
   hostModules = lib.filterAttrs (name: _: lib.hasPrefix prefix name) config.flake.modules.nixos;
-  hostNames = map (lib.removePrefix prefix) (lib.attrNames hostModules);
-  unknown = lib.subtractLists hostNames (lib.attrNames config.zep.hosts);
 in
 {
   # The channel is chosen per host, next to its module:
@@ -83,19 +81,18 @@ in
     # Home Manager is wired into every host, so `nh os switch` (or
     # nixos-rebuild) builds the system and the user environment together, and
     # a rollback reverts both.
-    nixosConfigurations =
-      lib.throwIf (unknown != [ ])
-        "zep.hosts is set for ${lib.concatStringsSep ", " unknown}, but there is no flake.modules.nixos.\"hosts/<name>\" by that name (typo?)"
-        (
-          lib.mapAttrs' (
-            name: module:
-            let
-              hostName = lib.removePrefix prefix name;
-              inherit (config.zep.hosts.${hostName} or { channel = "stable"; }) channel;
-            in
-            lib.nameValuePair hostName (mkHost hostName channel module)
-          ) hostModules
-        );
+    #
+    # A zep.hosts entry for a name that has no host (a typo) is caught by
+    # checks.nix rather than here, so one typo cannot stop every other
+    # machine from evaluating - or from updating itself.
+    nixosConfigurations = lib.mapAttrs' (
+      name: module:
+      let
+        hostName = lib.removePrefix prefix name;
+        inherit (config.zep.hosts.${hostName} or { channel = "stable"; }) channel;
+      in
+      lib.nameValuePair hostName (mkHost hostName channel module)
+    ) hostModules;
 
     # Exposed for checks.nix, which builds stand-in machines from each profile.
     lib.mkHost = mkHost;

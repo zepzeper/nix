@@ -27,6 +27,7 @@
       cfg = config.zep.desktop;
     in
     {
+      key = "zep#desktop";
       options.zep.desktop = {
         enable = lib.mkEnableOption "a graphical desktop";
 
@@ -72,26 +73,32 @@
 
         services = {
           # Xorg, only so the "Plasma (X11)" session at the login screen works.
-          xserver.enable = lib.mkIf cfg.options.x11Session true;
+          # Without xterm, which would otherwise appear in the start menu.
+          xserver = lib.mkIf cfg.options.x11Session {
+            enable = true;
+            excludePackages = [ pkgs.xterm ];
+          };
 
           # Sound
           pulseaudio.enable = false;
           pipewire = {
             enable = true;
             alsa.enable = true;
-            alsa.support32Bit = lib.mkDefault true;
+            # 32-bit ALSA is for Steam/Wine; a host that games turns it on.
+            alsa.support32Bit = lib.mkDefault false;
             pulse.enable = true;
           };
         };
         security.rtkit.enable = true;
 
+        # On at boot, so a bluetooth keyboard or mouse works at the login
+        # screen.
         hardware.bluetooth = {
           enable = lib.mkDefault true;
-          powerOnBoot = lib.mkDefault false;
+          powerOnBoot = lib.mkDefault true;
         };
 
         fonts = {
-          enableDefaultPackages = true;
           packages = with pkgs; [
             noto-fonts
             noto-fonts-color-emoji

@@ -8,7 +8,8 @@
   #     BTRFS: @root /, @home /home, @nix /nix, @log /var/log, @swap
   #
   # With encryption the passphrase is asked for during install and at every
-  # boot (until TPM2 unlock is added).
+  # boot (until TPM2 unlock is added). It is typed with the keyboard layout
+  # of zep.locale, the same one the installer ISO uses by default (us).
   flake.modules.nixos.disk-layout =
     { config, lib, ... }:
     let
@@ -49,6 +50,7 @@
       };
     in
     {
+      key = "zep#disk-layout";
       imports = [ inputs.disko.nixosModules.disko ];
 
       options.zep.disk = {
@@ -68,6 +70,16 @@
             type = lib.types.bool;
             default = false;
             description = "Put the BTRFS filesystem inside LUKS.";
+          };
+          recoveryKey = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              With encryption: also enroll a random recovery key at install
+              (systemd-cryptenroll). disko shows it once, with a QR code, and
+              waits - store it in the password manager. It opens the disk
+              when the passphrase is forgotten.
+            '';
           };
           swapSize = lib.mkOption {
             type = lib.types.str;
@@ -110,6 +122,7 @@
                       type = "luks";
                       name = "cryptroot";
                       settings.allowDiscards = true;
+                      enrollRecovery = cfg.options.recoveryKey;
                       content = btrfs;
                     }
                   else

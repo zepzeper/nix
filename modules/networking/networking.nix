@@ -2,15 +2,18 @@
   # Networking, in one of two modes:
   #
   #   networkmanager - desktops and laptops: WiFi, VPNs, a GUI to switch.
-  #   networkd       - servers: systemd-networkd, DHCP on every wired port.
-  #                    A host with a static address adds its own
-  #                    systemd.network.networks entry.
+  #   networkd       - servers: systemd-networkd, DHCP on every wired port
+  #                    through nixpkgs' own 99-ethernet-default-dhcp. A host
+  #                    with a static address or a bridge adds its own
+  #                    systemd.network.networks."10-..." entry, which wins
+  #                    because networkd uses the first match by name.
   flake.modules.nixos.networking =
     { config, lib, ... }:
     let
       cfg = config.zep.networking;
     in
     {
+      key = "zep#networking";
       options.zep.networking = {
         enable = lib.mkEnableOption "networking";
 
@@ -28,19 +31,14 @@
           (lib.mkIf (cfg.options.mode == "networkmanager") {
             networking.networkmanager.enable = true;
             # Admins and people can manage connections without sudo.
-            users.users = lib.mapAttrs (_: _: { extraGroups = [ "networkmanager" ]; }) (
-              config.zep.users.options.admins // config.zep.users.options.people
+            users.users = lib.mkIf config.zep.users.enable (
+              lib.mapAttrs (_: _: { extraGroups = [ "networkmanager" ]; }) (
+                config.zep.users.options.admins // config.zep.users.options.people
+              )
             );
           })
           (lib.mkIf (cfg.options.mode == "networkd") {
             networking.useNetworkd = true;
-            systemd.network = {
-              enable = true;
-              networks."10-wired" = {
-                matchConfig.Name = "en* eth*";
-                networkConfig.DHCP = lib.mkDefault "yes";
-              };
-            };
           })
         ]
       );

@@ -10,12 +10,29 @@
   #             are mutable, that password survives rebuilds and never ends up
   #             in this (public) repository.
   #
-  # root is locked. Without at least one admin nobody could administer the
-  # machine, so that is a build error rather than a surprise after install.
+  # root starts locked and stays locked unless an admin deliberately gives it
+  # a password (with mutable users, the "!" below is the initial state, not
+  # something re-applied on every switch). Without at least one admin nobody
+  # could administer the machine, so that is a build error rather than a
+  # surprise after install.
+  #
+  # people cannot be put in groups that are root in disguise (wheel, docker,
+  # ...), and a name can be an admin or a person, not both.
   flake.modules.nixos.base-users =
     { config, lib, ... }:
     let
       cfg = config.zep.users;
+
+      # Membership in any of these is as good as root.
+      adminGroups = [
+        "wheel"
+        "docker"
+        "podman"
+        "libvirtd"
+        "lxd"
+        "incus-admin"
+        "disk"
+      ];
 
       admin = lib.types.submodule {
         options = {
@@ -45,6 +62,7 @@
       };
     in
     {
+      key = "zep#base-users";
       options.zep.users = {
         enable = lib.mkEnableOption "admin and personal user accounts";
 
@@ -76,6 +94,18 @@
           {
             assertion = lib.all (a: a.sshKeys != [ ]) (lib.attrValues cfg.options.admins);
             message = "Every admin in zep.users.options.admins needs at least one SSH key.";
+          }
+          {
+            assertion = lib.all (p: lib.intersectLists p.extraGroups adminGroups == [ ]) (
+              lib.attrValues cfg.options.people
+            );
+            message = "zep.users.options.people: ${lib.concatStringsSep ", " adminGroups} make a user root-equivalent. Make them an admin instead.";
+          }
+          {
+            assertion =
+              lib.intersectLists (lib.attrNames cfg.options.admins) (lib.attrNames cfg.options.people) == [ ]
+              && !(cfg.options.admins ? root || cfg.options.people ? root);
+            message = "zep.users: a name is listed as both admin and person, or as root.";
           }
         ];
 

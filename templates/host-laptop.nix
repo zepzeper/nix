@@ -13,7 +13,7 @@
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
-    system.stateVersion = "26.05"; # the release it was installed with; never change
+    system.stateVersion = "26.05"; # `nixos-version` at install time (first two numbers); never change
 
     zep = {
       disk.options.device = "/dev/disk/by-id/CHANGE-ME";

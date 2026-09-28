@@ -6,7 +6,8 @@
 2. import-tree loads every `.nix` file under `modules/` as a flake-parts
    module (skipping paths that contain `/_`).
 3. Each file registers what it provides under `flake.modules.nixos.<name>`
-   (and `flake.modules.homeManager.<name>` for the user side).
+   (and `flake.modules.homeManager.<name>` for the user side). Every block
+   carries a `key`, so importing it twice is harmless.
 4. `modules/flake-parts/host-machines.nix` turns every
    `flake.modules.nixos."hosts/<name>"` into `nixosConfigurations.<name>`,
    with Home Manager wired in.
@@ -14,14 +15,16 @@
 ## Blocks, profiles, hosts
 
 ```
-block      one capability       zep.<name>.enable + zep.<name>.options.*
+block      one capability       zep.<option>.enable + zep.<option>.options.*
 profile    a machine type       base -> workstation -> laptop
                                 base -> server
 host       one machine          one profile + hardware + its own settings
 ```
 
-`profiles-base` imports every block, so a host can switch any block on
-without importing it itself. Importing a block never enables it.
+`profiles-base` imports every block (found automatically: everything in
+`flake.modules.nixos` that is not a profile or a host), so a host can switch
+any block on without importing it itself. Importing a block never enables it.
+Home Manager blocks are handed to every Home Manager user the same way.
 
 ## Decisions
 
@@ -32,10 +35,11 @@ the list of what a machine has across import lists.
 
 ### mkForce for mandatory, mkDefault for suggested
 What a machine type must have is forced in its profile, so a host cannot lose
-it by accident: SSH hardening, the firewall and a locked root on every
-machine; disk encryption on every laptop. Everything else is a default a host
-can override. A setting that would break a machine when empty (no admin, no
-disk) asserts at build time.
+it by accident: SSH policy and the firewall on every machine; disk encryption
+on every laptop. Everything else is a default a host can override. A setting
+that would break a machine or its security asserts at build time: no admin,
+no disk, an employee in an admin group, an encrypted server nobody can
+unlock, a laptop or server on unstable, auto-update without a lock file.
 
 ### Machine types are profiles, layered
 Employee laptops are workstations with stricter rules, so `profiles-laptop`
@@ -46,7 +50,20 @@ laptop.
 ### No passwords in the repository
 Admins log in with SSH keys. People (employees) get an account without a
 password, and the password is set on the machine at handover. Users are
-mutable, so it survives rebuilds.
+mutable, so it survives rebuilds. The same means root's "!" is its initial
+state: it stays locked unless an admin deliberately sets a root password.
+
+### SSH: policy forced, crypto left to nixpkgs
+Only wheel may log in, only with keys from this repository (never from
+`~/.ssh`), never as root. The ciphers and key exchange are nixpkgs' own
+defaults, which are hardened already and gain new algorithms (post-quantum
+key exchange) with each release; a forced list here froze them once and
+dropped one. Laptops do not accept SSH from the network at all.
+
+### Trusted Nix users only where deploys land
+A trusted Nix user can import unsigned store paths, which is root without a
+password. Servers need it for `nixos-rebuild --target-host`, so only the
+server profile makes wheel trusted.
 
 ### Stable for machines others depend on, unstable for mine
 Two nixpkgs inputs, each with its matching Home Manager branch. A host picks

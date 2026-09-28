@@ -1,49 +1,54 @@
 {
-  # OpenSSH, key-only. The crypto floor and login policy are forced so a host
-  # cannot weaken them by accident; maxAuthTries is a default a host may tune.
-  # Settings follow the NCSC/CIS guidance DAWO-NixOS uses.
+  # OpenSSH for admins only, with keys only.
+  #
+  # Forced (a host cannot weaken these): no root login, no passwords, only
+  # members of wheel may log in, and keys come only from this repository
+  # (users.users.<name>.openssh.authorizedKeys), never from ~/.ssh - so an
+  # employee, or malware running as one, cannot add a key and open a door.
+  #
+  # The crypto (ciphers, key exchange, MACs) is left to nixpkgs: its defaults
+  # are already a hardened, modern set, and they gain new algorithms (such as
+  # post-quantum key exchange) with each release. A forced list here would
+  # freeze them - it already dropped one once.
+  #
+  # options.openFirewall: servers and my machines accept SSH from the
+  # network; laptops do not (their profile turns it off), because they roam
+  # on networks nobody here controls. Reach them over a VPN instead.
   flake.modules.nixos.base-ssh =
     { config, lib, ... }:
     let
       cfg = config.zep.ssh;
     in
     {
+      key = "zep#base-ssh";
       options.zep.ssh = {
-        enable = lib.mkEnableOption "hardened, key-only OpenSSH";
+        enable = lib.mkEnableOption "hardened, key-only OpenSSH for admins";
 
-        options.maxAuthTries = lib.mkOption {
-          type = lib.types.ints.positive;
-          default = 4;
-          description = "Authentication attempts per connection.";
+        options = {
+          openFirewall = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Accept SSH on every interface. Off on laptops.";
+          };
+          maxAuthTries = lib.mkOption {
+            type = lib.types.ints.positive;
+            default = 4;
+            description = "Authentication attempts per connection.";
+          };
         };
       };
 
       config = lib.mkIf cfg.enable {
         services.openssh = {
           enable = true;
-          openFirewall = lib.mkDefault true;
+          inherit (cfg.options) openFirewall;
+          authorizedKeysInHomedir = lib.mkForce false;
           settings = {
             PermitRootLogin = lib.mkForce "no";
             PasswordAuthentication = lib.mkForce false;
             KbdInteractiveAuthentication = lib.mkForce false;
-            X11Forwarding = lib.mkForce false;
+            AllowGroups = lib.mkForce [ "wheel" ];
             MaxAuthTries = lib.mkDefault cfg.options.maxAuthTries;
-            Ciphers = lib.mkForce [
-              "chacha20-poly1305@openssh.com"
-              "aes256-gcm@openssh.com"
-              "aes128-gcm@openssh.com"
-            ];
-            # Post-quantum hybrids first, as OpenSSH 10 itself prefers.
-            KexAlgorithms = lib.mkForce [
-              "mlkem768x25519-sha256"
-              "sntrup761x25519-sha512@openssh.com"
-              "curve25519-sha256"
-              "curve25519-sha256@libssh.org"
-            ];
-            Macs = lib.mkForce [
-              "hmac-sha2-512-etm@openssh.com"
-              "hmac-sha2-256-etm@openssh.com"
-            ];
           };
         };
       };

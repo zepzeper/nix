@@ -9,8 +9,12 @@ One setting picks the desktop: `zep.desktop.options.environment`.
 | `gnome` | colleagues who prefer it | GDM |
 
 `desktop.nix` holds the switch and what every desktop shares: PipeWire
-sound, bluetooth, fonts (including Liberation, so Word documents keep their
-layout). Each environment has its own file and only switches on when it is
+sound, bluetooth (on at boot, so a bluetooth keyboard works at the login
+screen), fonts (including Liberation, so Word documents keep their layout).
+
+niri also gets what its default config expects - bar, launcher, terminal,
+locker, notifications, media and brightness keys - and a polkit agent, which
+programs.niri does not start. Each environment has its own file and only switches on when it is
 the one chosen, so a machine can never run two.
 
 Profiles: workstations turn the desktop on; laptops default to `plasma`;
@@ -30,4 +34,5 @@ XWayland is the real fallback: an old X11 app just runs. The Plasma X11
 session is for the rare case where the whole Wayland session misbehaves on
 some hardware. KDE has announced Plasma will drop its X11 session (6.8), so
 expect that option to disappear. Turn it off per machine with
-`zep.desktop.options.x11Session = false;` to leave Xorg off entirely.
+`zep.desktop.options.x11Session = false;` to leave Xorg off entirely. (xterm,
+which Xorg would add to the start menu, is left out.)

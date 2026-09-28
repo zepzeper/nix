@@ -6,6 +6,7 @@
   flake.modules.nixos.profiles-workstation =
     { lib, ... }:
     {
+      key = "zep#profiles-workstation";
       imports = [ config.flake.modules.nixos.profiles-base ];
 
       zep = {

@@ -18,7 +18,7 @@
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
-    system.stateVersion = "26.11"; # the release it was installed with; never change
+    system.stateVersion = "26.11"; # `nixos-version` at install time (first two numbers); never change
 
     zep = {
       desktop.options.environment = "niri";
@@ -31,6 +31,6 @@
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
 
-    home-manager.users.zepzeper.home.stateVersion = "26.11";
+    home-manager.users.zepzeper.home.stateVersion = "26.11"; # same as above
   };
 }

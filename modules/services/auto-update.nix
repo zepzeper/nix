@@ -12,11 +12,18 @@
   # This trusts whatever lands on the branch, so protect it: require pull
   # requests or signed commits on main before employee laptops track it.
   flake.modules.nixos.services-auto-update =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      inputs,
+      hostConfig,
+      ...
+    }:
     let
       cfg = config.zep.autoUpdate;
     in
     {
+      key = "zep#services-auto-update";
       options.zep.autoUpdate = {
         enable = lib.mkEnableOption "automatic updates from this flake";
 
@@ -44,9 +51,23 @@
       };
 
       config = lib.mkIf cfg.enable {
+        # Without a committed flake.lock every machine would resolve all inputs
+        # to their newest commit on every run - untested, and different per
+        # machine. Refuse to build rather than let that happen.
+        assertions = [
+          {
+            assertion = builtins.pathExists "${inputs.self}/flake.lock";
+            message = "zep.autoUpdate needs a committed flake.lock: run `nix flake lock` and commit it.";
+          }
+        ];
+
         system.autoUpgrade = {
           enable = true;
-          flake = "${cfg.options.flake}#${config.networking.hostName}";
+          # The host's name in this flake, not networking.hostName, which a
+          # host may change.
+          flake = "${cfg.options.flake}#${hostConfig.name}";
+          # Flakes pin everything; there are no channels to update.
+          upgrade = false;
           inherit (cfg.options) dates allowReboot;
           randomizedDelaySec = "45min";
           persistent = true;
