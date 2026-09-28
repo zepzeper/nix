@@ -14,6 +14,9 @@
   flake.modules.nixos."hosts/desktop" = {
     imports = [
       config.flake.modules.nixos.profiles-workstation
+      # Me: dotfiles, Home Manager, and my secrets once this machine's host
+      # key is in secrets/hosts/ (see secrets/README.md).
+      config.flake.modules.nixos."users/zepzeper"
       # ./_desktop-hardware.nix
     ];
 
@@ -47,9 +50,6 @@
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
 
-    home-manager.users.zepzeper = {
-      imports = [ config.flake.modules.homeManager."users/zepzeper" ]; # git, dotfiles
-      home.stateVersion = "26.11"; # same as above
-    };
+    home-manager.users.zepzeper.home.stateVersion = "26.11"; # same as above
   };
 }

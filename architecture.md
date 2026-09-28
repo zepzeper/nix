@@ -22,7 +22,7 @@ host       one machine          one profile + hardware + its own settings
 ```
 
 `profiles-base` imports every block (found automatically: everything in
-`flake.modules.nixos` that is not a profile or a host), so a host can switch
+`flake.modules.nixos` that is not a profile, a host or a person), so a host can switch
 any block on without importing it itself. Importing a block never enables it.
 Home Manager blocks are handed to every Home Manager user the same way.
 

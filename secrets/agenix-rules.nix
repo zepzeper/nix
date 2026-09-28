@@ -1,5 +1,5 @@
 # Who can decrypt which secret. Read by the agenix command (run it in this
-# folder), not by the NixOS configuration.
+# folder or below), not by the NixOS configuration.
 #
 # Every secret is encrypted to me (my age key; its private half is
 # identity.age, locked with the passphrase in Bitwarden) and to the machines

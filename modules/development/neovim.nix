@@ -84,8 +84,8 @@
                 nodejs
                 python3
                 go
-                php
-                php.packages.composer
+                php85
+                php85.packages.composer
                 luarocks
                 # tree-sitter parsers (the tree-sitter CLI itself comes from Mason)
                 gcc

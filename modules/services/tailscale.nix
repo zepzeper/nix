@@ -4,18 +4,26 @@
   #
   # Logging in: once per machine, `sudo tailscale up` and open the link it
   # prints. Or, with options.authKey, the machine logs itself in with the
-  # auth key in secrets/tailscale-authkey.age (handy for servers). An auth key
-  # is only used for that first login; once logged in the machine stays in.
+  # auth key in secrets/tailscale-authkey.age (handy for servers). It then
+  # uses the key whenever it is logged out, also after its login expires, so
+  # the key has to stay valid (a reusable key; or switch key expiry off for
+  # the machine in the admin console and the option off after the first
+  # login). `tailscale` works without sudo for the (first) admin.
   #
   # DNS goes through systemd-resolved, which NetworkManager and Tailscale
   # both work with, so MagicDNS names (`ssh <machine>`) resolve without the
   # two fighting over /etc/resolv.conf.
   flake.modules.nixos.services-tailscale =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      secretFile,
+      ...
+    }:
     let
       cfg = config.zep.tailscale;
-      authKeyFile = ../../secrets/tailscale-authkey.age;
-      useAuthKey = cfg.options.authKey && builtins.pathExists authKeyFile;
+      authKeyFile = secretFile "tailscale-authkey";
+      useAuthKey = cfg.options.authKey && authKeyFile != null;
     in
     {
       key = "zep#services-tailscale";
@@ -36,6 +44,9 @@
           # it traffic falls back to Tailscale's relays.
           openFirewall = true;
           authKeyFile = lib.mkIf useAuthKey config.age.secrets.tailscale-authkey.path;
+          extraSetFlags = map (name: "--operator=${name}") (
+            lib.take 1 (lib.attrNames config.zep.users.options.admins)
+          );
         };
 
         age.secrets.tailscale-authkey = lib.mkIf useAuthKey { file = authKeyFile; };
