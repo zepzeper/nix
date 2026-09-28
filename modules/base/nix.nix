@@ -66,6 +66,11 @@
         # Every machine is managed from a git repository (this one).
         environment.systemPackages = [ pkgs.git ];
 
+        # nh: `nh os switch` builds, shows what changes, and switches. A host
+        # sets where its clone of this repository is (programs.nh.flake), so
+        # the path can be left out.
+        programs.nh.enable = true;
+
         nixpkgs = {
           config.allowUnfree = lib.mkDefault true;
 

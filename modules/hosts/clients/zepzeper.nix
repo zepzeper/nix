@@ -42,6 +42,9 @@
       ];
     };
 
+    # This repository's clone here: `nh os switch` without a path.
+    programs.nh.flake = "/home/zepzeper/personal/nix";
+
     home-manager.users.zepzeper = {
       imports = [ config.flake.modules.homeManager."users/zepzeper" ];
       home.stateVersion = "26.11";

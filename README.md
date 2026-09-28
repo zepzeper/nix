@@ -173,10 +173,11 @@ Commit and push the two files from `~/personal/nix` afterwards.
 ## Everyday use
 
 ```sh
-nix develop                  # nh, nvd, nix-tree
-
-# This machine:
+# This machine (nh is on every machine; the path can be left out where the
+# host sets programs.nh.flake, as zepzeper does):
 nh os switch .               # build, show the package diff, switch
+
+nix develop                  # nvd, nix-tree: look into generations and closures
 
 # Another machine (servers; they never update themselves):
 nixos-rebuild switch --flake .#<host> --target-host <host> --ask-sudo-password
