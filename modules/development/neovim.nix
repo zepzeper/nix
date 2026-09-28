@@ -1,5 +1,7 @@
+{ inputs, ... }:
 {
-  # Neovim, with its configuration kept in its own repository. Which one is
+  # Neovim nightly (from the `neovim-nightly` flake input, built from
+  # Neovim's main branch), with its configuration kept in its own repository. Which one is
   # personal: zepzeper/nvim is cloned to ~/personal/nvim and linked to
   # ~/.config/nvim by modules/users/zepzeper/.
   #
@@ -40,6 +42,7 @@
       config = lib.mkIf osConfig.zep.neovim.enable {
         programs.neovim = {
           enable = true;
+          package = inputs.neovim-nightly.packages.${pkgs.stdenv.hostPlatform.system}.default;
           defaultEditor = true;
           viAlias = true;
           vimAlias = true;

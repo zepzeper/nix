@@ -51,6 +51,16 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Neovim nightly, built from Neovim's main branch (nix-community keeps
+    # this updated daily). `nix flake update neovim-nightly` moves to the
+    # newest nightly; built against our nixpkgs, so an update compiles
+    # Neovim once (a few minutes).
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.flake-parts.follows = "flake-parts";
+    };
+
     # ThePrimeagen's tmux-sessionizer, a single script (not in nixpkgs; the
     # nixpkgs "tmux-sessionizer" is a different program).
     tmux-sessionizer = {
