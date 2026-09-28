@@ -50,6 +50,9 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
+        # A file Home Manager wants to manage that already exists is moved
+        # aside instead of failing the whole activation.
+        backupFileExtension = "hm-backup";
       };
     };
 }

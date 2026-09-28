@@ -26,7 +26,6 @@
               "nix-command"
               "flakes"
             ];
-            auto-optimise-store = lib.mkDefault true;
             # Admins in wheel can copy closures to this machine, which
             # `nixos-rebuild --target-host` needs.
             trusted-users = [
@@ -40,6 +39,10 @@
             dates = lib.mkDefault "weekly";
             options = "--delete-older-than ${toString cfg.options.keepGenerationsDays}d";
           };
+
+          # Deduplicate the store on a timer rather than during every build
+          # (auto-optimise-store), which slows builds down.
+          optimise.automatic = lib.mkDefault true;
 
           registry.nixpkgs.flake = inputs.nixpkgs;
           nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];

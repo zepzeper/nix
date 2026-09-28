@@ -33,7 +33,9 @@
         };
 
         environment.systemPackages = with pkgs; [
-          xwayland-satellite # X11 apps under niri
+          # X11 apps: niri starts xwayland-satellite on demand when it is on
+          # the PATH. niri has no X11 session of its own.
+          xwayland-satellite
           alacritty # Mod+T in the default config
           fuzzel # Mod+D in the default config
           swaylock # Super+Alt+L in the default config

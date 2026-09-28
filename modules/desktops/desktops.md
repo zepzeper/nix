@@ -15,3 +15,19 @@ the one chosen, so a machine can never run two.
 
 Profiles: workstations turn the desktop on; laptops default to `plasma`;
 servers force it off and are shell-only, whatever a host sets.
+
+## X11
+
+All three desktops are Wayland. X11 is covered in two ways:
+
+| | X11 apps (XWayland) | X11 session at login |
+| --- | --- | --- |
+| Plasma | yes (KWin, `programs.xwayland`) | yes, "Plasma (X11)", on by default (`options.x11Session`) |
+| GNOME | yes (built into mutter) | no - removed in GNOME 49 |
+| niri | yes (xwayland-satellite, started on demand) | no - niri is Wayland-only |
+
+XWayland is the real fallback: an old X11 app just runs. The Plasma X11
+session is for the rare case where the whole Wayland session misbehaves on
+some hardware. KDE has announced Plasma will drop its X11 session (6.8), so
+expect that option to disappear. Turn it off per machine with
+`zep.desktop.options.x11Session = false;` to leave Xorg off entirely.

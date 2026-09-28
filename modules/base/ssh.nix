@@ -33,7 +33,9 @@
               "aes256-gcm@openssh.com"
               "aes128-gcm@openssh.com"
             ];
+            # Post-quantum hybrids first, as OpenSSH 10 itself prefers.
             KexAlgorithms = lib.mkForce [
+              "mlkem768x25519-sha256"
               "sntrup761x25519-sha512@openssh.com"
               "curve25519-sha256"
               "curve25519-sha256@libssh.org"

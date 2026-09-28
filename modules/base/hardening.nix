@@ -32,12 +32,18 @@
           "fs.protected_hardlinks" = soft 1;
           "fs.protected_fifos" = soft 2;
           "fs.protected_regular" = soft 2;
-          # No ICMP redirects or source routing.
+          # No ICMP redirects or source routing. "default" covers interfaces
+          # that appear later (WiFi, VPN, docks), "all" the ones up at boot.
           "net.ipv4.conf.all.accept_redirects" = soft 0;
+          "net.ipv4.conf.default.accept_redirects" = soft 0;
           "net.ipv4.conf.all.send_redirects" = soft 0;
+          "net.ipv4.conf.default.send_redirects" = soft 0;
           "net.ipv4.conf.all.accept_source_route" = soft 0;
+          "net.ipv4.conf.default.accept_source_route" = soft 0;
           "net.ipv6.conf.all.accept_redirects" = soft 0;
+          "net.ipv6.conf.default.accept_redirects" = soft 0;
           "net.ipv6.conf.all.accept_source_route" = soft 0;
+          "net.ipv6.conf.default.accept_source_route" = soft 0;
           "net.ipv4.tcp_syncookies" = soft 1;
         };
       };
