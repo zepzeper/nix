@@ -5,9 +5,7 @@
   #
   # - Plasma by default, the easiest switch from Windows; a laptop can set
   #   zep.desktop.options.environment = "gnome" instead;
-  # - the disk is encrypted, forced: a lost laptop must not be a data breach.
-  #   A recovery key is generated at install, for when the passphrase is
-  #   forgotten - store it somewhere safe;
+  # - the disk is encrypted (as on every workstation);
   # - SSH does not listen on the network: laptops roam on networks nobody
   #   here controls, and they update themselves anyway;
   # - it updates itself from this repository, so you never have to reach it;
@@ -28,11 +26,6 @@
 
       zep = {
         desktop.options.environment = lib.mkDefault "plasma";
-
-        disk.options = {
-          encrypt = lib.mkForce true;
-          recoveryKey = lib.mkDefault true;
-        };
 
         ssh.options.openFirewall = lib.mkDefault false;
 

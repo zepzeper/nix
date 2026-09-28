@@ -6,8 +6,8 @@ every module has a key, but one is the convention).
 | Profile | Imports | Forces | Defaults |
 | --- | --- | --- | --- |
 | `profiles-base` | every block, automatically | nix, users, ssh, hardening | locale, boot, disk, hardware, networking on |
-| `profiles-workstation` | base | | NetworkManager, a desktop (the host picks which) |
-| `profiles-laptop` | workstation | stable channel, disk encryption, no automatic reboot | Plasma, recovery key, SSH closed to the network, auto-update on |
+| `profiles-workstation` | base | disk encryption | NetworkManager, a desktop (the host picks which), graphics drivers, recovery key |
+| `profiles-laptop` | workstation | stable channel, no automatic reboot | Plasma, SSH closed to the network, auto-update on |
 | `profiles-server` | base | stable channel, unencrypted disk, no desktop, no automatic updates, no audio, no bluetooth | networkd, wheel trusted for remote deploys, no fwupd, no docs |
 
 A new block is imported by `base.nix` automatically. Switch it on in the

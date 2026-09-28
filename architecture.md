@@ -36,7 +36,7 @@ the list of what a machine has across import lists.
 ### mkForce for mandatory, mkDefault for suggested
 What a machine type must have is forced in its profile, so a host cannot lose
 it by accident: SSH policy and the firewall on every machine; disk encryption
-on every laptop. Everything else is a default a host can override. A setting
+on every workstation and laptop. Everything else is a default a host can override. A setting
 that would break a machine or its security asserts at build time: no admin,
 no disk, an employee in an admin group, an encrypted server nobody can
 unlock, a laptop or server on unstable, auto-update without a lock file.
@@ -44,8 +44,8 @@ unlock, a laptop or server on unstable, auto-update without a lock file.
 ### Machine types are profiles, layered
 Employee laptops are workstations with stricter rules, so `profiles-laptop`
 imports `profiles-workstation` and adds to it. Servers share only the base.
-One place per rule: encryption is decided in the laptop profile, not on each
-laptop.
+One place per rule: encryption is decided in the workstation profile, not on
+each machine.
 
 ### No passwords in the repository
 Admins log in with SSH keys. People (employees) get an account without a

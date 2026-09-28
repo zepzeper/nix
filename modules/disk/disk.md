@@ -4,13 +4,13 @@
 
 ```
 ESP 1G vfat /boot
-[LUKS cryptroot]          options.encrypt (forced on laptops, refused on servers)
+[LUKS cryptroot]          options.encrypt (forced on workstations and laptops, refused on servers)
   BTRFS  @root /  @home /home  @nix /nix  @log /var/log  [@swap]
 ```
 
 - `options.device` is required and erased at install. Use a
   `/dev/disk/by-id/` path so it does not change between boots.
-- `options.recoveryKey` (on for laptops): disko enrolls a random recovery key
+- `options.recoveryKey` (on for workstations and laptops): disko enrolls a random recovery key
   at install and shows it once. Store it; it opens the disk when the
   passphrase is forgotten.
 - `options.swapSize`: a swap file on its own subvolume. Without it there is

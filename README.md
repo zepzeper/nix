@@ -48,8 +48,8 @@ configurations go.
 
 | Profile | For | Adds to base |
 | --- | --- | --- |
-| `profiles-workstation` | my desktop | NetworkManager, a desktop (niri on mine) |
-| `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), forced disk encryption with a recovery key, SSH closed to the network, daily auto-update that never reboots on its own. Stable only |
+| `profiles-workstation` | my desktop | NetworkManager, a desktop (niri on mine), graphics drivers, forced disk encryption with a recovery key |
+| `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), SSH closed to the network, daily auto-update that never reboots on its own. Stable only |
 | `profiles-server` | servers, ARM servers | shell only: no desktop, audio or bluetooth; systemd-networkd; unencrypted disk; no automatic updates, deployed by hand. Stable only |
 
 Every profile includes `profiles-base`: SSH for admins only and with keys

@@ -37,10 +37,8 @@
       #   }
       # '';
 
-      disk.options = {
-        device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
-        encrypt = true;
-      };
+      # Encrypted, with a recovery key (the workstation profile forces it).
+      disk.options.device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
 
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
