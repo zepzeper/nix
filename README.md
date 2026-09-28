@@ -36,8 +36,8 @@ modules/
   hardware/                  firmware, fwupd, graphics, zram
   networking/                NetworkManager or systemd-networkd
   services/                  auto-update
-  shell/                     zsh, the admins' shell on every machine
-  users/                     a person's own Home Manager settings (git identity)
+  shell/                     zsh and tmux (with tmux-sessionizer), on every machine
+  users/                     a person's own Home Manager settings and dotfiles (git, sessionizer, which Neovim config)
   hosts/
     profiles/                base, workstation, laptop, server
     clients/ laptops/ servers/   one file per machine (created with the first host)
@@ -136,13 +136,13 @@ nixos-enter --root /mnt -c 'passwd zepzeper'   # admin: needed for sudo
 nixos-enter --root /mnt -c 'passwd <person>'   # employee laptops: their account
 
 # 7. Keep this clone: the ISO forgets everything at reboot.
-mkdir -p /mnt/home/zepzeper && cp -a /root/nix /mnt/home/zepzeper/nix
-nixos-enter --root /mnt -c 'chown -R zepzeper:users /home/zepzeper/nix'
+mkdir -p /mnt/home/zepzeper/personal && cp -a /root/nix /mnt/home/zepzeper/personal/nix
+nixos-enter --root /mnt -c 'chown -R zepzeper:users /home/zepzeper/personal'
 reboot
 ```
 
 After the first boot, commit and push the host file and its hardware file
-from `~/nix` the same day - a laptop's first automatic update looks for them
+from `~/personal/nix` the same day - a laptop's first automatic update looks for them
 on GitHub.
 
 ## Installing an ARM server
@@ -164,11 +164,11 @@ nixos-generate-config --no-filesystems --show-hardware-config \
 git add -A
 nixos-rebuild switch --flake .#<name>
 passwd zepzeper
-cp -a /root/nix /home/zepzeper/nix && chown -R zepzeper:users /home/zepzeper/nix
+mkdir -p /home/zepzeper/personal && cp -a /root/nix /home/zepzeper/personal/nix && chown -R zepzeper:users /home/zepzeper/personal
 reboot
 ```
 
-Commit and push the two files from `~/nix` afterwards.
+Commit and push the two files from `~/personal/nix` afterwards.
 
 ## Everyday use
 

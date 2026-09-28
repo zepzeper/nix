@@ -72,8 +72,9 @@
           shell = pkgs.zsh;
         });
 
-        # Everything lives in /etc/zshrc. An (empty) ~/.zshrc keeps zsh's
-        # first-run wizard away; one that already exists is left alone.
+        # Everything lives in /etc/zshrc. A ~/.zshrc (empty unless you add
+        # something) keeps zsh's first-run wizard away; its contents are never
+        # touched, only its owner and mode are reset.
         systemd.tmpfiles.rules = map (
           name: "f ${config.users.users.${name}.home}/.zshrc 0644 ${name} users -"
         ) admins;

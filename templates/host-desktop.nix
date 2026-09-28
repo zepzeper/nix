@@ -24,6 +24,8 @@
 
     zep = {
       desktop.options.environment = "niri";
+      helium.enable = true; # browser
+      neovim.enable = true; # Neovim nightly; which config: zep.neovim.configRepo in users/<name>
 
       # The GPU. For NVIDIA, also the generation (see modules/hardware/graphics.nix):
       # "turing-or-newer" (RTX, GTX 16xx) or "pascal-or-maxwell" (GTX 9xx/10xx).
@@ -45,6 +47,9 @@
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
 
-    home-manager.users.zepzeper.home.stateVersion = "26.11"; # same as above
+    home-manager.users.zepzeper = {
+      imports = [ config.flake.modules.homeManager."users/zepzeper" ]; # git, dotfiles
+      home.stateVersion = "26.11"; # same as above
+    };
   };
 }

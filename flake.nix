@@ -4,8 +4,9 @@
   # Inputs only. Everything else lives in ./modules and is picked up by
   # import-tree, so adding a file is all it takes to add a module.
   #
-  # Rule: every input that has its own nixpkgs follows ours, and an input is
-  # only added once something uses it.
+  # Rule: every input that has its own nixpkgs follows ours (one exception,
+  # neovim-nightly, explained there), and an input is only added once
+  # something uses it.
   inputs = {
     # Two channels. Stable is the default and what employee laptops and
     # servers must run; unstable is for my own machines. A host picks one
@@ -52,12 +53,13 @@
     };
 
     # Neovim nightly, built from Neovim's main branch (nix-community keeps
-    # this updated daily). `nix flake update neovim-nightly` moves to the
-    # newest nightly; built against our nixpkgs, so an update compiles
-    # Neovim once (a few minutes).
+    # this updated daily; `nix flake update neovim-nightly` moves to the
+    # newest). The one input that keeps its own nixpkgs, on purpose: then
+    # the build matches nix-community's binary cache (added on machines with
+    # Neovim) and an update downloads Neovim instead of compiling it and
+    # tree-sitter from source.
     neovim-nightly = {
       url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.flake-parts.follows = "flake-parts";
     };
 

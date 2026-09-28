@@ -76,13 +76,17 @@
           # What cheat's windows run: those start in tmux's environment, not
           # the script's, so these have to be on the system PATH.
           pkgs.curl
-          pkgs.w3m
+          pkgs.w3m-batch
           pkgs.less
         ];
 
-        programs.zsh.interactiveShellInit = lib.mkIf config.zep.zsh.enable ''
-          bindkey -s '^f' "tmux-sessionizer\n"
-        '';
+        # After oh-my-zsh, which picks the emacs keymap: bound earlier, Ctrl+F
+        # would land in the vi keymap zsh starts in when EDITOR is nvim.
+        programs.zsh.interactiveShellInit = lib.mkIf config.zep.zsh.enable (
+          lib.mkAfter ''
+            bindkey -M emacs -s '^f' "tmux-sessionizer\n"
+          ''
+        );
       };
     };
 }

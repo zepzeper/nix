@@ -2,7 +2,7 @@
 # disk with a recovery key (forced by the workstation profile). Its hardware
 # configuration is _zepzeper-hardware.nix, next to this file (generated at
 # install with `nixos-generate-config --no-filesystems --show-hardware-config`).
-{ config, lib, ... }:
+{ config, ... }:
 {
   # My own machine: the unstable channel.
   zep.hosts.zepzeper.channel = "unstable";
@@ -10,8 +10,8 @@
   flake.modules.nixos."hosts/zepzeper" = {
     imports = [
       config.flake.modules.nixos.profiles-workstation
-    ]
-    ++ lib.optional (builtins.pathExists ./_zepzeper-hardware.nix) ./_zepzeper-hardware.nix;
+      ./_zepzeper-hardware.nix
+    ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
     # The release this machine was first installed with - unstable, so 26.11
