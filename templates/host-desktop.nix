@@ -7,6 +7,10 @@
 # "_" are not loaded automatically, only through the import below.
 { config, ... }:
 {
+  # My own machine: the unstable channel. Laptops and servers must stay on
+  # stable (their profiles refuse unstable).
+  zep.hosts.desktop.channel = "unstable";
+
   flake.modules.nixos."hosts/desktop" = {
     imports = [
       config.flake.modules.nixos.profiles-workstation
@@ -14,7 +18,7 @@
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
-    system.stateVersion = "26.05"; # the release it was installed with; never change
+    system.stateVersion = "26.11"; # the release it was installed with; never change
 
     zep = {
       desktop.options.environment = "niri";
@@ -27,6 +31,6 @@
       users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
 
-    home-manager.users.zepzeper.home.stateVersion = "26.05";
+    home-manager.users.zepzeper.home.stateVersion = "26.11";
   };
 }

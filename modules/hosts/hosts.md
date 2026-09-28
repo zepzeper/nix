@@ -14,6 +14,8 @@ which becomes `nixosConfigurations.<name>`.
    `host-laptop.nix`, `host-server.nix`) into the right folder and rename.
 2. Fill in every `CHANGE-ME`: the disk (`ls -l /dev/disk/by-id/`) and the
    admin SSH keys.
-3. Generate its hardware configuration on the machine as
+3. Pick its channel: stable is the default; for one of my own machines add
+   `zep.hosts.<name>.channel = "unstable";` next to the host module.
+4. Generate its hardware configuration on the machine as
    `_<name>-hardware.nix` next to the host file and import it.
-4. `nix flake check`, then install (see the README).
+5. `nix flake check`, then install (see the README).

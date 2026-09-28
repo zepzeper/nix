@@ -41,8 +41,21 @@ configurations go.
 | Profile | For | Adds to base |
 | --- | --- | --- |
 | `profiles-workstation` | my desktop | NetworkManager, a desktop (niri on mine) |
-| `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), forced disk encryption, daily auto-update, never reboots on its own |
-| `profiles-server` | servers, the Pi | shell only: no desktop, audio or bluetooth; systemd-networkd, auto-update with reboots between 03:00 and 05:00 |
+| `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), forced disk encryption, daily auto-update, never reboots on its own. Stable only |
+| `profiles-server` | servers, the Pi | shell only: no desktop, audio or bluetooth; systemd-networkd; no automatic updates, deployed by hand. Stable only |
+
+## Channels
+
+| Channel | nixpkgs | For |
+| --- | --- | --- |
+| `stable` (default) | nixos-26.05 | employee laptops and servers (enforced by their profiles) |
+| `unstable` | nixos-unstable | my own machines |
+
+A host picks its channel next to its module with
+`zep.hosts.<name>.channel = "unstable";`. On a stable machine a single newer
+package is still available as `pkgs.unstable.<name>`. When a new NixOS
+release comes out, bump `nixpkgs` and `home-manager` in `flake.nix`
+together.
 
 Every profile includes `profiles-base`: key-only SSH, locked root, at least
 one admin with an SSH key (a build error otherwise), firewall, sudo for wheel
@@ -105,5 +118,8 @@ nh os switch . -H <host>     # a specific host
 nixos-rebuild switch --flake .#<host> --target-host <host> --sudo   # remote
 ```
 
-Laptops and servers pull `main` from GitHub by themselves, so a push to
-`main` reaches them within a day. Protect the branch accordingly.
+Employee laptops pull `main` from GitHub by themselves, so a push to `main`
+reaches them within a day; protect the branch accordingly. They get exactly
+what `flake.lock` pins, so security fixes reach them when the lock is bumped
+(`nix flake update`) and pushed. Servers never update on their own: deploy
+to them with the `--target-host` command above.

@@ -1,8 +1,11 @@
 { inputs, ... }:
 {
-  # Nix itself: flakes, garbage collection, and the registry pinned to the
-  # nixpkgs this flake is built from, so `nix shell nixpkgs#foo` on a machine
-  # uses the same nixpkgs as its system.
+  # Nix itself: flakes, garbage collection, and `pkgs.unstable` for the odd
+  # package a stable machine needs newer.
+  #
+  # The registry and NIX_PATH are not set here: nixpkgs' own
+  # nixpkgs.flake.setFlakeRegistry/setNixPath pin them to whichever channel
+  # the host was built from, so `nix shell nixpkgs#foo` matches the system.
   flake.modules.nixos.base-nix =
     { config, lib, ... }:
     let
@@ -10,7 +13,7 @@
     in
     {
       options.zep.nix = {
-        enable = lib.mkEnableOption "Nix settings, garbage collection and registry pinning";
+        enable = lib.mkEnableOption "Nix settings and garbage collection";
 
         options.keepGenerationsDays = lib.mkOption {
           type = lib.types.ints.positive;
@@ -44,12 +47,23 @@
           # (auto-optimise-store), which slows builds down.
           optimise.automatic = lib.mkDefault true;
 
-          registry.nixpkgs.flake = inputs.nixpkgs;
-          nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
           channel.enable = false;
         };
 
-        nixpkgs.config.allowUnfree = lib.mkDefault true;
+        nixpkgs = {
+          config.allowUnfree = lib.mkDefault true;
+
+          # environment.systemPackages = [ pkgs.unstable.<name> ];
+          # On an unstable host this is the same nixpkgs again.
+          overlays = [
+            (final: _: {
+              unstable = import inputs.nixpkgs-unstable {
+                inherit (final.stdenv.hostPlatform) system;
+                inherit (final) config;
+              };
+            })
+          ];
+        };
       };
     };
 }

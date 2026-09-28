@@ -3,23 +3,28 @@ let
   inherit (config.flake) nixosConfigurations;
   inherit (config.flake.modules) nixos;
 
-  # A stand-in machine per profile (and per desktop), so the base is checked
-  # before any real machine exists: every combination has to produce a
-  # system that evaluates, assertions included.
+  # A stand-in machine per profile (and per desktop, on the channel that
+  # profile runs), so the base is checked before any real machine exists:
+  # every combination has to produce a system that evaluates, assertions
+  # included.
   variants = {
     workstation-niri = {
       profile = "workstation";
+      channel = "unstable";
       settings.zep.desktop.options.environment = "niri";
     };
     laptop-plasma = {
+      channel = "stable";
       profile = "laptop";
       settings = { };
     };
     laptop-gnome = {
+      channel = "stable";
       profile = "laptop";
       settings.zep.desktop.options.environment = "gnome";
     };
     server = {
+      channel = "stable";
       profile = "server";
       settings = { };
     };
@@ -29,7 +34,7 @@ let
     system:
     lib.mapAttrs (
       name: variant:
-      config.flake.lib.mkHost "check-${name}" {
+      config.flake.lib.mkHost "check-${name}" variant.channel {
         imports = [
           nixos."profiles-${variant.profile}"
           variant.settings

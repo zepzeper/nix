@@ -3,6 +3,12 @@
   # GitHub on a schedule, build it, and switch. Push to main and every machine
   # with this on follows within a day - no need to reach each laptop.
   #
+  # On for employee laptops. Off (forced) for servers, which only change when
+  # an admin deploys to them.
+  #
+  # Inputs are pinned by flake.lock, so "an update" means whatever the lock
+  # says: security fixes reach machines when the lock is bumped and pushed.
+  #
   # This trusts whatever lands on the branch, so protect it: require pull
   # requests or signed commits on main before employee laptops track it.
   flake.modules.nixos.services-auto-update =
@@ -29,8 +35,9 @@
             type = lib.types.bool;
             default = false;
             description = ''
-              Reboot when an update needs it (new kernel, initrd). Fine for
-              servers inside rebootWindow; wrong for someone's laptop.
+              Reboot when an update needs it (new kernel, initrd), inside
+              03:00-05:00. Wrong for someone's laptop, so the laptop profile
+              forces it off.
             '';
           };
         };

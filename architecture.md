@@ -48,10 +48,20 @@ Admins log in with SSH keys. People (employees) get an account without a
 password, and the password is set on the machine at handover. Users are
 mutable, so it survives rebuilds.
 
-### Machines update themselves from main
-Laptops and servers pull this flake on a schedule and switch
-(`system.autoUpgrade`). Nobody has to reach a laptop to update it. The
-cost is that `main` is trusted by every machine, so it must be protected.
+### Stable for machines others depend on, unstable for mine
+Two nixpkgs inputs, each with its matching Home Manager branch. A host picks
+one with `zep.hosts.<name>.channel` (default stable). The choice lives at the
+flake level because it decides which nixpkgs evaluates the host at all. The
+laptop and server profiles assert stable, so an employee laptop or a server
+cannot end up on unstable by accident. `pkgs.unstable` covers the odd package
+a stable machine needs newer.
+
+### Laptops update themselves; servers are deployed by hand
+Employee laptops pull this flake on a schedule and switch
+(`system.autoUpgrade`), so nobody has to reach a laptop; the cost is that
+`main` is trusted by every laptop and must be protected. Servers never change
+on their own: an admin deploys with `nixos-rebuild --target-host`. In both
+cases `flake.lock` decides what "latest" means.
 
 ### Home Manager as a NixOS module
 The system and the user environment build, switch and roll back together.

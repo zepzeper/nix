@@ -1,8 +1,9 @@
 # Template: a server. Copy to modules/hosts/servers/<name>.nix and replace
 # "server" with the machine's name.
 #
-# The server profile uses systemd-networkd (DHCP on wired ports), updates
-# itself and may reboot between 03:00 and 05:00.
+# The server profile: shell only, stable channel, systemd-networkd (DHCP on
+# wired ports), and no automatic updates. Deploy changes from your machine:
+#   nixos-rebuild switch --flake .#server --target-host server --sudo
 { config, ... }:
 {
   flake.modules.nixos."hosts/server" = {

@@ -1,8 +1,8 @@
 # Template: an employee laptop. Copy to modules/hosts/laptops/<name>.nix and
 # replace "laptop-anna" and "anna" throughout.
 #
-# The laptop profile forces disk encryption and turns on automatic updates
-# from this repository. The employee's account has no password in here: set
+# The laptop profile runs the stable channel, forces disk encryption and
+# turns on automatic updates from this repository. The employee's account has no password in here: set
 # it with `passwd anna` before handing the laptop over.
 { config, ... }:
 {
