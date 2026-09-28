@@ -10,6 +10,7 @@
     {
       config,
       lib,
+      pkgs,
       hostConfig,
       ...
     }:
@@ -61,6 +62,9 @@
 
           channel.enable = false;
         };
+
+        # Every machine is managed from a git repository (this one).
+        environment.systemPackages = [ pkgs.git ];
 
         nixpkgs = {
           config.allowUnfree = lib.mkDefault true;
