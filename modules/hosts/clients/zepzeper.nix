@@ -29,10 +29,9 @@
         steam.enable = true;
         localsend.enable = true;
 
-        tailscale = {
-          enable = true;
-          options.authKey = true;
-        };
+        # Logged in once by hand (`tailscale up`); the auth key secret is
+        # for servers.
+        tailscale.enable = true;
 
         graphics.options = {
           gpu = "nvidia";
