@@ -10,7 +10,9 @@
   #   here controls, and they update themselves anyway;
   # - it updates itself from this repository, so you never have to reach it;
   #   it never reboots on its own, the person decides when;
-  # - it runs the stable channel, never unstable: someone else depends on it.
+  # - it runs the stable channel, never unstable: someone else depends on it;
+  # - what a colleague needs on day one: Firefox, LibreOffice (Dutch
+  #   spelling), printing and scanning, and the work VPN (OpenVPN).
   flake.modules.nixos.profiles-laptop =
     { lib, hostConfig, ... }:
     {
@@ -28,6 +30,11 @@
         desktop.options.environment = lib.mkDefault "plasma";
 
         ssh.options.openFirewall = lib.mkDefault false;
+
+        firefox.enable = lib.mkDefault true;
+        office.enable = lib.mkDefault true;
+        printing.enable = lib.mkDefault true;
+        networking.options.openvpn = lib.mkDefault true;
 
         autoUpdate = {
           enable = lib.mkDefault true;

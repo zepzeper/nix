@@ -1,0 +1,37 @@
+# Every Monday: update flake.lock (every input: both nixpkgs channels, Home
+# Manager, Neovim nightly, Helium, ...) and open a pull request with what
+# changed. The check workflow tests the pull request; merging it is what
+# ships the updates, security fixes included, to every machine. Employee
+# laptops pick them up within a day.
+#
+# Setup, once (Settings of the repository):
+# - Secrets and variables -> Actions -> New repository secret
+#   FLAKE_UPDATE_TOKEN: a fine-grained personal access token for this
+#   repository only, with "Contents" and "Pull requests" read and write.
+#   Pull requests opened with the default token do not start other
+#   workflows, so the check would never run on them.
+# - Without that secret it still works, with the default token, as long as
+#   Actions -> General -> "Allow GitHub Actions to create and approve pull
+#   requests" is on. Close and reopen the pull request to run the check.
+#
+# Run it by hand: Actions -> update-inputs -> Run workflow.
+name: update-inputs
+on:
+  schedule:
+    - cron: "17 4 * * 1" # Mondays 04:17 UTC
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: DeterminateSystems/update-flake-lock@v29
+        with:
+          token: ${{ secrets.FLAKE_UPDATE_TOKEN || github.token }}
+          branch: update-inputs
+          commit-msg: "Update inputs"
+          pr-title: "Update inputs"

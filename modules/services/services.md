@@ -14,3 +14,8 @@ ship security fixes.
 in once with `sudo tailscale up`, or let it log itself in with the auth key
 secret (`options.authKey`, see `secrets/README.md`). DNS goes through
 systemd-resolved so MagicDNS names work next to NetworkManager.
+
+`services-printing` (`zep.printing`, on for laptops): printing and scanning.
+Network printers and scanners are found by themselves (Avahi, driverless
+IPP and eSCL); USB ones through ipp-usb. Admins and people can print and
+scan without sudo.

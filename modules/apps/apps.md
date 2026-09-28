@@ -10,3 +10,5 @@ plain apps are listed by the host itself in `environment.systemPackages`.
 | `steam.nix` | `zep.steam.enable` | Steam, with 32-bit graphics drivers and controller support |
 | `localsend.nix` | `zep.localsend.enable` | LocalSend, with its port (53317) open to receive files |
 | `spotify.nix` | `zep.spotify.enable` | Spotify themed with Spicetify (Comfy theme), from the `spicetify-nix` flake input |
+| `firefox.nix` | `zep.firefox.enable` (on for laptops) | Firefox in Dutch and English, telemetry and studies off |
+| `office.nix` | `zep.office.enable` (on for laptops) | LibreOffice (still branch; Qt on Plasma) with Dutch and English spelling and Dutch hyphenation |

@@ -14,8 +14,8 @@
   flake.modules.nixos."hosts/desktop" = {
     imports = [
       config.flake.modules.nixos.profiles-workstation
-      # Me: dotfiles, Home Manager, and my secrets once this machine's host
-      # key is in secrets/hosts/ (see secrets/README.md).
+      # Me as admin (SSH keys from modules/users/zepzeper/authorized_keys),
+      # with my Home Manager setup and secrets.
       config.flake.modules.nixos."users/zepzeper"
       # ./_desktop-hardware.nix
     ];
@@ -46,10 +46,6 @@
 
       # Encrypted, with a recovery key (the workstation profile forces it).
       disk.options.device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
-
-      users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
-
-    home-manager.users.zepzeper.home.stateVersion = "26.11"; # same as above
   };
 }

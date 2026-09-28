@@ -47,10 +47,6 @@
         # '';
 
         disk.options.device = "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_1TB_S5H9NS0NB56647A";
-
-        users.options.admins.zepzeper.sshKeys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDb3F0fLHesNqOe3PTkPHfvuLnSjCz+8jP+wBa41SMcp zepzeper@zepzeper"
-        ];
       };
 
       # This repository's clone here: `nh os switch` without a path.
@@ -58,10 +54,9 @@
 
       environment.systemPackages = with pkgs; [
         vlc
+        iptvnator
         bitwarden-desktop
         gimp
       ];
-
-      home-manager.users.zepzeper.home.stateVersion = "26.11";
     };
 }

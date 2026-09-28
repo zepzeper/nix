@@ -7,6 +7,7 @@
         packages = with pkgs; [
           nvd # compare two generations
           nix-tree # see what is in a closure
+          nixos-anywhere # install a server over SSH (README)
         ];
       };
     };

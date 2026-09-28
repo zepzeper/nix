@@ -13,8 +13,9 @@ nix flake check    # formatting, lints, and every host and variant evaluates
 ```
 
 `flake.lock` pins every input and must stay committed: laptops update
-themselves from GitHub and refuse to build without it. Update the pins with
-`nix flake update`, check, commit and push.
+themselves from GitHub and refuse to build without it. Every Monday the
+`update-inputs` workflow updates it and opens a pull request (setup: the
+comment at the top of `.github/workflows/update-inputs.yml`).
 
 Then protect `main` on GitHub (Settings -> Branches): require pull requests
 and the `check` workflow (`.github/workflows/check.yml`, which runs
@@ -103,49 +104,102 @@ together.
 
 See [architecture.md](architecture.md) for the reasoning.
 
-## Installing a machine (desktop, laptop, server)
+## Installing a machine
 
-Boot the NixOS installer ISO in **UEFI mode** (not legacy/CSM) and get it
-online (wired, or `nmtui` for WiFi). Then:
+### The installer
+
+Any NixOS minimal ISO works; my own is quicker, because it starts SSH with
+my keys (`modules/users/zepzeper/authorized_keys`) and has flakes and git:
+
+```sh
+nix build .#installer-iso      # result/iso/zep-installer-x86_64-linux.iso
+sudo dd if=result/iso/zep-installer-x86_64-linux.iso of=/dev/sdX bs=4M conv=fsync oflag=direct status=progress
+```
+
+Boot it in **UEFI mode** (not legacy/CSM, Secure Boot off) and get it online
+(wired, or `nmtui` for WiFi). `ip -brief address` shows its address; from
+the desktop `ssh root@<address>` then gets you in.
+
+### The host file
+
+Copy the template (`templates/host-desktop.nix`, `host-laptop.nix` or
+`host-server.nix`) to `modules/hosts/<clients|laptops|servers>/<name>.nix`,
+rename it, fill in every CHANGE-ME, and uncomment the hardware import. The
+disk, as seen on the machine: `ls -l /dev/disk/by-id/` (the whole disk, not
+a `-part`; the NVMe or SSD it should run from). Push it only once the
+machine is installed: until its hardware file exists it does not build.
+
+### Desktops and laptops (encrypted): at the machine
+
+Also over SSH from the desktop into the installer; disko needs someone to
+type the disk passphrase either way.
 
 ```sh
 sudo -i
-git clone https://github.com/zepzeper/nix && cd nix
+git clone https://github.com/zepzeper/nix && cd nix      # plus the new host file
 
-# 1. The host file. If it is not in the repository yet, copy the template
-#    now (templates/host-desktop.nix, host-laptop.nix, host-server.nix)
-#    and fill in every CHANGE-ME. The disk:
-ls -l /dev/disk/by-id/
-
-# 2. Hardware configuration, next to the host file; uncomment its import.
+# 1. Hardware configuration, next to the host file.
 nixos-generate-config --no-filesystems --show-hardware-config \
   > modules/hosts/<type>/_<name>-hardware.nix
 
-# 3. Flakes only see files git knows about.
+# 2. Flakes only see files git knows about.
 git add -A
 
-# 4. Partition, format and mount - ERASES zep.disk.options.device.
-#    Laptops: type the disk passphrase twice, then write down the recovery
-#    key disko shows (password manager) before pressing Enter.
+# 3. Partition, format and mount - ERASES zep.disk.options.device.
+#    Type the disk passphrase twice, then write down the recovery key disko
+#    shows (password manager) before pressing Enter.
 nix --extra-experimental-features "nix-command flakes" \
   run --inputs-from . disko -- --mode destroy,format,mount --flake .#<name>
 
-# 5. Install.
+# 4. Install.
 nixos-install --flake .#<name> --no-root-passwd --no-channel-copy
 
-# 6. Passwords live on the machine, never in this repository.
+# 5. Passwords live on the machine, never in this repository.
 nixos-enter --root /mnt -c 'passwd zepzeper'   # admin: needed for sudo
 nixos-enter --root /mnt -c 'passwd <person>'   # employee laptops: their account
 
-# 7. Keep this clone: the ISO forgets everything at reboot.
+# 6. Keep this clone: the installer forgets everything at reboot.
 mkdir -p /mnt/home/zepzeper/personal && cp -a /root/nix /mnt/home/zepzeper/personal/nix
 nixos-enter --root /mnt -c 'chown -R zepzeper:users /home/zepzeper/personal'
 reboot
 ```
 
 After the first boot, commit and push the host file and its hardware file
-from `~/personal/nix` the same day - a laptop's first automatic update looks for them
-on GitHub.
+from `~/personal/nix` the same day: a laptop's first automatic update looks
+for them on GitHub.
+
+### Servers (unencrypted): from the desktop
+
+With [nixos-anywhere](https://github.com/nix-community/nixos-anywhere) (in
+`nix develop`), from `~/personal/nix` on the desktop, with the server booted
+into the installer. It generates the hardware file, partitions and
+installs, all over SSH:
+
+```sh
+nix develop
+nixos-anywhere --flake .#<name> --target-host root@<address> --no-reboot \
+  --generate-hardware-config nixos-generate-config modules/hosts/servers/_<name>-hardware.nix
+
+# My password (for sudo), set before the first boot, then reboot.
+ssh -t root@<address> "nixos-enter --root /mnt -c 'passwd zepzeper'"
+ssh root@<address> reboot
+
+git add -A && git commit -m "Add <name>" && git push
+```
+
+Afterwards the server is deployed from the desktop (see Everyday use).
+
+### Secrets on a new machine
+
+A machine decrypts its secrets with its SSH host key, which only exists
+after the install. Add it, and re-encrypt what the machine needs
+(`secrets/README.md`):
+
+```sh
+ssh <name> cat /etc/ssh/ssh_host_ed25519_key.pub > secrets/hosts/<name>.pub
+# list <name> on its secrets in secrets/agenix-rules.nix, then:
+cd secrets && agenix -r -i identity.age && cd .. && git add -A && git commit -m "<name>: secrets"
+```
 
 ## Installing an ARM server
 
@@ -188,7 +242,9 @@ nh os build . -H <host>      # only build it, e.g. to check a change
 
 Employee laptops pull `main` from GitHub by themselves, so a push to `main`
 reaches them within a day. They get exactly what `flake.lock` pins, so
-security fixes reach them when the lock is updated and pushed:
+security fixes reach them when the lock is updated: merge Monday's "Update
+inputs" pull request once its check is green (then `nh os switch` here, and
+deploy the servers). By hand, any time:
 
 ```sh
 nix flake update && nix flake check && git commit -am "Update inputs" && git push

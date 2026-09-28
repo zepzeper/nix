@@ -12,6 +12,9 @@
   flake.modules.nixos."hosts/server-arm" = {
     imports = [
       config.flake.modules.nixos.profiles-server
+      # Me as admin (SSH keys from modules/users/zepzeper/authorized_keys),
+      # with my Home Manager setup and secrets.
+      config.flake.modules.nixos."users/zepzeper"
       # ./_server-arm-hardware.nix
     ];
 
@@ -21,8 +24,6 @@
     zep = {
       boot.options.loader = "extlinux";
       disk.enable = false;
-
-      users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
 
     # The SD image's root filesystem (its label is set by the image builder).

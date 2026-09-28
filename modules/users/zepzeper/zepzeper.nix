@@ -1,6 +1,12 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   inherit (config.flake.modules) homeManager;
+
+  # The SSH keys that may log in as me: one per machine I work from, in
+  # authorized_keys next to this file (also used by the installer image).
+  sshKeys = lib.filter (line: line != "" && !lib.hasPrefix "#" line) (
+    lib.splitString "\n" (builtins.readFile ./authorized_keys)
+  );
 in
 {
   # Me, the same on every machine I use. My dotfiles sit next to this file. A
@@ -10,8 +16,9 @@ in
   #
   # Not blocks: never handed to other machines or users.
 
-  # System half: my Home Manager setup, and my secrets on this machine (each
-  # once it exists for this machine, see secrets/README.md).
+  # System half: me as an admin (wheel, my SSH keys), my Home Manager setup,
+  # and my secrets on this machine (each once it exists for this machine,
+  # see secrets/README.md).
   flake.modules.nixos."users/zepzeper" =
     {
       config,
@@ -30,7 +37,13 @@ in
     {
       key = "zep#users-zepzeper";
 
-      home-manager.users.zepzeper.imports = [ homeManager."users/zepzeper" ];
+      zep.users.options.admins.zepzeper.sshKeys = sshKeys;
+
+      home-manager.users.zepzeper = {
+        imports = [ homeManager."users/zepzeper" ];
+        # The release the machine was installed with, like system.stateVersion.
+        home.stateVersion = lib.mkDefault config.system.stateVersion;
+      };
 
       age.secrets = {
         # The PHP language server's licence (linked into ~ by the Home

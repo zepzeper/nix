@@ -8,7 +8,12 @@
   #                    systemd.network.networks."10-..." entry, which wins
   #                    because networkd uses the first match by name.
   flake.modules.nixos.networking =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.zep.networking;
     in
@@ -24,12 +29,20 @@
           ];
           default = "networkmanager";
         };
+
+        # A VPN profile (an .ovpn file, or certificates) can then be
+        # imported in the network settings, or with
+        # `nmcli connection import type openvpn file <profile>.ovpn`.
+        options.openvpn = lib.mkEnableOption "OpenVPN profiles in NetworkManager";
       };
 
       config = lib.mkIf cfg.enable (
         lib.mkMerge [
           (lib.mkIf (cfg.options.mode == "networkmanager") {
-            networking.networkmanager.enable = true;
+            networking.networkmanager = {
+              enable = true;
+              plugins = lib.optional cfg.options.openvpn pkgs.networkmanager-openvpn;
+            };
             # Admins and people can manage connections without sudo.
             users.users = lib.mkIf config.zep.users.enable (
               lib.mapAttrs (_: _: { extraGroups = [ "networkmanager" ]; }) (

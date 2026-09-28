@@ -9,6 +9,9 @@
   flake.modules.nixos."hosts/laptop-anna" = {
     imports = [
       config.flake.modules.nixos.profiles-laptop
+      # Me as admin (SSH keys from modules/users/zepzeper/authorized_keys),
+      # with my Home Manager setup and secrets.
+      config.flake.modules.nixos."users/zepzeper"
       # ./_laptop-anna-hardware.nix
     ];
 
@@ -23,10 +26,7 @@
       # Plasma unless this colleague prefers GNOME:
       # desktop.options.environment = "gnome";
 
-      users.options = {
-        admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
-        people.anna.description = "Anna";
-      };
+      users.options.people.anna.description = "Anna";
     };
   };
 }

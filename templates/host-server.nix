@@ -11,6 +11,9 @@
   flake.modules.nixos."hosts/server" = {
     imports = [
       config.flake.modules.nixos.profiles-server
+      # Me as admin (SSH keys from modules/users/zepzeper/authorized_keys),
+      # with my Home Manager setup and secrets.
+      config.flake.modules.nixos."users/zepzeper"
       # ./_server-hardware.nix
     ];
 
@@ -19,8 +22,6 @@
 
     zep = {
       disk.options.device = "/dev/disk/by-id/CHANGE-ME";
-
-      users.options.admins.zepzeper.sshKeys = [ "ssh-ed25519 AAAA... CHANGE-ME" ];
     };
   };
 }
