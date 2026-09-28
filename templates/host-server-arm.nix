@@ -1,18 +1,18 @@
-# Template: a Raspberry Pi 4 server. Copy to modules/hosts/servers/<name>.nix
-# and replace "pi" with the machine's name.
+# Template: an ARM server that boots from an SD card. Copy to
+# modules/hosts/servers/<name>.nix and replace "server-arm" with its name.
 #
-# Pi 4 only: nixpkgs has U-Boot and device trees for the Pi 3 and 4, not the
-# Pi 5 (see the nixos-raspberrypi project for that).
+# Supported boards: those nixpkgs has U-Boot and device trees for - the
+# BCM2711 and BCM2837 SoCs (64-bit), not BCM2712.
 #
-# No disko here: the Pi is installed from the NixOS aarch64 SD image, and
-# keeps that image's partitions (see "Installing a Raspberry Pi" in the
+# No disko: the machine is installed from the NixOS aarch64 SD image and
+# keeps that image's partitions (see "Installing an ARM server" in the
 # README). It boots through U-Boot, so extlinux instead of systemd-boot.
 { config, ... }:
 {
-  flake.modules.nixos."hosts/pi" = {
+  flake.modules.nixos."hosts/server-arm" = {
     imports = [
       config.flake.modules.nixos.profiles-server
-      # ./_pi-hardware.nix
+      # ./_server-arm-hardware.nix
     ];
 
     nixpkgs.hostPlatform = "aarch64-linux";
@@ -32,7 +32,7 @@
     };
 
     # The SD image boots with every hardware module available; a configured
-    # system only gets what is listed. These are the Pi 4's PCIe (USB 3
+    # system only gets what is listed. These are the board's PCIe (USB 3
     # controller), its USB firmware loader, USB storage and keyboards, and
     # the GPU - without them a USB keyboard or USB SSD is dead at boot.
     boot.initrd.availableKernelModules = [

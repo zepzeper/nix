@@ -17,5 +17,5 @@ ESP 1G vfat /boot
   no hibernation (zram covers memory pressure).
 - The passphrase prompt at boot uses the keyboard layout of `zep.locale`.
 
-The Raspberry Pi does not use this block (`zep.disk.enable = false`): it keeps
+An ARM server does not use this block (`zep.disk.enable = false`): it keeps
 the SD image's partitions.

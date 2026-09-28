@@ -1,7 +1,6 @@
 {
   # Boot loader. systemd-boot for UEFI machines (desktop, laptops, most
-  # servers); extlinux for boards like the Raspberry Pi that boot through
-  # U-Boot.
+  # servers); extlinux for ARM servers that boot through U-Boot.
   flake.modules.nixos.boot-loader =
     { config, lib, ... }:
     let

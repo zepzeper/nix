@@ -5,7 +5,7 @@
 # wired ports), unencrypted disk, and no automatic updates. Deploy changes
 # from your own machine:
 #   nixos-rebuild switch --flake .#server --target-host server --ask-sudo-password
-# For a Raspberry Pi use templates/host-pi.nix instead.
+# For an ARM server booting from an SD card use templates/host-server-arm.nix.
 { config, ... }:
 {
   flake.modules.nixos."hosts/server" = {

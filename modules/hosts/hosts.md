@@ -6,12 +6,13 @@ which becomes `nixosConfigurations.<name>`.
 - `profiles/` - machine types a host imports (see `profiles/profiles.md`).
 - `clients/` - my own machines (desktop).
 - `laptops/` - employee laptops.
-- `servers/` - ds10u, the Pi.
+- `servers/` - servers, including ARM servers.
 
 ## Adding a machine
 
 1. Copy the matching template from `templates/` (`host-desktop.nix`,
-   `host-laptop.nix`, `host-server.nix`) into the right folder and rename.
+   `host-laptop.nix`, `host-server.nix`, `host-server-arm.nix`) into the
+   right folder and rename.
 2. Fill in every `CHANGE-ME`: the disk (`ls -l /dev/disk/by-id/`) and the
    admin SSH keys.
 3. Pick its channel: stable is the default; for one of my own machines add

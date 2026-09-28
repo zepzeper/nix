@@ -36,8 +36,8 @@ in
         ssh.enable = lib.mkForce true;
         hardening.enable = lib.mkForce true;
 
-        # On by default; a host may switch these off (e.g. a Pi without
-        # disko).
+        # On by default; a host may switch these off (e.g. an ARM server
+        # that keeps its SD image's partitions instead of disko).
         locale.enable = lib.mkDefault true;
         boot.enable = lib.mkDefault true;
         disk.enable = lib.mkDefault true;

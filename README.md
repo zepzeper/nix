@@ -39,7 +39,7 @@ modules/
   hosts/
     profiles/                base, workstation, laptop, server
     clients/ laptops/ servers/   one file per machine (created with the first host)
-templates/                   a block, and a host per machine type (desktop, laptop, server, Pi)
+templates/                   a block, and a host per machine type (desktop, laptop, server, ARM server)
 ```
 
 Every `.nix` file under `modules/` is loaded automatically. Files or folders
@@ -52,7 +52,7 @@ configurations go.
 | --- | --- | --- |
 | `profiles-workstation` | my desktop | NetworkManager, a desktop (niri on mine) |
 | `profiles-laptop` | employee laptops | workstation + Plasma (or GNOME per laptop), forced disk encryption with a recovery key, SSH closed to the network, daily auto-update that never reboots on its own. Stable only |
-| `profiles-server` | servers, the Pi | shell only: no desktop, audio or bluetooth; systemd-networkd; unencrypted disk; no automatic updates, deployed by hand. Stable only |
+| `profiles-server` | servers, ARM servers | shell only: no desktop, audio or bluetooth; systemd-networkd; unencrypted disk; no automatic updates, deployed by hand. Stable only |
 
 Every profile includes `profiles-base`: SSH for admins only and with keys
 only, a locked root, at least one admin with an SSH key (a build error
@@ -143,18 +143,20 @@ After the first boot, commit and push the host file and its hardware file
 from `~/nix` the same day - a laptop's first automatic update looks for them
 on GitHub.
 
-## Installing a Raspberry Pi (4)
+## Installing an ARM server
 
-The Pi keeps the partitions of the NixOS SD image instead of using disko.
+An ARM server boots from an SD card and keeps the partitions of the NixOS SD
+image instead of using disko. See `templates/host-server-arm.nix` for the
+supported boards.
 
-1. Flash the NixOS 26.05 aarch64 SD image, boot the Pi on a wired network,
-   and log in (user `nixos`, no password).
+1. Flash the NixOS 26.05 aarch64 SD image, boot the server on a wired
+   network, and log in (user `nixos`, no password).
 2. Then:
 
 ```sh
 sudo -i
 git clone https://github.com/zepzeper/nix && cd nix
-cp templates/host-pi.nix modules/hosts/servers/<name>.nix   # fill in CHANGE-ME, rename "pi"
+cp templates/host-server-arm.nix modules/hosts/servers/<name>.nix   # fill in CHANGE-ME, rename "server-arm"
 nixos-generate-config --no-filesystems --show-hardware-config \
   > modules/hosts/servers/_<name>-hardware.nix              # uncomment its import
 git add -A
