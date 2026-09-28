@@ -52,6 +52,7 @@ defaults; `noctalia msg templates-apply` writes them on demand.
 | `Mod+Space`, `Mod+Backspace` | Launcher |
 | `Mod+Return`, `Mod+Shift+Delete` | Terminal (ghostty) |
 | `Mod+Shift+F` | File manager |
+| `Mod+Shift+B` | Browser (Helium, on home.krugten.org) |
 | `Mod+S` | Control center |
 | `Mod+Comma` | Noctalia settings |
 | `Mod+Ctrl+V` | Clipboard history |

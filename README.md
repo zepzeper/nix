@@ -28,12 +28,16 @@ flake.nix                    inputs only
 modules/
   flake-parts/               how the flake itself is wired (no machine config)
   base/                      every machine: nix, users, ssh, locale, hardening
+  apps/                      programs people use: Helium
   boot/                      boot loader
   desktops/                  niri + Noctalia (mine), Plasma and GNOME (colleagues)
+  development/               Neovim (its config is the zepzeper/nvim repo)
   disk/                      disko layout: BTRFS, optional LUKS
-  hardware/                  firmware, fwupd, zram
+  hardware/                  firmware, fwupd, graphics, zram
   networking/                NetworkManager or systemd-networkd
   services/                  auto-update
+  shell/                     zsh, the admins' shell on every machine
+  users/                     a person's own Home Manager settings (git identity)
   hosts/
     profiles/                base, workstation, laptop, server
     clients/ laptops/ servers/   one file per machine (created with the first host)

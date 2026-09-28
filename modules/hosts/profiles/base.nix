@@ -12,7 +12,11 @@ let
   # Same for Home Manager blocks (flake.modules.homeManager.<name>): each is
   # given to every Home Manager user and, like a NixOS block, does nothing
   # until switched on.
-  homeBlocks = lib.attrValues (config.flake.modules.homeManager or { });
+  # A person's own settings (flake.modules.homeManager."users/<name>") are
+  # not blocks: a host imports them for that user only.
+  homeBlocks = lib.attrValues (
+    lib.filterAttrs (name: _: !(lib.hasPrefix "users/" name)) (config.flake.modules.homeManager or { })
+  );
 in
 {
   # The base every machine imports. Two jobs:
@@ -43,6 +47,7 @@ in
         disk.enable = lib.mkDefault true;
         hardware.enable = lib.mkDefault true;
         networking.enable = lib.mkDefault true;
+        zsh.enable = lib.mkDefault true;
       };
 
       home-manager = {

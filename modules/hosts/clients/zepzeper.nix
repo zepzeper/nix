@@ -1,15 +1,7 @@
 # zepzeper, my desktop: niri + Noctalia on the unstable channel, RTX 3060 Ti, encrypted
-# disk with a recovery key (forced by the workstation profile).
-#
-# Two things are filled in on the machine itself, from the installer:
-#
-# 1. The disk to install on, below: `ls -l /dev/disk/by-id/` and pick the
-#    NVMe drive's nvme-... name (not a -part name, not the HDD).
-# 2. Its hardware configuration, next to this file:
-#      nixos-generate-config --no-filesystems --show-hardware-config \
-#        > modules/hosts/clients/_zepzeper-hardware.nix
-#    It is imported automatically once it exists. Commit it after the
-#    install.
+# disk with a recovery key (forced by the workstation profile). Its hardware
+# configuration is _zepzeper-hardware.nix, next to this file (generated at
+# install with `nixos-generate-config --no-filesystems --show-hardware-config`).
 { config, lib, ... }:
 {
   # My own machine: the unstable channel.
@@ -28,6 +20,8 @@
 
     zep = {
       desktop.options.environment = "niri";
+      helium.enable = true;
+      neovim.enable = true;
 
       graphics.options = {
         gpu = "nvidia";
@@ -48,6 +42,9 @@
       ];
     };
 
-    home-manager.users.zepzeper.home.stateVersion = "26.11";
+    home-manager.users.zepzeper = {
+      imports = [ config.flake.modules.homeManager."users/zepzeper" ];
+      home.stateVersion = "26.11";
+    };
   };
 }

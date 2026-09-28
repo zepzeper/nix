@@ -42,6 +42,14 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Helium, the browser (not in nixpkgs). Only its package recipe is used,
+    # built with the host's own nixpkgs; `nix flake update helium` pulls a
+    # new Helium release.
+    helium = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

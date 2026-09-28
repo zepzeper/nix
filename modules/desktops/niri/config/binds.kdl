@@ -8,6 +8,7 @@ binds {
     Mod+Shift+Delete hotkey-overlay-title="Terminal" { spawn "ghostty"; }
     Mod+Return hotkey-overlay-title="Terminal" { spawn "ghostty"; }
     Mod+Shift+F hotkey-overlay-title="File manager" { spawn "nautilus" "--new-window"; }
+    Mod+Shift+B hotkey-overlay-title="Browser" { spawn "helium" "--new-window" "https://home.krugten.org"; }
 
     // --- Noctalia -----------------------------------------------------------
     Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
