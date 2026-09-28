@@ -18,7 +18,9 @@
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
-    system.stateVersion = "26.11"; # `nixos-version` at install time (first two numbers); never change
+    # The release first installed: 26.11 while unstable is 26.11 (the installer
+    # ISO's version does not matter). Never change it afterwards.
+    system.stateVersion = "26.11";
 
     zep = {
       desktop.options.environment = "niri";
