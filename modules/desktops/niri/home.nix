@@ -1,20 +1,23 @@
 {
   # niri with the Noctalia shell: the user half (see niri.nix for the system
-  # half). Given to every Home Manager user, active only on machines whose
-  # desktop is niri.
+  # half, theme.nix for GTK/Qt/cursor/icons). Given to every Home Manager
+  # user, active only on machines whose desktop is niri.
   #
-  # - niri's config: config.kdl in this folder, checked with `niri validate`
-  #   when the system is built, so a typo fails the build instead of the
-  #   session. ~/.config/niri/local.kdl is included for live experiments.
+  # - niri's config: the files in config/, plus outputs.kdl generated from
+  #   the host's zep.niri.options.outputs. Checked together with
+  #   `niri validate` when the system is built, so a typo fails the build
+  #   instead of the session. Each file is linked on its own, so
+  #   ~/.config/niri stays writable for Noctalia's noctalia.kdl and your
+  #   local.kdl.
   # - Noctalia: bar, launcher, notifications, lock screen, idle, wallpaper,
-  #   OSD, clipboard history, screenshots, night light, session menu, and the
-  #   polkit password dialog. Runs as a systemd user service tied to the
-  #   niri session; restarts when its settings change. Settings here are
-  #   defaults: anything changed in Noctalia's own settings window is kept in
-  #   ~/.local/state/noctalia/settings.toml and wins over them.
-  # - ghostty, the terminal.
+  #   OSD, clipboard history, screenshots, night light, session menu, polkit
+  #   dialog, and the colours of other apps. Settings: noctalia.toml. Runs as
+  #   a systemd user service tied to the niri session and restarts when its
+  #   settings change.
+  # - ghostty, the terminal, coloured by Noctalia.
   flake.modules.homeManager.desktops-niri =
     {
+      config,
       lib,
       pkgs,
       options,
@@ -25,25 +28,36 @@
       desktop = osConfig.zep.desktop;
       active = desktop.enable && desktop.options.environment == "niri";
 
-      niriConfig = pkgs.runCommand "niri-config.kdl" { } ''
-        ${lib.getExe osConfig.programs.niri.package} validate -c ${./config.kdl}
-        cp ${./config.kdl} $out
+      niriFiles = builtins.attrNames (builtins.readDir ./config) ++ [ "outputs.kdl" ];
+
+      niriConfig = pkgs.runCommand "niri-config" { } ''
+        mkdir -p $out
+        cp ${./config}/*.kdl $out/
+        cp ${pkgs.writeText "outputs.kdl" osConfig.zep.niri.options.outputs} $out/outputs.kdl
+        ${lib.getExe osConfig.programs.niri.package} validate -c $out/config.kdl
       '';
+
+      noctalia = config.programs.noctalia.package;
+      ghosttyTheme = "${config.xdg.configHome}/ghostty/themes/noctalia";
     in
     {
       key = "zep#hm-desktops-niri";
       config = lib.mkIf active (
         lib.mkMerge [
           {
-            xdg.configFile."niri/config.kdl".source = niriConfig;
+            xdg.configFile = lib.listToAttrs (
+              map (file: lib.nameValuePair "niri/${file}" { source = "${niriConfig}/${file}"; }) niriFiles
+            );
 
             programs.ghostty = {
               enable = true;
               settings = {
                 font-family = "JetBrainsMonoNL Nerd Font Mono";
                 font-size = 12;
-                theme = "Rose Pine Moon";
-                background = "161521";
+                # Colours: the theme Noctalia renders from its palette. "?"
+                # makes it optional, so ghostty (and Home Manager's check of
+                # this config) is fine before Noctalia has written it once.
+                config-file = "?${ghosttyTheme}";
                 window-decoration = "none";
                 gtk-titlebar = false;
                 confirm-close-surface = false;
@@ -61,28 +75,16 @@
             programs.noctalia = {
               enable = true;
               systemd.enable = true;
-              settings = {
-                shell = {
-                  # The password dialog for admin actions; niri has none.
-                  polkit_agent = true;
-                  telemetry_enabled = false;
-                  # Apps started from Noctalia survive a Noctalia restart.
-                  launch_apps_as_systemd_services = true;
-                };
-                theme.mode = "dark";
-                # Lock after 10 minutes, screens off a minute later. The
-                # lock screen also comes up before every suspend.
-                idle.behavior = {
-                  lock = {
-                    timeout = 600;
-                    action = "lock";
-                    enabled = true;
-                  };
-                  screen-off = {
-                    timeout = 660;
-                    action = "screen_off";
-                    enabled = true;
-                  };
+              settings = lib.recursiveUpdate (builtins.fromTOML (builtins.readFile ./noctalia.toml)) {
+                # Noctalia's built-in ghostty template would edit ghostty's
+                # config file, which is read-only here. This user template
+                # renders the same colours to the file ghostty includes
+                # (config-file above) and reloads ghostty, touching nothing
+                # else.
+                theme.templates.user.ghostty = {
+                  input_path = "${noctalia}/share/noctalia/assets/templates/ghostty/ghostty";
+                  output_path = ghosttyTheme;
+                  post_hook = "bash ${noctalia}/share/noctalia/assets/templates/ghostty/reload.sh";
                 };
               };
             };

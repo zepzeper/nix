@@ -1,0 +1,39 @@
+# Noctalia defaults for my workstation. Reference:
+# https://docs.noctalia.dev/noctalia/configuration/
+#
+# Checked with `noctalia config validate` when the system is built. Anything
+# changed in Noctalia's settings window (Mod+Comma) is kept in
+# ~/.local/state/noctalia/settings.toml and wins over this file - copy the
+# lines you want to keep from there into here.
+#
+# The ghostty theme template is added in home.nix, because it points at
+# files inside the Noctalia package.
+
+[shell]
+polkit_agent = true                     # the password dialog for admin actions; niri has none
+telemetry_enabled = false
+launch_apps_as_systemd_services = true  # apps survive a Noctalia restart (it runs as a user service)
+setup_wizard_enabled = false            # this file is the setup
+
+[theme]
+mode = "dark"
+
+# Apply Noctalia's colours to other apps whenever the palette changes.
+# gtk3/gtk4: GTK apps (with the adw-gtk3 theme from theme.nix)
+# qt:        Qt apps through qt5ct/qt6ct (theme.nix points them at it)
+# niri:      window borders and focus colours (config.kdl includes it)
+[theme.templates]
+enable_builtin_templates = true
+builtin_ids = ["gtk3", "gtk4", "qt", "niri"]
+
+# Lock after 10 minutes, screens off a minute later. The lock screen also
+# comes up before every suspend ([lockscreen].lock_before_suspend, default).
+[idle.behavior.lock]
+timeout = 600
+action = "lock"
+enabled = true
+
+[idle.behavior.screen-off]
+timeout = 660
+action = "screen_off"
+enabled = true

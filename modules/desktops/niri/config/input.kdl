@@ -1,0 +1,23 @@
+// Keyboard, touchpad and mouse.
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            options "compose:caps"
+        }
+        repeat-delay 600
+        repeat-rate 40
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        scroll-factor 0.4
+    }
+
+    // Focus follows the mouse, but only onto windows fully on screen, so
+    // the view does not scroll away under the pointer.
+    focus-follows-mouse max-scroll-amount="0%"
+}

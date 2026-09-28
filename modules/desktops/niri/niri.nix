@@ -14,6 +14,9 @@
   # dialog - is Noctalia's own (shell.polkit_agent in home.nix).
   #
   # Unstable only: Noctalia 5 is not in the 26.05 release.
+  #
+  # zep.niri.options.outputs: this machine's monitors, as niri `output`
+  # blocks, set in its host file. home.nix turns it into outputs.kdl.
   flake.modules.nixos.desktops-niri =
     {
       config,
@@ -51,6 +54,21 @@
     in
     {
       key = "zep#desktops-niri";
+
+      options.zep.niri.options.outputs = lib.mkOption {
+        type = lib.types.lines;
+        default = "";
+        example = ''
+          output "DP-1" {
+              scale 1.6
+          }
+        '';
+        description = ''
+          niri `output` blocks for this machine's monitors (names from
+          `niri msg outputs`). Empty: niri picks mode and scale itself.
+        '';
+      };
+
       config = lib.mkIf (cfg.enable && cfg.options.environment == "niri") {
         assertions = [
           {
@@ -59,7 +77,12 @@
           }
         ];
 
-        programs.niri.enable = true;
+        programs = {
+          niri.enable = true;
+          # dconf (Noctalia's theme switches GTK dark/light through it) comes
+          # with programs.niri.
+          gpu-screen-recorder.enable = true;
+        };
 
         services = {
           greetd = {
@@ -79,7 +102,9 @@
           power-profiles-daemon.enable = lib.mkDefault true;
         };
 
-        programs.gpu-screen-recorder.enable = true;
+        # Electron apps (VS Code, Slack, Discord, ...) run natively on
+        # Wayland instead of through XWayland: sharp on scaled screens.
+        environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
         environment.systemPackages = [
           pkgs.xwayland-satellite

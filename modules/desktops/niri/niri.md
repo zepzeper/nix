@@ -5,23 +5,43 @@ the [Noctalia](https://docs.noctalia.dev/) 5 shell. Unstable channel only.
 
 | File | What |
 | --- | --- |
-| `niri.nix` | System: niri, login screen (tuigreet), X11 apps, screen recording, the services Noctalia reads |
-| `home.nix` | My user: niri's config, Noctalia (as a user service) and its defaults, ghostty |
-| `config.kdl` | niri's config. Checked with `niri validate` at build time and in CI |
+| `niri.nix` | System: niri, login screen (tuigreet), X11 apps, screen recording, Electron on Wayland, the services Noctalia reads; `zep.niri.options.outputs` |
+| `home.nix` | My user: niri's config files, Noctalia (as a user service), ghostty |
+| `theme.nix` | How apps look: GTK (adw-gtk3), Qt (qt5ct/qt6ct, Fusion), Papirus icons, Bibata cursor |
+| `noctalia.toml` | Noctalia's settings |
+| `config/` | niri's config, split by subject (see the top of `config/config.kdl`). Checked with `niri validate` at build time and in CI |
 
 Noctalia covers the bar, launcher, notifications, lock screen, idle
 (lock after 10 min, screens off after 11), wallpaper, volume/brightness OSD,
 clipboard history, screenshots with annotation, night light, the session
 menu and the polkit password dialog.
 
-Changing things:
+## Colours
 
-- **niri**: edit `config.kdl` and rebuild. To try something first, put it in
-  `~/.config/niri/local.kdl` - it overrides the repo config and reloads on
-  save.
-- **Noctalia**: `home.nix` sets defaults. Changes made in Noctalia's settings
-  window (`Mod+Comma`) are kept in `~/.local/state/noctalia/settings.toml`
-  and win over the repo; move the ones you keep into `home.nix`.
+Noctalia derives one palette from the wallpaper (or a chosen scheme) and
+writes it into the other apps through its theme templates, so everything
+changes together:
+
+- GTK apps: `noctalia.css`, imported from `gtk.css` (theme.nix)
+- Qt apps: qt5ct/qt6ct colour scheme `noctalia.conf` (theme.nix)
+- niri: border and focus colours in `~/.config/niri/noctalia.kdl`
+- ghostty: `~/.config/ghostty/themes/noctalia`, included by its config
+
+Before Noctalia has run once these files do not exist yet and apps use their
+defaults; `noctalia msg templates-apply` writes them on demand.
+
+## Changing things
+
+- **niri**: edit the files in `config/` and rebuild. To try something first,
+  put it in `~/.config/niri/local.kdl` - it overrides the repo config and
+  reloads on save.
+- **Monitors**: per machine, in its host file:
+  `zep.niri.options.outputs = ''output "DP-1" { scale 1.6; }'';`
+  (names from `niri msg outputs`). Empty means automatic.
+- **Noctalia**: `noctalia.toml` sets the defaults. Changes made in Noctalia's
+  settings window (`Mod+Comma`) are kept in
+  `~/.local/state/noctalia/settings.toml` and win over the repo; copy the
+  lines you keep into `noctalia.toml`.
 
 ## Keys
 
@@ -60,7 +80,7 @@ Changing things:
 | `Alt+Tab`, `Mod+Tab` | Recent windows (niri's switcher) |
 | `Mod+Shift+P` | Monitors off |
 
-Not carried over from the old Hyprland config: app shortcuts for apps not
+Not carried over from the old Hyprland config: the fixed blue-green border gradient (borders now follow Noctalia's palette; put it back in `local.kdl` if you miss it), app shortcuts for apps not
 ported yet (browser, Spotify, web apps), universal copy/paste
 (`Mod+C/V/X` - niri cannot send shortcuts to windows), pseudo-tiling, and
 typing the e-mail address.

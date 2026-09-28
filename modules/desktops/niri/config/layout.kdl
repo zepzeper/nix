@@ -1,0 +1,39 @@
+// Layout, borders, shadows and blur. Border and focus-ring colours come from
+// Noctalia's theme (noctalia.kdl, included after this file), so they follow
+// the wallpaper and dark/light mode.
+
+layout {
+    gaps 0
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        width 2
+    }
+
+    shadow {
+        on
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+}
+
+// Blur behind windows and Noctalia's surfaces (niri 26.04+).
+blur {
+    passes 2
+    offset 3.0
+    noise 0.03
+    saturation 1.0
+}

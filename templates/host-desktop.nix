@@ -23,6 +23,13 @@
     zep = {
       desktop.options.environment = "niri";
 
+      # This machine's monitors (names: `niri msg outputs`). Empty: automatic.
+      # niri.options.outputs = ''
+      #   output "DP-1" {
+      #       scale 1.6
+      #   }
+      # '';
+
       disk.options = {
         device = "/dev/disk/by-id/CHANGE-ME"; # ls -l /dev/disk/by-id/
         encrypt = true;

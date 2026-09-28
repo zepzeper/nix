@@ -1,0 +1,49 @@
+// Window and layer rules: per-app behaviour, and how Noctalia's surfaces
+// (bar, panels, notifications, wallpaper) sit in niri.
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+// Blur what is actually behind a window (xray off), not only the wallpaper.
+window-rule {
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Noctalia's settings window floats.
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+layer-rule {
+    match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+    background-effect {
+        xray false
+    }
+}
+
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Noctalia's blurred copy of the wallpaper behind the overview.
+layer-rule {
+    match namespace="^noctalia-backdrop"
+    place-within-backdrop true
+}
