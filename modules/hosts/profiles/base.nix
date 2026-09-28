@@ -1,11 +1,13 @@
 { config, lib, ... }:
 let
   # Every block in the repository: all of flake.modules.nixos except the
-  # profiles and the hosts themselves. A new block is picked up by being
-  # written; there is no list to remember to update.
+  # profiles, the hosts, and the people (users/<name>, which a host imports).
+  # A new block is picked up by being written; there is no list to remember
+  # to update.
   blocks = lib.attrValues (
     lib.filterAttrs (
-      name: _: !(lib.hasPrefix "profiles-" name || lib.hasPrefix "hosts/" name)
+      name: _:
+      !(lib.hasPrefix "profiles-" name || lib.hasPrefix "hosts/" name || lib.hasPrefix "users/" name)
     ) config.flake.modules.nixos
   );
 

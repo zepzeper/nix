@@ -44,6 +44,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Secrets (secrets/): age-encrypted files, decrypted on each machine with
+    # its SSH host key.
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Helium, the browser (not in nixpkgs). Only its package recipe is used,
     # built with the host's own nixpkgs; `nix flake update helium` pulls a
     # new Helium release.

@@ -28,19 +28,21 @@ flake.nix                    inputs only
 modules/
   flake-parts/               how the flake itself is wired (no machine config)
   base/                      every machine: nix, users, ssh, locale, hardening
-  apps/                      programs people use: Helium
+  apps/                      programs people use: Helium, Steam, LocalSend
   boot/                      boot loader
   desktops/                  niri + Noctalia (mine), Plasma and GNOME (colleagues)
-  development/               Neovim (its config is the zepzeper/nvim repo)
+  development/               languages, Docker, VMs, tools; Neovim (its config is the zepzeper/nvim repo)
   disk/                      disko layout: BTRFS, optional LUKS
   hardware/                  firmware, fwupd, graphics, zram
   networking/                NetworkManager or systemd-networkd
-  services/                  auto-update
+  secrets/                   agenix (the secrets themselves are in secrets/ at the root)
+  services/                  auto-update, Tailscale
   shell/                     zsh and tmux (with tmux-sessionizer), on every machine
-  users/                     a person's own Home Manager settings and dotfiles (git, sessionizer, which Neovim config)
+  users/                     a person: their dotfiles, Home Manager settings and secrets on a machine
   hosts/
     profiles/                base, workstation, laptop, server
-    clients/ laptops/ servers/   one file per machine (created with the first host)
+    clients/ laptops/ servers/   one file per machine
+secrets/                     encrypted secrets (agenix), see secrets/README.md
 templates/                   a block, and a host per machine type (desktop, laptop, server, ARM server)
 ```
 

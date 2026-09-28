@@ -9,3 +9,8 @@
 
 What a machine updates *to* is pinned by `flake.lock`: bump it and push to
 ship security fixes.
+
+`services-tailscale` (`zep.tailscale`): the machine joins the tailnet. Log
+in once with `sudo tailscale up`, or let it log itself in with the auth key
+secret (`options.authKey`, see `secrets/README.md`). DNS goes through
+systemd-resolved so MagicDNS names work next to NetworkManager.
