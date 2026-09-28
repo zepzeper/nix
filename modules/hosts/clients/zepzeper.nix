@@ -52,6 +52,20 @@
       # This repository's clone here: `nh os switch` without a path.
       programs.nh.flake = "/home/zepzeper/personal/nix";
 
+      # Search packages and NixOS / Home Manager options from the terminal:
+      # `tv nix-search-tv` (television, with a preview).
+      home-manager.users.zepzeper.programs = {
+        television.enable = true;
+        nix-search-tv = {
+          enable = true;
+          settings.indexes = [
+            "nixpkgs"
+            "nixos"
+            "home-manager"
+          ];
+        };
+      };
+
       environment.systemPackages = with pkgs; [
         vlc
         iptvnator
