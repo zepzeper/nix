@@ -27,6 +27,7 @@
         neovim.enable = true;
         devTools.enable = true;
         steam.enable = true;
+        spotify.enable = true;
         localsend.enable = true;
 
         # Logged in once by hand (`tailscale up`); the auth key secret is
@@ -56,7 +57,6 @@
       programs.nh.flake = "/home/zepzeper/personal/nix";
 
       environment.systemPackages = with pkgs; [
-        spotify
         vlc
         bitwarden-desktop
         gimp

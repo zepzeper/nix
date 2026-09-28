@@ -28,7 +28,7 @@ flake.nix                    inputs only
 modules/
   flake-parts/               how the flake itself is wired (no machine config)
   base/                      every machine: nix, users, ssh, locale, hardening
-  apps/                      programs people use: Helium, Steam, LocalSend
+  apps/                      programs people use: Helium, Spotify (Spicetify), Steam, LocalSend
   boot/                      boot loader
   desktops/                  niri + Noctalia (mine), Plasma and GNOME (colleagues)
   development/               languages, Docker, VMs, tools; Neovim (its config is the zepzeper/nvim repo)

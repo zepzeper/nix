@@ -9,3 +9,4 @@ plain apps are listed by the host itself in `environment.systemPackages`.
 | `helium.nix` | `zep.helium.enable` | Helium browser, set as the default browser. From the `helium` flake input; `nix flake update helium` for a new release |
 | `steam.nix` | `zep.steam.enable` | Steam, with 32-bit graphics drivers and controller support |
 | `localsend.nix` | `zep.localsend.enable` | LocalSend, with its port (53317) open to receive files |
+| `spotify.nix` | `zep.spotify.enable` | Spotify themed with Spicetify (Comfy theme), from the `spicetify-nix` flake input |

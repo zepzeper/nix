@@ -59,6 +59,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Spicetify: a themed Spotify (modules/apps/spotify.nix).
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     # Neovim nightly, built from Neovim's main branch (nix-community keeps
     # this updated daily; `nix flake update neovim-nightly` moves to the
     # newest). The one input that keeps its own nixpkgs, on purpose: then
