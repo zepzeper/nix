@@ -11,5 +11,10 @@
   NVIDIA also gets modesetting, video memory kept across suspend, VA-API
   video decoding, and niri's fix for its video-memory use.
 
+- `hardware-hetzner-cloud` (`zep.hetznerCloud`): a Hetzner Cloud x86 VM.
+  The disk is `/dev/sda`; IPv4 by DHCP and the fixed IPv6 address from
+  `options.ipv6` (gateway `fe80::1`), on systemd-networkd; QEMU guest
+  drivers. Template: `templates/host-server-hetzner.nix`.
+
 Model specifics live with the host: its generated `_<name>-hardware.nix`, or
 a nixos-hardware profile when one exists.

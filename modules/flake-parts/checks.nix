@@ -32,6 +32,17 @@ let
       profile = "server";
       settings = { };
     };
+    server-hetzner = {
+      channel = "stable";
+      profile = "server";
+      settings.zep = {
+        hetznerCloud = {
+          enable = true;
+          options.ipv6 = "2a01:4f8:c012:3456::1/64";
+        };
+        tailscale.enable = true;
+      };
+    };
   };
 
   stubs =

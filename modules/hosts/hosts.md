@@ -11,7 +11,8 @@ which becomes `nixosConfigurations.<name>`.
 ## Adding a machine
 
 1. Copy the matching template from `templates/` (`host-desktop.nix`,
-   `host-laptop.nix`, `host-server.nix`, `host-server-arm.nix`) into the
+   `host-laptop.nix`, `host-server.nix`, `host-server-hetzner.nix`,
+   `host-server-arm.nix`) into the
    right folder and rename.
 2. Fill in every `CHANGE-ME` (the disk: `ls -l /dev/disk/by-id/`). I am
    the admin through `users/zepzeper`, which the templates import; my SSH

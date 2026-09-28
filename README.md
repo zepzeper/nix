@@ -44,7 +44,7 @@ modules/
     profiles/                base, workstation, laptop, server
     clients/ laptops/ servers/   one file per machine
 secrets/                     encrypted secrets (agenix), see secrets/README.md
-templates/                   a block, and a host per machine type (desktop, laptop, server, ARM server)
+templates/                   a block, and a host per machine type (desktop, laptop, server, Hetzner Cloud server, ARM server)
 ```
 
 Every `.nix` file under `modules/` is loaded automatically. Files or folders
@@ -172,11 +172,14 @@ for them on GitHub.
 
 With [nixos-anywhere](https://github.com/nix-community/nixos-anywhere) (in
 `nix develop`), from `~/personal/nix` on the desktop, with the server booted
-into the installer. It generates the hardware file, partitions and
-installs, all over SSH:
+into the installer, or into any Linux that root can SSH into (it switches
+itself into a NixOS installer). It generates the hardware file, partitions
+and installs, all over SSH. The hardware file has to exist in git first
+(flakes only see tracked files), so start it empty:
 
 ```sh
 nix develop
+echo '{ }' > modules/hosts/servers/_<name>-hardware.nix && git add -A   # host file included
 nixos-anywhere --flake .#<name> --target-host root@<address> --no-reboot \
   --generate-hardware-config nixos-generate-config modules/hosts/servers/_<name>-hardware.nix
 
@@ -188,6 +191,20 @@ git add -A && git commit -m "Add <name>" && git push
 ```
 
 Afterwards the server is deployed from the desktop (see Everyday use).
+
+### Hetzner Cloud servers
+
+1. In the Cloud Console create the server: x86, **Ubuntu** image (only used
+   to start nixos-anywhere), with IPv4 and IPv6, and my SSH key (add the
+   public key from `modules/users/zepzeper/authorized_keys` under
+   Security -> SSH keys). Note its IPv4 address and its IPv6 /64.
+2. Host file: `templates/host-server-hetzner.nix` to
+   `modules/hosts/servers/<name>.nix`, named by role; fill in the IPv6
+   address (the /64 with `::1`) and uncomment the hardware import.
+3. Install it as above, with `root@<ipv4>` as the target. The disk is
+   `/dev/sda`, set by `zep.hetznerCloud`.
+4. After the reboot: `ssh <ipv4>`, then `tailscale up` once (open the link).
+   From then on `ssh <name>` works over the tailnet.
 
 ### Secrets on a new machine
 
