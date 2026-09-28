@@ -1,8 +1,7 @@
 {
-  # Neovim, with its configuration kept in its own repository
-  # (github.com/zepzeper/nvim), cloned to ~/.config/nvim once per machine:
-  #
-  #   git clone git@github.com:zepzeper/nvim ~/.config/nvim
+  # Neovim, with its configuration kept in its own repository. Which one is
+  # personal: zepzeper/nvim is cloned to ~/personal/nvim and linked to
+  # ~/.config/nvim by modules/users/zepzeper/.
   #
   # That config manages itself: vim.pack installs the plugins (pinned in its
   # nvim-pack-lock.json) and Mason installs the language servers, linters and
