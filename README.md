@@ -31,7 +31,7 @@ modules/
   flake-parts/               how the flake itself is wired (no machine config)
   base/                      every machine: nix, users, ssh, locale, hardening
   boot/                      boot loader
-  desktops/                  niri (mine), Plasma and GNOME (colleagues)
+  desktops/                  niri + Noctalia (mine), Plasma and GNOME (colleagues)
   disk/                      disko layout: BTRFS, optional LUKS
   hardware/                  firmware, fwupd, zram
   networking/                NetworkManager or systemd-networkd

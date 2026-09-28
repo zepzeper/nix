@@ -4,7 +4,7 @@ One setting picks the desktop: `zep.desktop.options.environment`.
 
 | Environment | For | Login screen |
 | --- | --- | --- |
-| `niri` | my own machines: scrollable-tiling window manager | tuigreet (greetd) |
+| `niri` | my own machines: scrollable-tiling window manager with the Noctalia shell (see `niri/niri.md`; unstable only) | tuigreet (greetd) |
 | `plasma` | colleagues, the laptop default: taskbar and start menu | SDDM |
 | `gnome` | colleagues who prefer it | GDM |
 
@@ -12,9 +12,8 @@ One setting picks the desktop: `zep.desktop.options.environment`.
 sound, bluetooth (on at boot, so a bluetooth keyboard works at the login
 screen), fonts (including Liberation, so Word documents keep their layout).
 
-niri also gets what its default config expects - bar, launcher, terminal,
-locker, notifications, media and brightness keys - and a polkit agent, which
-programs.niri does not start. Each environment has its own file and only switches on when it is
+niri's own setup - Noctalia, its config, keybinds, terminal - lives in the
+`niri/` folder. Each environment has its own file and only switches on when it is
 the one chosen, so a machine can never run two.
 
 Profiles: workstations turn the desktop on; laptops default to `plasma`;

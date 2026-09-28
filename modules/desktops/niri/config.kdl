@@ -1,0 +1,277 @@
+// niri config for my workstation. Managed from the repo
+// (modules/desktops/niri/config.kdl) and checked with `niri validate` when
+// the system is built. For live experiments, put settings in
+// ~/.config/niri/local.kdl: it is included at the end, overrides anything
+// here, and reloads on save. Move what you keep into this file.
+//
+// Docs: https://niri-wm.github.io/niri/  (written for niri 26.04)
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            options "compose:caps"
+        }
+        repeat-delay 600
+        repeat-rate 40
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        scroll-factor 0.4
+    }
+
+    // Focus follows the mouse, but only onto windows fully on screen, so
+    // the view does not scroll away under the pointer.
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+// Outputs are scaled automatically. To pin one, find its name with
+// `niri msg outputs` and add e.g.:
+// output "DP-1" { scale 1.6; }
+
+layout {
+    gaps 0
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        off
+    }
+
+    border {
+        width 2
+        active-gradient from="#33ccffee" to="#00ff99ee" angle=45
+        inactive-color "#595959aa"
+        urgent-color "#9b0000"
+    }
+
+    shadow {
+        on
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+}
+
+// Apps draw no titlebars; niri's border shows focus instead.
+prefer-no-csd
+
+// Noctalia draws its own hotkey hints; skip niri's popup at login.
+hotkey-overlay {
+    skip-at-startup
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {
+    off
+}
+
+// Blur behind windows and Noctalia's surfaces (niri 26.04+). xray off so
+// blur shows what is actually behind, not only the wallpaper.
+blur {
+    passes 2
+    offset 3.0
+    noise 0.03
+    saturation 1.0
+}
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+window-rule {
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Noctalia's settings window floats.
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+layer-rule {
+    match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+    background-effect {
+        xray false
+    }
+}
+
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+// Noctalia's blurred copy of the wallpaper behind the overview.
+layer-rule {
+    match namespace="^noctalia-backdrop"
+    place-within-backdrop true
+}
+
+debug {
+    // Lets Noctalia's notifications focus the app that sent them.
+    honor-xdg-activation-with-invalid-serial
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // --- Apps -------------------------------------------------------------
+    Mod+Shift+Delete hotkey-overlay-title="Terminal" { spawn "ghostty"; }
+    Mod+Return hotkey-overlay-title="Terminal" { spawn "ghostty"; }
+    Mod+Shift+F hotkey-overlay-title="File manager" { spawn "nautilus" "--new-window"; }
+
+    // --- Noctalia -----------------------------------------------------------
+    Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+BackSpace hotkey-overlay-title=null { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+S hotkey-overlay-title="Control center" { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+Comma hotkey-overlay-title="Noctalia settings" { spawn-sh "noctalia msg settings-toggle"; }
+    Mod+Ctrl+V hotkey-overlay-title="Clipboard history" { spawn-sh "noctalia msg panel-toggle clipboard"; }
+    Mod+N hotkey-overlay-title="Toggle do not disturb" { spawn-sh "noctalia msg notification-dnd-toggle"; }
+    Alt+N hotkey-overlay-title="Toggle night light" { spawn-sh "noctalia msg nightlight-force-toggle"; }
+    Mod+Ctrl+L hotkey-overlay-title="Lock screen" { spawn-sh "noctalia msg session lock"; }
+    Mod+Shift+Q hotkey-overlay-title="Session menu" { spawn-sh "noctalia msg panel-toggle session"; }
+
+    // --- Captures -----------------------------------------------------------
+    // niri's own: pick a region, copied to the clipboard and saved.
+    Ctrl+Shift+P hotkey-overlay-title="Screenshot" { screenshot; }
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+    Ctrl+Shift+A hotkey-overlay-title="Screenshot and annotate" { spawn-sh "noctalia msg screenshot-annotate"; }
+    Ctrl+Shift+R hotkey-overlay-title="Start/stop recording" { spawn "zep-record"; }
+
+    // --- Media, volume, brightness (Noctalia shows the OSD) -------------------
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
+    XF86AudioMute allow-when-locked=true { spawn-sh "noctalia msg volume-mute"; }
+    XF86AudioMicMute allow-when-locked=true { spawn-sh "noctalia msg mic-mute"; }
+    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
+    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; }
+    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg brightness-down"; }
+
+    // --- Windows ------------------------------------------------------------
+    Mod+Q repeat=false { close-window; }
+    Mod+O repeat=false { toggle-overview; }
+
+    Mod+T { toggle-window-floating; }
+    Mod+E { switch-focus-between-floating-and-tiling; }
+    Mod+F { fullscreen-window; }
+    Mod+Ctrl+F { toggle-windowed-fullscreen; }
+    Mod+Alt+F { maximize-column; }
+    Mod+C { center-column; }
+    Mod+W { toggle-column-tabbed-display; }
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-column-width-back; }
+
+    // Focus
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+K { focus-window-or-workspace-up; }
+    Mod+J { focus-window-or-workspace-down; }
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-or-workspace-up; }
+    Mod+Down { focus-window-or-workspace-down; }
+
+    // Move ("swap" in the old config)
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+L { move-column-right; }
+    Mod+Shift+K { move-window-up-or-to-workspace-up; }
+    Mod+Shift+J { move-window-down-or-to-workspace-down; }
+
+    // Resize
+    Alt+H { set-column-width "-10%"; }
+    Alt+L { set-column-width "+10%"; }
+    Alt+K { set-window-height "-10%"; }
+    Alt+J { set-window-height "+10%"; }
+
+    // Columns: pull a window into the column next to it, or push it out.
+    Mod+BracketLeft { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // --- Workspaces (niri stacks them vertically) ---------------------------
+    Alt+Shift+H { move-column-to-workspace-up; }
+    Alt+Shift+L { move-column-to-workspace-down; }
+    Mod+Page_Up { focus-workspace-up; }
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+    Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollLeft { focus-column-left; }
+    Mod+WheelScrollRight { focus-column-right; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+
+    // Move without following.
+    Mod+Shift+Alt+1 { move-column-to-workspace 1 focus=false; }
+    Mod+Shift+Alt+2 { move-column-to-workspace 2 focus=false; }
+    Mod+Shift+Alt+3 { move-column-to-workspace 3 focus=false; }
+    Mod+Shift+Alt+4 { move-column-to-workspace 4 focus=false; }
+    Mod+Shift+Alt+5 { move-column-to-workspace 5 focus=false; }
+    Mod+Shift+Alt+6 { move-column-to-workspace 6 focus=false; }
+    Mod+Shift+Alt+7 { move-column-to-workspace 7 focus=false; }
+    Mod+Shift+Alt+8 { move-column-to-workspace 8 focus=false; }
+    Mod+Shift+Alt+9 { move-column-to-workspace 9 focus=false; }
+    Mod+Shift+Alt+0 { move-column-to-workspace 10 focus=false; }
+
+    // --- Monitors -----------------------------------------------------------
+    Mod+Ctrl+Left { focus-monitor-left; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Shift+Ctrl+Left { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
+
+    // --- Session ------------------------------------------------------------
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    Mod+Shift+P { power-off-monitors; }
+    Ctrl+Alt+Delete { quit; }
+}
+
+// Local, unmanaged overrides (see the top of this file).
+include optional=true "~/.config/niri/local.kdl"

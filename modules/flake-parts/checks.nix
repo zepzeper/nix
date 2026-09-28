@@ -11,7 +11,11 @@ let
     workstation-niri = {
       channel = "unstable";
       profile = "workstation";
-      settings.zep.desktop.options.environment = "niri";
+      settings = {
+        zep.desktop.options.environment = "niri";
+        # A Home Manager user, so the niri/Noctalia user config is checked too.
+        home-manager.users.check.home.stateVersion = "26.05";
+      };
     };
     laptop-plasma = {
       channel = "stable";
@@ -75,6 +79,24 @@ in
   perSystem =
     { pkgs, system, ... }:
     {
+      # Builds the checked config files the niri desktop installs: this runs
+      # `niri validate` and `noctalia config validate` on them, so a mistake
+      # in either fails CI rather than a login.
+      checks.desktop-configs =
+        let
+          files = (stubs system).workstation-niri.config.home-manager.users.check.xdg.configFile;
+        in
+        pkgs.linkFarm "desktop-configs" [
+          {
+            name = "niri-config.kdl";
+            path = files."niri/config.kdl".source;
+          }
+          {
+            name = "noctalia-config.toml";
+            path = files."noctalia/config.toml".source;
+          }
+        ];
+
       checks.hosts-evaluate = pkgs.writeText "hosts-evaluate" (
         lib.throwIf (unknown != [ ])
           "zep.hosts is set for ${lib.concatStringsSep ", " unknown}, but there is no host by that name (typo?)"
