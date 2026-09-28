@@ -18,6 +18,8 @@
     zep = {
       disk.options.device = "/dev/disk/by-id/CHANGE-ME";
 
+      graphics.options.gpu = "intel"; # or "amd", "nvidia"
+
       # Plasma unless this colleague prefers GNOME:
       # desktop.options.environment = "gnome";
 

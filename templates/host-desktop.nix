@@ -23,6 +23,13 @@
     zep = {
       desktop.options.environment = "niri";
 
+      # The GPU. For NVIDIA, also the generation (see modules/hardware/graphics.nix):
+      # "turing-or-newer" (RTX, GTX 16xx) or "pascal-or-maxwell" (GTX 9xx/10xx).
+      graphics.options = {
+        gpu = "nvidia";
+        nvidiaGeneration = "turing-or-newer";
+      };
+
       # This machine's monitors (names: `niri msg outputs`). Empty: automatic.
       # niri.options.outputs = ''
       #   output "DP-1" {

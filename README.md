@@ -8,15 +8,13 @@ servers. They share a base and differ by profile.
 ## First run
 
 ```sh
-nix flake lock     # pins every input
-git add flake.lock && git commit -m "Lock inputs"   # required: see below
 nix fmt            # format the tree
 nix flake check    # formatting, lints, and every host and variant evaluates
 ```
 
-`flake.lock` must be committed. Laptops update themselves from GitHub and
-refuse to build without it: without a lock, every machine would pull the
-newest commit of every input on every run.
+`flake.lock` pins every input and must stay committed: laptops update
+themselves from GitHub and refuse to build without it. Update the pins with
+`nix flake update`, check, commit and push.
 
 Then protect `main` on GitHub (Settings -> Branches): require pull requests
 and the `check` workflow (`.github/workflows/check.yml`, which runs

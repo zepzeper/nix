@@ -12,6 +12,8 @@
       zep = {
         networking.options.mode = lib.mkDefault "networkmanager";
         desktop.enable = lib.mkDefault true;
+        # Drivers; the host names its GPU (zep.graphics.options.gpu).
+        graphics.enable = lib.mkDefault true;
       };
     };
 }
