@@ -50,6 +50,13 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    # ThePrimeagen's tmux-sessionizer, a single script (not in nixpkgs; the
+    # nixpkgs "tmux-sessionizer" is a different program).
+    tmux-sessionizer = {
+      url = "github:ThePrimeagen/tmux-sessionizer";
+      flake = false;
+    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

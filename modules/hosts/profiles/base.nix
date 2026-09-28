@@ -48,6 +48,7 @@ in
         hardware.enable = lib.mkDefault true;
         networking.enable = lib.mkDefault true;
         zsh.enable = lib.mkDefault true;
+        tmux.enable = lib.mkDefault true;
       };
 
       home-manager = {
