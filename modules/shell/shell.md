@@ -16,8 +16,17 @@ tmux keys, after the prefix Ctrl+A:
 | `r` | reload the config |
 | `Ctrl+A` | send Ctrl+A to the program inside |
 
-Ctrl+F in zsh (outside tmux too) opens tmux-sessionizer. Which folders it
-offers is a personal setting, in `modules/users/<name>.nix`.
+Ctrl+F in zsh (outside tmux too) opens tmux-sessionizer.
+
+Configs and scripts stay files, edited as files; the `.nix` next to them only
+installs them:
+
+| File | Is |
+| --- | --- |
+| `tmux/tmux.conf` | the tmux config, `/etc/tmux.conf` |
+| `tmux/scripts/cheat` | the cheat sheet script, with its lists in `tmux/scripts/resources/` |
+| `../users/zepzeper/tmux-sessionizer.conf` | which folders the sessionizer offers |
+| `../users/zepzeper/.tmux-sessionizer` | what every new sessionizer session runs first |
 
 The whole configuration is system-wide (`/etc/zshrc`), so servers without a
 Home Manager user get the same shell. People (employees) keep bash.
