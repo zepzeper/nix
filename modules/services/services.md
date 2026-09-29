@@ -21,3 +21,7 @@ NetworkManager.
 Network printers and scanners are found by themselves (Avahi, driverless
 IPP and eSCL); USB ones through ipp-usb. Admins and people can print and
 scan without sudo.
+
+`services-kodai` (`zep.kodai`): Kodai natively (PHP-FPM, nginx, MariaDB,
+Redis, Mailpit, workers), over the tailnet only; deployed with
+`kodai-deploy`. See `kodai/kodai.md`.

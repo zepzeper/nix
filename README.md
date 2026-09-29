@@ -37,7 +37,7 @@ modules/
   hardware/                  firmware, fwupd, graphics, zram
   networking/                NetworkManager or systemd-networkd
   secrets/                   agenix (the secrets themselves are in secrets/ at the root)
-  services/                  auto-update, Tailscale
+  services/                  auto-update, Tailscale, printing, Kodai (test server)
   shell/                     zsh and tmux (with tmux-sessionizer), on every machine
   users/                     a person: their dotfiles, Home Manager settings and secrets on a machine
   hosts/

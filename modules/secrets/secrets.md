@@ -11,3 +11,4 @@ are in `secrets/README.md`.
 | `tailscale-authkey` | `services/tailscale.nix` | automatic Tailscale login (`zep.tailscale.options.authKey`) |
 | `intelephense` | `users/zepzeper/` | PHP language server licence |
 | `ansible-vault` | `users/zepzeper/` | Ansible vault password |
+| `kodai-env` | `services/kodai/` | Kodai's `.env` on the test server |
