@@ -68,10 +68,15 @@ Once:
 4. **Tailnet**, for the site and Mailpit: `ssh <ipv4>`, then `tailscale up`.
    In the Tailscale admin console turn off key expiry for it, and limit who
    may reach its ports 80 and 8025 (Mailpit has no login).
-5. **Kodai's pipeline** gets the server's address and the deploy key as
-   secrets, and a `known_hosts` line for it:
-   `ssh-keyscan <ipv4>` (compare with `ssh <ipv4> cat
-   /etc/ssh/ssh_host_ed25519_key.pub`).
+5. **Kodai's pipeline** (`.forgejo/workflows/deploy.yml`: the `staging`
+   branch deploys here) needs four secrets in the Kodai repository:
+
+   | Secret | Is |
+   | --- | --- |
+   | `STAGING_HOST` | the server's IPv4 |
+   | `STAGING_SSH_KEY` | the private half of `kodai-deploy` |
+   | `STAGING_KNOWN_HOSTS` | `ssh-keyscan -t ed25519 <ipv4>` (compare with `ssh <ipv4> cat /etc/ssh/ssh_host_ed25519_key.pub`) |
+   | `STAGING_ENV` | the whole `.env` (`DB_HOST=localhost` for the socket, `DB_USERNAME=kodai`, `DB_PASSWORD=` empty, `MAIL_DSN=smtp://127.0.0.1:1025`) |
 
 Then: `http://staging` (the site), `http://staging:8025` (the mail). Logs:
 `journalctl -u phpfpm-kodai -u 'kodai-*'`.
