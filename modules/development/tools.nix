@@ -12,7 +12,10 @@
   #   libvirtd groups;
   # - kustomize (Ansible comes with my user, as the ~/ansible-env my ansible
   #   repository expects);
-  # - age and agenix, for the secrets in this repository.
+  # - age and agenix, for the secrets in this repository;
+  # - direnv with nix-direnv: a project's development shell (its flake, see
+  #   the project templates) loads by itself on `cd`, in tmux sessions and
+  #   for Neovim too, and is cached so it stays fast.
   #
   # Dropped from the old installers: stow (Nix links the dotfiles now), the
   # cargo-built TUIs for the Hyprland launchers (Noctalia has those panels),
@@ -69,6 +72,11 @@
           age
           (callPackage "${inputs.agenix}/pkgs/agenix.nix" { })
         ];
+
+        programs.direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+        };
 
         virtualisation = {
           docker.enable = true;

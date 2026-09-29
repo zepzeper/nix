@@ -44,7 +44,8 @@ modules/
     profiles/                base, workstation, laptop, server
     clients/ laptops/ servers/   one file per machine
 secrets/                     encrypted secrets (agenix), see secrets/README.md
-templates/                   a block, and a host per machine type (desktop, laptop, server, Hetzner Cloud server, ARM server)
+templates/                   a block, a host per machine type (desktop, laptop, server, Hetzner Cloud server, ARM server),
+                             and projects/: development shells for new projects (nix flake init -t .#go)
 ```
 
 Every `.nix` file under `modules/` is loaded automatically. Files or folders
