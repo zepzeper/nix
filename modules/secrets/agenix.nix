@@ -5,11 +5,10 @@
   # it uses at boot with its SSH host key, into /run/agenix (memory only).
   #
   # Whatever uses a secret asks for it with `secretFile "<name>"` (a module
-  # argument): the .age file, or null while it is missing or this machine
-  # has no host key in secrets/hosts/ yet. So a machine builds before its
-  # secrets exist, and a machine that was never added cannot fail to decrypt
-  # (one that was added also has to be listed on the secret, in
-  # secrets/agenix-rules.nix):
+  # argument): the .age file, or null unless it exists and this machine can
+  # decrypt it - its host key in secrets/hosts/ and listed on that secret in
+  # secrets/agenix-rules.nix. So a machine builds before its secrets exist,
+  # and never tries to decrypt a secret that was not encrypted for it:
   #
   #   { secretFile, ... }: let file = secretFile "<name>"; in {
   #     age.secrets.<name> = lib.mkIf (file != null) { inherit file; };
@@ -19,6 +18,10 @@
   # switch): with no secret declared, agenix does nothing.
   flake.modules.nixos.secrets-agenix =
     { config, ... }:
+    let
+      rules = import ../../secrets/agenix-rules.nix;
+      key = file: builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile file);
+    in
     {
       key = "zep#secrets-agenix";
       imports = [ inputs.agenix.nixosModules.default ];
@@ -28,7 +31,13 @@
         let
           file = ../../secrets + "/${name}.age";
           hostKey = ../../secrets/hosts + "/${config.networking.hostName}.pub";
+          recipients = rules."${name}.age".publicKeys or [ ];
         in
-        if builtins.pathExists file && builtins.pathExists hostKey then file else null;
+        if
+          builtins.pathExists file && builtins.pathExists hostKey && builtins.elem (key hostKey) recipients
+        then
+          file
+        else
+          null;
     };
 }

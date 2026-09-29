@@ -30,7 +30,10 @@ caught, never delivered.
    ```
 
 3. **Tailnet**: `ssh <ipv4>`, then `tailscale up` (open the link). From now
-   on it is `staging`.
+   on it is `staging`. In the Tailscale admin console turn off key expiry
+   for it (or it drops off the tailnet after 180 days), and limit who may
+   reach its ports 80 and 8025: Mailpit has no login, and employee laptops
+   are on the same tailnet.
 4. **Its .env** (secrets/README.md):
 
    ```sh

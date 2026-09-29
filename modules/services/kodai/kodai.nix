@@ -126,6 +126,8 @@
           # As Kodai's docker/nginx/default.conf.
           nginx = {
             enable = true;
+            # Uploads up to php.ini's 50M (nginx's own default is 10M).
+            clientMaxBodySize = "50m";
             recommendedOptimisation = true;
             recommendedGzipSettings = true;
             recommendedProxySettings = true;
@@ -153,6 +155,8 @@
           mysql = {
             enable = true;
             package = pkgs.mariadb_118;
+            # Everything uses the socket; nothing listens on the network.
+            settings.mysqld.bind-address = "127.0.0.1";
             ensureDatabases = [ "kodai" ];
             ensureUsers = [
               {
@@ -180,19 +184,31 @@
           8025
         ];
 
-        systemd.services = {
-          kodai-scheduler = service "Kodai scheduler" "schedule:work";
-        }
-        // lib.listToAttrs (
-          map (
-            queue:
-            lib.nameValuePair "kodai-worker-${queue}" (
-              service "Kodai queue worker (${queue})" (
-                "queue:work" + lib.optionalString (queue != "default") " --queue=${queue}"
-              )
+        systemd.services =
+          lib.mapAttrs
+            (
+              _: unit:
+              unit
+              // {
+                # A changed .env reaches the long-running processes too.
+                restartTriggers = lib.optional (envFile != null) envFile;
+              }
             )
-          ) queues
-        );
+            (
+              {
+                kodai-scheduler = service "Kodai scheduler" "schedule:work";
+              }
+              // lib.listToAttrs (
+                map (
+                  queue:
+                  lib.nameValuePair "kodai-worker-${queue}" (
+                    service "Kodai queue worker (${queue})" (
+                      "queue:work" + lib.optionalString (queue != "default") " --queue=${queue}"
+                    )
+                  )
+                ) queues
+              )
+            );
 
         # The deploy key clones from GitHub without asking about its host key.
         programs.ssh.knownHosts."github.com".publicKey =

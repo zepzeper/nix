@@ -7,8 +7,9 @@
   # - IPv4 comes from DHCP, but IPv6 does not: each server gets a /64, shown
   #   in the Cloud Console, and uses one address from it with fe80::1 as its
   #   gateway (options.ipv6).
-  # - The QEMU guest drivers come with the hardware file nixos-anywhere
-  #   generates (nixpkgs' qemu-guest profile).
+  # - The QEMU guest drivers for its disk and network, here as well as in
+  #   the hardware file nixos-anywhere generates: without them the server
+  #   cannot find its disk at boot.
   #
   # Installed from the desktop with nixos-anywhere, straight from the Ubuntu
   # image Hetzner starts the server with (see the README).
@@ -42,6 +43,15 @@
         ];
 
         zep.disk.options.device = lib.mkDefault "/dev/sda";
+
+        boot.initrd.availableKernelModules = [
+          "virtio_pci"
+          "virtio_scsi"
+          "virtio_blk"
+          "virtio_net"
+          "sd_mod"
+          "sr_mod"
+        ];
 
         # The one network card: DHCP for IPv4, the fixed IPv6 address. Named
         # "10-..." so it wins over nixpkgs' catch-all DHCP.

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Deploys Kodai on this server. From the desktop:
+# Deploys Kodai on this server. From the desktop (-t: sudo asks my password):
 #
-#   ssh <server> kodai-deploy <branch, tag or commit>
-#   ssh <server> kodai-deploy --key       the deploy key, to add on GitHub once
+#   ssh -t <server> kodai-deploy <branch, tag or commit>
+#   ssh -t <server> kodai-deploy --key    the deploy key, to add on GitHub once
 #
 # Fetches the code into /srv/kodai (cloning it the first time, with the
 # server's own read-only deploy key), installs the PHP dependencies without
@@ -15,12 +15,15 @@ dir=/srv/kodai
 repo=git@github.com:zepzeper/kodai.git
 key=/var/lib/kodai/.ssh/id_ed25519
 
-# sudo resets PATH; keep ours (git, php, composer come from this script's).
+# Everything as kodai, which owns /srv/kodai and its home (I cannot even look
+# inside either). sudo resets PATH; keep ours (git, php, composer come from
+# this script's). in_app runs in the checkout.
 as_kodai() { sudo -u kodai -H env "PATH=$PATH" "$@"; }
+in_app() { sudo -u kodai -H env -C "$dir" "PATH=$PATH" "$@"; }
 
 ref="${1:?usage: kodai-deploy <branch|tag|commit>, or kodai-deploy --key}"
 
-if [[ ! -f "$key" ]]; then
+if ! as_kodai test -f "$key"; then
     as_kodai mkdir -p -m 700 "$(dirname "$key")"
     as_kodai ssh-keygen -q -t ed25519 -N "" -C "kodai-deploy@$(cat /proc/sys/kernel/hostname)" -f "$key"
 fi
@@ -37,26 +40,26 @@ if [[ ! -f /run/agenix/kodai-env ]]; then
     exit 1
 fi
 
-if [[ ! -d "$dir/.git" ]]; then
+if ! as_kodai test -d "$dir/.git"; then
     as_kodai git clone --quiet "$repo" "$dir"
 fi
 
-as_kodai git -C "$dir" fetch --quiet --prune --tags origin
+# --force: a tag that was moved on GitHub moves here too.
+in_app git fetch --quiet --prune --tags --force origin
 # A branch deploys what is on GitHub now; a tag or commit as it is.
-if as_kodai git -C "$dir" rev-parse --verify --quiet "origin/$ref" >/dev/null; then
-    as_kodai git -C "$dir" checkout --quiet --force --detach "origin/$ref"
+if in_app git rev-parse --verify --quiet "origin/$ref" >/dev/null; then
+    in_app git checkout --quiet --force --detach "origin/$ref"
 else
-    as_kodai git -C "$dir" checkout --quiet --force --detach "$ref"
+    in_app git checkout --quiet --force --detach "$ref"
 fi
 
-cd "$dir"
-as_kodai ln -sfn /run/agenix/kodai-env .env
+in_app ln -sfn /run/agenix/kodai-env .env
 
-as_kodai composer install --quiet --no-interaction --prefer-dist --no-dev --classmap-authoritative
-as_kodai vendor/bin/phinx migrate
-as_kodai php bin/kodai cache:clear
+in_app composer install --quiet --no-interaction --prefer-dist --no-dev --classmap-authoritative
+in_app vendor/bin/phinx migrate
+in_app php bin/kodai cache:clear
 
 sudo systemctl reload phpfpm-kodai.service
 sudo systemctl restart kodai-scheduler.service 'kodai-worker-*.service'
 
-echo "Deployed $ref ($(as_kodai git -C "$dir" rev-parse --short HEAD))."
+echo "Deployed $ref ($(in_app git rev-parse --short HEAD))."
