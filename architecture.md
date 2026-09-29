@@ -76,9 +76,20 @@ a stable machine needs newer.
 ### Laptops update themselves; servers are deployed by hand
 Employee laptops pull this flake on a schedule and switch
 (`system.autoUpgrade`), so nobody has to reach a laptop; the cost is that
-`main` is trusted by every laptop and must be protected. Servers never change
-on their own: an admin deploys with `nixos-rebuild --target-host`. In both
-cases `flake.lock` decides what "latest" means.
+`main` is trusted by every laptop and must be protected. Servers change
+when an admin deploys with `nixos-rebuild --target-host`; the test server
+instead follows `main` (it checks every few minutes and rebuilds only when
+`main` moved), so a merged, checked change reaches it without any key for
+this repository living in CI. In all cases `flake.lock` decides what
+"latest" means.
+
+### Machines in Nix, applications by their own CI
+This repository is what Ansible was: machines, services, and the platform
+an application runs on (runtimes, web server, database, workers, users,
+firewall). The application itself - its code, its `.env`, migrations,
+releases - is shipped by the application's own CI, which logs in with a
+restricted deploy key and may only restart its own services. Nix never
+holds an application's configuration or secrets.
 
 ### Home Manager as a NixOS module
 The system and the user environment build, switch and roll back together.
