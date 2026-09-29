@@ -10,6 +10,10 @@
   # the machine in the admin console and the option off after the first
   # login). `tailscale` works without sudo for the (first) admin.
   #
+  # SSH always answers over the tailnet, also on machines where it is closed
+  # to the network they are on (laptops): so I reach every machine with my
+  # key, through the tailnet only.
+  #
   # DNS goes through systemd-resolved, which NetworkManager and Tailscale
   # both work with, so MagicDNS names (`ssh <machine>`) resolve without the
   # two fighting over /etc/resolv.conf.
@@ -50,6 +54,9 @@
         };
 
         age.secrets.tailscale-authkey = lib.mkIf useAuthKey { file = authKeyFile; };
+
+        networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts =
+          lib.mkIf config.services.openssh.enable config.services.openssh.ports;
 
         services.resolved.enable = lib.mkDefault true;
       };

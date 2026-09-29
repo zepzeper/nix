@@ -9,15 +9,18 @@
 # PIN twice. Running it again replaces the PIN. The passphrase and the
 # recovery key keep working, so keep them in the password manager.
 #
-# The key is tied to the Secure Boot state (PCR 7): after a firmware update
-# or a Secure Boot change the PIN stops working and the machine asks for the
-# passphrase instead; run this again to enroll anew.
+# The key is sealed in this laptop's TPM and opens only with the PIN; the
+# TPM locks itself after repeated wrong PINs. It is deliberately not tied to
+# boot measurements (PCRs): those change with firmware and boot updates,
+# which would make the PIN stop working after an update. So nothing has to
+# be enrolled again after updates. The disk stays useless outside this
+# laptop, and without the PIN inside it.
 set -euo pipefail
 
 device=/dev/disk/by-partlabel/disk-main-root
 
 sudo systemd-cryptenroll --wipe-slot=tpm2 \
-    --tpm2-device=auto --tpm2-with-pin=yes --tpm2-pcrs=7 \
+    --tpm2-device=auto --tpm2-with-pin=yes --tpm2-pcrs= \
     "$device"
 
 echo "Done: from the next boot the disk asks for the PIN."

@@ -15,7 +15,9 @@
   #   spelling), Thunderbird and Mattermost, printing and scanning, and the
   #   work VPN (OpenVPN); more apps they install themselves from Flathub;
   # - the disk unlocks with a PIN through the TPM once `enroll-tpm-pin` has
-  #   run (the passphrase stays mine, for recovery).
+  #   run (the passphrase stays mine, for recovery);
+  # - I can reach it: it joins the tailnet, and SSH (my keys only) answers
+  #   there, while it stays closed on whatever network the laptop is on.
   flake.modules.nixos.profiles-laptop =
     { lib, hostConfig, ... }:
     {
@@ -33,6 +35,7 @@
         desktop.options.environment = lib.mkDefault "plasma";
 
         ssh.options.openFirewall = lib.mkDefault false;
+        tailscale.enable = lib.mkDefault true;
 
         firefox.enable = lib.mkDefault true;
         office.enable = lib.mkDefault true;

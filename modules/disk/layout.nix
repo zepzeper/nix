@@ -11,8 +11,8 @@
   # boot, typed with the keyboard layout of zep.locale (the installer's is
   # us). With options.tpm2 the disk can instead unlock through the TPM after
   # a short PIN, once `enroll-tpm-pin` (scripts/) has been run on the
-  # machine; until then, and whenever the TPM refuses, it asks for the
-  # passphrase.
+  # machine (once: updates do not undo it); until then, or after too many
+  # wrong PINs, it asks for the passphrase.
   flake.modules.nixos.disk-layout =
     {
       config,

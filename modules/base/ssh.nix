@@ -13,7 +13,8 @@
   #
   # options.openFirewall: servers and my machines accept SSH from the
   # network; laptops do not (their profile turns it off), because they roam
-  # on networks nobody here controls. Reach them over a VPN instead.
+  # on networks nobody here controls. They are reached over the tailnet
+  # instead, where SSH always answers (services-tailscale).
   flake.modules.nixos.base-ssh =
     { config, lib, ... }:
     let

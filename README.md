@@ -183,12 +183,16 @@ install passphrase this once):
 1. Log in as `zepzeper` (a TTY is fine: Ctrl+Alt+F2).
 2. `sudo passwd <person>`: the colleague types their own password.
 3. `enroll-tpm-pin`: type the disk passphrase, then the colleague chooses
-   their PIN (twice). From now on the laptop asks only that PIN at boot.
-4. Store the disk passphrase and the recovery key in the password manager
+   their PIN (twice). From now on the laptop asks only that PIN at boot,
+   also after updates.
+4. `tailscale up` and log in with my account: the laptop joins the tailnet,
+   and from then on `ssh <name>` reaches it from anywhere (my keys only;
+   SSH stays closed on the networks it roams on). In the Tailscale admin
+   console, turn off key expiry for it, so it never drops out.
+5. Store the disk passphrase and the recovery key in the password manager
    under the laptop's name: with them the disk opens when the PIN is
-   forgotten or the TPM refuses after a firmware update (then run
-   `enroll-tpm-pin` again).
-5. Log out; the colleague logs in. Apps beyond the standard set come from
+   forgotten (then run `enroll-tpm-pin` again).
+6. Log out; the colleague logs in. Apps beyond the standard set come from
    Discover (Flathub), no admin needed.
 
 ### Servers (unencrypted): from the desktop
