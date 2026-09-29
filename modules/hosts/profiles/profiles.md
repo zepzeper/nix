@@ -6,7 +6,7 @@ every module has a key, but one is the convention).
 | Profile | Imports | Forces | Defaults |
 | --- | --- | --- | --- |
 | `profiles-base` | every block, automatically | nix, users, ssh, hardening | locale, boot, disk, hardware, networking on |
-| `profiles-workstation` | base | disk encryption | NetworkManager, a desktop (the host picks which), graphics drivers, recovery key |
+| `profiles-workstation` | base | disk encryption | NetworkManager, a desktop (the host picks which), graphics drivers, recovery key, Secure Boot (own keys, lanzaboote) |
 | `profiles-laptop` | workstation | stable channel, no automatic reboot | Plasma, Tailscale (SSH only over the tailnet, closed to the network), auto-update on, Firefox, LibreOffice, Thunderbird, Mattermost, Flatpak (Flathub), printing and scanning, OpenVPN in NetworkManager, TPM + PIN disk unlock |
 | `profiles-server` | base | stable channel, unencrypted disk, no desktop, no automatic updates, no audio, no bluetooth | networkd, wheel trusted for remote deploys, no fwupd, no docs |
 

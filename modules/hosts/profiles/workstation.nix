@@ -20,6 +20,8 @@
         desktop.enable = lib.mkDefault true;
         # Drivers; the host names its GPU (zep.graphics.options.gpu).
         graphics.enable = lib.mkDefault true;
+        # Secure Boot with the machine's own keys (see modules/boot/loader.nix).
+        boot.options.secureBoot = lib.mkDefault true;
 
         disk.options = {
           encrypt = lib.mkForce true;

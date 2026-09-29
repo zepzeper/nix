@@ -51,6 +51,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Secure Boot (modules/boot/): lanzaboote signs the boot files with each
+    # machine's own keys. Pinned to a release tag; a newer release is a new
+    # tag here. Its tool is built from source (there is no binary cache),
+    # once per nixpkgs update, on stable for every machine.
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.2.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # Only used by lanzaboote's own development.
+      inputs.pre-commit.follows = "";
+    };
+
     # Helium, the browser (not in nixpkgs). Only its package recipe is used,
     # built with the host's own nixpkgs; `nix flake update helium` pulls a
     # new Helium release.

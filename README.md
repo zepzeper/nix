@@ -117,7 +117,9 @@ nix build .#installer-iso      # result/iso/zep-installer-x86_64-linux.iso
 sudo dd if=result/iso/zep-installer-x86_64-linux.iso of=/dev/sdX bs=4M conv=fsync oflag=direct status=progress
 ```
 
-Boot it in **UEFI mode** (not legacy/CSM, Secure Boot off) and get it online
+Boot it in **UEFI mode** (not legacy/CSM, Secure Boot off; on a desktop
+or laptop also clear the Secure Boot keys, "Setup Mode", so the installed
+system can enroll its own) and get it online
 (wired, or `nmtui` for WiFi). `ip -brief address` shows its address; from
 the desktop `ssh root@<address>` then gets you in.
 
@@ -178,7 +180,9 @@ git add -A && git commit -m "Add <name>" && git push
 ### Handing over a laptop
 
 With the colleague there, after its first boot (the disk still wants the
-install passphrase this once):
+install passphrase this once). Its first boot also created its Secure Boot
+keys: reboot once more (the keys are enrolled then), switch Secure Boot on
+in the firmware if it is not, and check with `sbctl status`. Then:
 
 1. Log in as `zepzeper` (a TTY is fine: Ctrl+Alt+F2).
 2. `sudo passwd <person>`: the colleague types their own password.
