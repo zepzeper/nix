@@ -58,6 +58,8 @@
           shellcheck
           shfmt
           unzip
+          lsof
+          tree
 
           # VMs
           virt-manager # virt-install
