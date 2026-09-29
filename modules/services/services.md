@@ -22,6 +22,11 @@ Network printers and scanners are found by themselves (Avahi, driverless
 IPP and eSCL); USB ones through ipp-usb. Admins and people can print and
 scan without sudo.
 
-`services-kodai` (`zep.kodai`): Kodai natively (PHP-FPM, nginx, MariaDB,
-Redis, Mailpit, workers), over the tailnet only; deployed with
-`kodai-deploy`. See `kodai/kodai.md`.
+`services-kodai` (`zep.kodai`): the platform Kodai is deployed onto
+(PHP-FPM, nginx, MariaDB, Redis, Mailpit, sandboxed workers), over the
+tailnet only. Kodai's CI deploys the code and its `.env`. See
+`kodai/kodai.md`.
+
+`services-auto-update` can also make a server follow main
+(`options.onlyWhenChanged` with a short schedule): it checks every few
+minutes and rebuilds only when main moved. The test server does this.

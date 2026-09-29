@@ -41,6 +41,10 @@ let
         home-manager.nixosModules.home-manager
         {
           networking.hostName = lib.mkDefault hostName;
+          # Which commit of this repository the system was built from
+          # (`nixos-version --configuration-revision`); unset when built
+          # from uncommitted changes.
+          system.configurationRevision = lib.mkIf (inputs.self ? rev) inputs.self.rev;
           home-manager.extraSpecialArgs = specialArgs;
         }
       ];

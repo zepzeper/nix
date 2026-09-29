@@ -3,8 +3,9 @@
   # GitHub on a schedule, build it, and switch. Push to main and every machine
   # with this on follows within a day - no need to reach each laptop.
   #
-  # On for employee laptops. Off (forced) for servers, which only change when
-  # an admin deploys to them.
+  # On for employee laptops. Off by default for servers, which change when an
+  # admin deploys to them; a server can follow main instead (the test server:
+  # every few minutes, only when main moved - options.onlyWhenChanged).
   #
   # Inputs are pinned by flake.lock, so "an update" means whatever the lock
   # says: security fixes reach machines when the lock is bumped and pushed.
@@ -15,12 +16,24 @@
     {
       config,
       lib,
+      pkgs,
       inputs,
       hostConfig,
       ...
     }:
     let
       cfg = config.zep.autoUpdate;
+      flake = "${cfg.options.flake}#${hostConfig.name}";
+
+      # Is there a newer commit than the one this system was built from?
+      updateAvailable = pkgs.writeShellApplication {
+        name = "update-available";
+        runtimeInputs = [
+          config.nix.package
+          pkgs.jq
+        ];
+        text = builtins.readFile ./scripts/update-available;
+      };
     in
     {
       key = "zep#services-auto-update";
@@ -37,6 +50,19 @@
             type = lib.types.str;
             default = "daily";
             description = "When to check, as a systemd calendar expression.";
+          };
+          randomizedDelay = lib.mkOption {
+            type = lib.types.str;
+            default = "45min";
+            description = "Random delay before each run, so machines do not all update at once.";
+          };
+          onlyWhenChanged = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              Build only when the flake has a newer commit than the running
+              system, so a frequent schedule costs a quick check, not a build.
+            '';
           };
           allowReboot = lib.mkOption {
             type = lib.types.bool;
@@ -65,17 +91,21 @@
           enable = true;
           # The host's name in this flake, not networking.hostName, which a
           # host may change.
-          flake = "${cfg.options.flake}#${hostConfig.name}";
+          inherit flake;
           # Flakes pin everything; there are no channels to update.
           upgrade = false;
           inherit (cfg.options) dates allowReboot;
-          randomizedDelaySec = "45min";
+          randomizedDelaySec = cfg.options.randomizedDelay;
           persistent = true;
           rebootWindow = lib.mkIf cfg.options.allowReboot {
             lower = "03:00";
             upper = "05:00";
           };
         };
+
+        # Exit status 1 skips the run without counting as a failure.
+        systemd.services.nixos-upgrade.serviceConfig.ExecCondition =
+          lib.mkIf cfg.options.onlyWhenChanged "${lib.getExe updateAvailable} ${cfg.options.flake}";
       };
     };
 }

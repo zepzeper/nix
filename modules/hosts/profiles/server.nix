@@ -5,8 +5,9 @@ let
 in
 {
   # A headless machine: nobody logs in at a desk, admins reach it over SSH.
-  # Shell only, stable channel, and no automatic updates: a server changes
-  # when an admin deploys to it, never on its own:
+  # Shell only, stable channel, and no automatic updates by default: a server
+  # changes when an admin deploys to it (a test server may instead follow
+  # main, see services-auto-update):
   #
   #   nixos-rebuild switch --flake .#<name> --target-host <name> --ask-sudo-password
   #
@@ -37,7 +38,7 @@ in
       zep = {
         networking.options.mode = lib.mkDefault "networkd";
         desktop.enable = lib.mkForce false;
-        autoUpdate.enable = lib.mkForce false;
+        autoUpdate.enable = lib.mkDefault false;
         nix.options.trustAdmins = lib.mkDefault true;
         hardware.options.firmwareUpdates = lib.mkDefault false;
       };

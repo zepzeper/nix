@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Succeeds when the flake (e.g. github:zepzeper/nix) has a newer commit than
+# the one the running system was built from, so the automatic update only
+# builds when there is something new. Any failure (no network, GitHub down)
+# counts as "nothing new": the next run tries again.
+set -euo pipefail
+
+flake="${1:?usage: update-available <flake>}"
+
+latest="$(nix --extra-experimental-features 'nix-command flakes' flake metadata --refresh --json "$flake" | jq -r '.revision // empty')"
+running="$(/run/current-system/sw/bin/nixos-version --configuration-revision 2>/dev/null || true)"
+
+[[ -n "$latest" && "$latest" != "$running" ]]

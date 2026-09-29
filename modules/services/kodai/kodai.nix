@@ -1,70 +1,106 @@
 {
-  # Kodai (github.com/zepzeper/kodai) on a server, natively: what its
-  # compose.yaml runs, as NixOS services.
+  # The platform for Kodai (github.com/zepzeper/kodai): everything its
+  # compose.yaml runs, as NixOS services, but not the application itself.
+  # Kodai's CI deploys the code and its .env; this only prepares where they
+  # go and runs what is there.
   #
-  #   nginx        the site, on port 80, reachable over the tailnet only
-  #   PHP-FPM 8.5  with the extensions Kodai needs (redis added to the
-  #                defaults) and php.ini next to this file
-  #   MariaDB 11.8 database kodai; the kodai system user logs in over the
-  #                socket, so there is no database password
+  #   nginx        the site, on port 80, over the tailnet only
+  #   PHP-FPM 8.5  the extensions Kodai needs (redis added to the defaults),
+  #                php.ini next to this file
+  #   MariaDB 11.8 database kodai; users log in over the socket as their
+  #                system user (kodai runs the app, deploy migrates), so there
+  #                is no database password
   #   Redis        on localhost
   #   Mailpit      catches all mail; its inbox on port 8025, over the tailnet
   #   workers      one per queue (default, logs, webhooks, mail) and the
-  #                scheduler, as systemd services, stopped gracefully (SIGTERM,
-  #                a minute to finish the job in hand)
+  #                scheduler: kodai.target, stopped gracefully (SIGTERM, a
+  #                minute to finish the job in hand), sandboxed
   #
-  # The code is not built by Nix: it is a checkout in /srv/kodai, deployed
-  # with `kodai-deploy <ref>` (the deploy script next to this file). Its .env
-  # is the secret kodai-env (env.example next to this file shows what goes
-  # in). Before the first deploy the workers simply do not start.
+  # What the deploy finds (all under /srv/kodai):
+  #
+  #   releases/<id>/  one directory per release, uploaded by CI
+  #   current         symlink to the live release (nginx, PHP and the workers
+  #                   run from here)
+  #   shared/.env     Kodai's .env: written by CI, never by this repository
+  #   shared/var/     Kodai's var/ (its cache), writable by the app; each
+  #                   release links its var/ here
+  #
+  # CI logs in as `deploy` with the key(s) in deploy_keys (restricted: no
+  # terminal, no forwarding), owns releases/ and shared/, runs the
+  # migrations, switches current, and may do exactly two things as root:
+  # `systemctl reload phpfpm-kodai.service` and `systemctl restart
+  # kodai.target` (allowed by polkit, no sudo). The app runs as `kodai`,
+  # which can read the code and write only shared/var.
   flake.modules.nixos.services-kodai =
     {
       config,
       lib,
       pkgs,
-      secretFile,
       ...
     }:
     let
       cfg = config.zep.kodai;
       dir = "/srv/kodai";
-      envFile = secretFile "kodai-env";
 
       php = pkgs.php85.buildEnv {
         extensions = { enabled, all }: enabled ++ [ all.redis ];
         extraConfig = builtins.readFile ./php.ini;
       };
 
-      deploy = pkgs.writeShellApplication {
-        name = "kodai-deploy";
-        runtimeInputs = [
-          php
-          php.packages.composer
-          pkgs.git
-          pkgs.openssh
-          pkgs.coreutils
+      deployKeys = lib.filter (line: line != "" && !lib.hasPrefix "#" line) (
+        lib.splitString "\n" (builtins.readFile ./deploy_keys)
+      );
+
+      # The sandbox every Kodai process runs in: read-only system, its own
+      # /tmp, no devices, no kernel knobs, network only over IP and sockets,
+      # and write access to shared/var alone.
+      sandbox = {
+        ProtectSystem = "strict";
+        ReadWritePaths = [ "${dir}/shared/var" ];
+        ProtectHome = true;
+        PrivateTmp = true;
+        PrivateDevices = true;
+        NoNewPrivileges = true;
+        ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectKernelLogs = true;
+        ProtectControlGroups = true;
+        ProtectClock = true;
+        ProtectHostname = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        LockPersonality = true;
+        RestrictAddressFamilies = [
+          "AF_UNIX"
+          "AF_INET"
+          "AF_INET6"
         ];
-        text = builtins.readFile ./deploy;
+        SystemCallArchitectures = "native";
+        CapabilityBoundingSet = "";
+        # Group-writable: deploy (in the kodai group) clears the cache.
+        UMask = "0007";
       };
 
-      # What every Kodai process needs to run.
-      service = description: command: {
+      worker = description: command: {
         inherit description;
-        wantedBy = [ "multi-user.target" ];
+        wantedBy = [ "kodai.target" ];
+        partOf = [ "kodai.target" ];
         after = [
           "mysql.service"
           "redis.service"
+          "mailpit-kodai.service"
         ];
         wants = [
           "mysql.service"
           "redis.service"
         ];
         # Nothing to run before the first deploy.
-        unitConfig.ConditionPathExists = "${dir}/vendor/autoload.php";
-        serviceConfig = {
+        unitConfig.ConditionPathExists = "${dir}/current/vendor/autoload.php";
+        serviceConfig = sandbox // {
           User = "kodai";
           Group = "kodai";
-          WorkingDirectory = dir;
+          WorkingDirectory = "${dir}/current";
           ExecStart = "${php}/bin/php bin/kodai ${command}";
           KillSignal = "SIGTERM";
           TimeoutStopSec = 60;
@@ -82,29 +118,66 @@
     in
     {
       key = "zep#services-kodai";
-      options.zep.kodai.enable = lib.mkEnableOption "Kodai, with its database, cache, mail catcher and workers";
+      options.zep.kodai.enable = lib.mkEnableOption "the platform Kodai is deployed onto";
 
       config = lib.mkIf cfg.enable {
+        assertions = [
+          {
+            assertion = config.zep.tailscale.enable;
+            message = "zep.kodai answers over the tailnet only: turn on zep.tailscale too.";
+          }
+        ];
+
         users = {
-          users.kodai = {
-            isSystemUser = true;
-            group = "kodai";
-            # The deploy key and composer's cache live here, not in the
-            # checkout.
-            home = "/var/lib/kodai";
-            createHome = true;
+          groups = {
+            kodai = { };
+            deploy = { };
           };
-          groups.kodai = { };
-          # nginx serves public/ and reaches the PHP-FPM socket.
-          users.${config.services.nginx.user}.extraGroups = [ "kodai" ];
+          users = {
+            # Runs the application.
+            kodai = {
+              isSystemUser = true;
+              group = "kodai";
+            };
+            # CI's login: uploads releases, writes .env, migrates, restarts.
+            deploy = {
+              isSystemUser = true;
+              group = "deploy";
+              extraGroups = [ "kodai" ];
+              home = "/var/lib/deploy";
+              createHome = true;
+              shell = pkgs.bashInteractive;
+              openssh.authorizedKeys.keys = map (key: "restrict ${key}") deployKeys;
+            };
+            # nginx serves public/ and reaches the PHP-FPM socket.
+            ${config.services.nginx.user}.extraGroups = [ "kodai" ];
+          };
         };
 
-        systemd.tmpfiles.rules = [ "d ${dir} 0750 kodai kodai -" ];
+        zep.ssh.options.extraAllowGroups = [ "deploy" ];
 
-        age.secrets.kodai-env = lib.mkIf (envFile != null) {
-          file = envFile;
-          owner = "kodai";
-        };
+        # setgid directories: whatever deploy puts in them belongs to the
+        # kodai group, so the app can read it.
+        systemd.tmpfiles.rules = [
+          "d ${dir} 0750 deploy kodai -"
+          "d ${dir}/releases 2750 deploy kodai -"
+          "d ${dir}/shared 2750 deploy kodai -"
+          "d ${dir}/shared/var 2770 kodai kodai -"
+        ];
+
+        # The two root actions a deploy needs, and nothing else.
+        security.polkit.enable = true;
+        security.polkit.extraConfig = ''
+          polkit.addRule(function (action, subject) {
+            if (action.id == "org.freedesktop.systemd1.manage-units" && subject.user == "deploy") {
+              var unit = action.lookup("unit"), verb = action.lookup("verb");
+              if ((unit == "kodai.target" && verb == "restart") ||
+                  (unit == "phpfpm-kodai.service" && verb == "reload")) {
+                return polkit.Result.YES;
+              }
+            }
+          });
+        '';
 
         services = {
           phpfpm.pools.kodai = {
@@ -123,7 +196,9 @@
             };
           };
 
-          # As Kodai's docker/nginx/default.conf.
+          # As Kodai's docker/nginx/default.conf, from the live release.
+          # $realpath_root: PHP sees the release's real path, so switching
+          # `current` never mixes two releases within a request.
           nginx = {
             enable = true;
             # Uploads up to php.ini's 50M (nginx's own default is 10M).
@@ -133,15 +208,15 @@
             recommendedProxySettings = true;
             virtualHosts.kodai = {
               default = true;
-              root = "${dir}/public";
+              root = "${dir}/current/public";
               extraConfig = "index index.php;";
               locations = {
                 "/".tryFiles = "$uri $uri/ /index.php?$query_string";
                 "~ \\.php$".extraConfig = ''
                   try_files $uri =404;
                   include ${config.services.nginx.package}/conf/fastcgi_params;
-                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                  fastcgi_param DOCUMENT_ROOT $document_root;
+                  fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                  fastcgi_param DOCUMENT_ROOT $realpath_root;
                   fastcgi_pass unix:${config.services.phpfpm.pools.kodai.socket};
                 '';
                 # OAuth metadata, JWKS and ACME challenges live here.
@@ -158,12 +233,16 @@
             # Everything uses the socket; nothing listens on the network.
             settings.mysqld.bind-address = "127.0.0.1";
             ensureDatabases = [ "kodai" ];
-            ensureUsers = [
-              {
-                name = "kodai";
-                ensurePermissions."kodai.*" = "ALL PRIVILEGES";
-              }
-            ];
+            ensureUsers =
+              map
+                (name: {
+                  inherit name;
+                  ensurePermissions."kodai.*" = "ALL PRIVILEGES";
+                })
+                [
+                  "kodai"
+                  "deploy"
+                ];
           };
 
           redis.servers."" = {
@@ -184,47 +263,46 @@
           8025
         ];
 
-        systemd.services =
-          lib.mapAttrs
-            (
-              _: unit:
-              unit
-              // {
-                # A changed .env reaches the long-running processes too.
-                restartTriggers = lib.optional (envFile != null) envFile;
-              }
-            )
-            (
-              {
-                kodai-scheduler = service "Kodai scheduler" "schedule:work";
-              }
-              // lib.listToAttrs (
-                map (
-                  queue:
-                  lib.nameValuePair "kodai-worker-${queue}" (
-                    service "Kodai queue worker (${queue})" (
-                      "queue:work" + lib.optionalString (queue != "default") " --queue=${queue}"
-                    )
-                  )
-                ) queues
+        systemd = {
+          targets.kodai = {
+            description = "Kodai's workers and scheduler";
+            wantedBy = [ "multi-user.target" ];
+          };
+
+          services = {
+            kodai-scheduler = worker "Kodai scheduler" "schedule:work";
+
+            # Kodai's PHP-FPM pool, sandboxed as far as a service that starts
+            # as root and switches to kodai allows.
+            phpfpm-kodai.serviceConfig = {
+              UMask = "0007";
+              ProtectSystem = "full";
+              ProtectHome = true;
+              PrivateTmp = true;
+              ProtectKernelTunables = true;
+              ProtectKernelModules = true;
+              ProtectKernelLogs = true;
+              ProtectControlGroups = true;
+              RestrictNamespaces = true;
+              LockPersonality = true;
+            };
+          }
+          // lib.listToAttrs (
+            map (
+              queue:
+              lib.nameValuePair "kodai-worker-${queue}" (
+                worker "Kodai queue worker (${queue})" (
+                  "queue:work" + lib.optionalString (queue != "default") " --queue=${queue}"
+                )
               )
-            );
+            ) queues
+          );
+        };
 
-        # The deploy key clones from GitHub without asking about its host key.
-        programs.ssh.knownHosts."github.com".publicKey =
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-
+        # For the deploy (composer, migrations, bin/kodai) and for me.
         environment.systemPackages = [
-          deploy
           php
           php.packages.composer
-        ];
-
-        assertions = [
-          {
-            assertion = config.zep.tailscale.enable;
-            message = "zep.kodai answers over the tailnet only: turn on zep.tailscale too.";
-          }
         ];
       };
     };

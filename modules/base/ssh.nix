@@ -2,9 +2,11 @@
   # OpenSSH for admins only, with keys only.
   #
   # Forced (a host cannot weaken these): no root login, no passwords, only
-  # members of wheel may log in, and keys come only from this repository
-  # (users.users.<name>.openssh.authorizedKeys), never from ~/.ssh - so an
-  # employee, or malware running as one, cannot add a key and open a door.
+  # members of wheel may log in (plus groups a service block names in
+  # options.extraAllowGroups, for restricted deploy keys), and keys come
+  # only from this repository (users.users.<name>.openssh.authorizedKeys),
+  # never from ~/.ssh - so an employee, or malware running as one, cannot
+  # add a key and open a door.
   #
   # The crypto (ciphers, key exchange, MACs) is left to nixpkgs: its defaults
   # are already a hardened, modern set, and they gain new algorithms (such as
@@ -31,6 +33,14 @@
             default = true;
             description = "Accept SSH on every interface. Off on laptops.";
           };
+          extraAllowGroups = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = ''
+              Groups besides wheel whose members may log in, for service
+              accounts whose keys are restricted (a CI deploy user).
+            '';
+          };
           maxAuthTries = lib.mkOption {
             type = lib.types.ints.positive;
             default = 4;
@@ -48,7 +58,7 @@
             PermitRootLogin = lib.mkForce "no";
             PasswordAuthentication = lib.mkForce false;
             KbdInteractiveAuthentication = lib.mkForce false;
-            AllowGroups = lib.mkForce [ "wheel" ];
+            AllowGroups = lib.mkForce ([ "wheel" ] ++ cfg.options.extraAllowGroups);
             MaxAuthTries = lib.mkDefault cfg.options.maxAuthTries;
           };
         };

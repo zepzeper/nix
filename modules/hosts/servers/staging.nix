@@ -1,7 +1,9 @@
-# staging: a Hetzner Cloud server (x86) to test Kodai on, reached over the
-# tailnet only. Not installed yet: create it in the Cloud Console, then
-# install and deploy as in modules/services/kodai/kodai.md. Until then its
-# hardware file does not exist and is simply not imported.
+# staging: a Hetzner Cloud server (x86) to test Kodai on; the site over the
+# tailnet only. Its configuration follows main by itself (a merged change is
+# live within minutes); Kodai's own CI deploys the application onto it.
+# Not installed yet: create it in the Cloud Console, then install as in
+# modules/services/kodai/kodai.md. Until then its hardware file does not
+# exist and is simply not imported.
 { config, lib, ... }:
 {
   flake.modules.nixos."hosts/staging" = {
@@ -23,6 +25,16 @@
 
       tailscale.enable = true;
       kodai.enable = true;
+
+      # Follow main: look every 5 minutes, rebuild only when it moved.
+      autoUpdate = {
+        enable = true;
+        options = {
+          dates = "*:0/5";
+          randomizedDelay = "0";
+          onlyWhenChanged = true;
+        };
+      };
     };
   };
 }

@@ -1,24 +1,59 @@
 # Kodai
 
-`services-kodai` (`zep.kodai`): Kodai on a server, natively (no Docker). See
-`kodai.nix` for what runs; the files next to it are edited as files:
+`services-kodai` (`zep.kodai`) is the platform Kodai is deployed onto: the
+services from its `compose.yaml`, declared here. It is not the
+application: Kodai's own CI deploys the code and writes its `.env`; this
+repository never sees either.
 
-| File | Is |
+| This repository | Kodai's CI |
 | --- | --- |
-| `php.ini` | PHP settings (Kodai's production values, plus the MariaDB socket) |
-| `deploy` | `kodai-deploy`, run on the server |
-| `env.example` | what goes in the `kodai-env` secret, Kodai's `.env` |
+| PHP 8.5 and `php.ini`, PHP-FPM, nginx, MariaDB, Redis, Mailpit | the code, as a release |
+| workers and scheduler (`kodai.target`), sandboxed | `.env` (from its secrets) |
+| the `deploy` user and its key (`deploy_keys`) | `composer install`, migrations |
+| `/srv/kodai/{releases,shared}`, permissions | switching `current`, restarting |
+| firewall: site and Mailpit over the tailnet only | |
 
-Only over the tailnet: the site on port 80, Mailpit's inbox on 8025. Mail is
-caught, never delivered.
+Files next to `kodai.nix`, edited as files: `php.ini` (PHP settings) and
+`deploy_keys` (the public key CI deploys with).
+
+## What a deploy does
+
+CI logs in as `deploy` over SSH (a Forgejo secret holds the private key;
+the login gets no terminal and no forwarding) and:
+
+1. uploads the release (code plus `vendor/` from `composer install --no-dev
+   --classmap-authoritative`) to `/srv/kodai/releases/<id>/`;
+2. writes `/srv/kodai/shared/.env` from its secrets (mode 0640), and links
+   it and the shared cache into the release:
+   `ln -sfn /srv/kodai/shared/.env <release>/.env`,
+   `rm -rf <release>/var && ln -sfn /srv/kodai/shared/var <release>/var`;
+3. migrates, as the `deploy` database user:
+   `cd <release> && DB_USERNAME=deploy php vendor/bin/phinx migrate`
+   (a real environment variable beats `.env`);
+4. switches: `ln -sfn releases/<id> /srv/kodai/current.new && mv -T
+   /srv/kodai/current.new /srv/kodai/current` (atomic);
+5. `systemctl reload phpfpm-kodai.service` and `systemctl restart
+   kodai.target` - the only two root actions `deploy` may take (polkit, no
+   sudo);
+6. removes old releases, keeping the last few (rolling back is pointing
+   `current` at the previous one, then step 5).
 
 ## The test server: staging
 
-`modules/hosts/servers/staging.nix`, a Hetzner Cloud server. Once:
+`modules/hosts/servers/staging.nix`, a Hetzner Cloud server. Its NixOS
+configuration follows `main`: it checks every 5 minutes and rebuilds only
+when `main` moved, so a merged change is live within minutes, with no key
+for this repository anywhere else.
+
+Once:
 
 1. **Create it** in the Cloud Console: x86, Ubuntu image, IPv4 and IPv6, my
    SSH key. Optionally put its IPv6 /64 (with `::1`) in `staging.nix`.
-2. **Install** from `~/personal/nix` on the desktop:
+2. **Deploy key**: create a key pair for Kodai's pipeline
+   (`ssh-keygen -t ed25519 -f kodai-deploy -C kodai-ci`). The private half
+   becomes a Forgejo secret of the Kodai repository; the public half goes in
+   `deploy_keys`. Commit.
+3. **Install** from `~/personal/nix` on the desktop:
 
    ```sh
    nix develop
@@ -27,43 +62,16 @@ caught, never delivered.
      --generate-hardware-config nixos-generate-config modules/hosts/servers/_staging-hardware.nix
    ssh -t root@<ipv4> "nixos-enter --root /mnt -c 'passwd zepzeper'"
    ssh root@<ipv4> reboot
-   ```
-
-3. **Tailnet**: `ssh <ipv4>`, then `tailscale up` (open the link). From now
-   on it is `staging`. In the Tailscale admin console turn off key expiry
-   for it (or it drops off the tailnet after 180 days), and limit who may
-   reach its ports 80 and 8025: Mailpit has no login, and employee laptops
-   are on the same tailnet.
-4. **Its .env** (secrets/README.md):
-
-   ```sh
-   ssh staging cat /etc/ssh/ssh_host_ed25519_key.pub > secrets/hosts/staging.pub
-   cd secrets && agenix -e kodai-env.age -i identity.age && cd ..
-   ```
-
-   Paste `env.example` into the editor; set `APP_URL` to
-   `http://staging.<your-tailnet>.ts.net` and a new `APP_KEY`
-   (`echo "base64:$(openssl rand -base64 32)"`). Then commit (hardware file,
-   host key, secret), push, and deploy the configuration:
-
-   ```sh
    git add -A && git commit -m "staging: installed" && git push
-   nixos-rebuild switch --flake .#staging --target-host staging --ask-sudo-password
    ```
 
-5. **Deploy key**: `ssh -t staging kodai-deploy --key` prints the server's
-   key; add it on GitHub (zepzeper/kodai -> Settings -> Deploy keys,
-   read-only).
-
-## Deploying
-
-```sh
-ssh -t staging kodai-deploy main      # a branch, a tag (v1.2.3) or a commit
-```
-
-It fetches the code into `/srv/kodai`, installs the dependencies (no dev
-ones), runs the migrations, reloads PHP-FPM and restarts the workers and the
-scheduler. `-t` because sudo asks my password for the reload.
+4. **Tailnet**, for the site and Mailpit: `ssh <ipv4>`, then `tailscale up`.
+   In the Tailscale admin console turn off key expiry for it, and limit who
+   may reach its ports 80 and 8025 (Mailpit has no login).
+5. **Kodai's pipeline** gets the server's address and the deploy key as
+   secrets, and a `known_hosts` line for it:
+   `ssh-keyscan <ipv4>` (compare with `ssh <ipv4> cat
+   /etc/ssh/ssh_host_ed25519_key.pub`).
 
 Then: `http://staging` (the site), `http://staging:8025` (the mail). Logs:
 `journalctl -u phpfpm-kodai -u 'kodai-*'`.

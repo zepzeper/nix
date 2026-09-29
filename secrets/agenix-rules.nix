@@ -17,7 +17,4 @@ in
   "tailscale-authkey.age".publicKeys = for [ "zepzeper" ];
   "intelephense.age".publicKeys = for [ "zepzeper" ];
   "ansible-vault.age".publicKeys = for [ "zepzeper" ];
-
-  # Kodai's .env on the test server (modules/services/kodai/env.example).
-  "kodai-env.age".publicKeys = for [ "staging" ];
 }
