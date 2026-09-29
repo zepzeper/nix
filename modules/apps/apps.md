@@ -12,3 +12,5 @@ plain apps are listed by the host itself in `environment.systemPackages`.
 | `spotify.nix` | `zep.spotify.enable` | Spotify themed with Spicetify (Comfy theme), from the `spicetify-nix` flake input |
 | `firefox.nix` | `zep.firefox.enable` (on for laptops) | Firefox in Dutch and English, telemetry and studies off |
 | `office.nix` | `zep.office.enable` (on for laptops) | LibreOffice (still branch; Qt on Plasma) with Dutch and English spelling and Dutch hyphenation |
+| `communication.nix` | `zep.communication.enable` (on for laptops) | Thunderbird and the Mattermost desktop app |
+| `flatpak.nix` | `zep.flatpak.enable` (on for laptops) | Flatpak with Flathub: people install apps themselves from Discover (Plasma) or Software (GNOME), sandboxed |

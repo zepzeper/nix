@@ -13,6 +13,10 @@ ESP 1G vfat /boot
 - `options.recoveryKey` (on for workstations and laptops): disko enrolls a random recovery key
   at install and shows it once. Store it; it opens the disk when the
   passphrase is forgotten.
+- `options.tpm2` (on for laptops): the disk unlocks through the TPM after a
+  short PIN. Set up on the machine with `enroll-tpm-pin` (the script is
+  `scripts/enroll-tpm-pin`); until then, and whenever the TPM refuses
+  (after a firmware or Secure Boot change), the passphrase is asked.
 - `options.swapSize`: a swap file on its own subvolume. Without it there is
   no hibernation (zram covers memory pressure).
 - The passphrase prompt at boot uses the keyboard layout of `zep.locale`.

@@ -12,7 +12,10 @@
   #   it never reboots on its own, the person decides when;
   # - it runs the stable channel, never unstable: someone else depends on it;
   # - what a colleague needs on day one: Firefox, LibreOffice (Dutch
-  #   spelling), printing and scanning, and the work VPN (OpenVPN).
+  #   spelling), Thunderbird and Mattermost, printing and scanning, and the
+  #   work VPN (OpenVPN); more apps they install themselves from Flathub;
+  # - the disk unlocks with a PIN through the TPM once `enroll-tpm-pin` has
+  #   run (the passphrase stays mine, for recovery).
   flake.modules.nixos.profiles-laptop =
     { lib, hostConfig, ... }:
     {
@@ -33,6 +36,9 @@
 
         firefox.enable = lib.mkDefault true;
         office.enable = lib.mkDefault true;
+        communication.enable = lib.mkDefault true;
+        flatpak.enable = lib.mkDefault true;
+        disk.options.tpm2 = lib.mkDefault true;
         printing.enable = lib.mkDefault true;
         networking.options.openvpn = lib.mkDefault true;
 

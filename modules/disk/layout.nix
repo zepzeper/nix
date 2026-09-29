@@ -8,10 +8,18 @@
   #     BTRFS: @root /, @home /home, @nix /nix, @log /var/log, @swap
   #
   # With encryption the passphrase is asked for during install and at every
-  # boot (until TPM2 unlock is added). It is typed with the keyboard layout
-  # of zep.locale, the same one the installer ISO uses by default (us).
+  # boot, typed with the keyboard layout of zep.locale (the installer's is
+  # us). With options.tpm2 the disk can instead unlock through the TPM after
+  # a short PIN, once `enroll-tpm-pin` (scripts/) has been run on the
+  # machine; until then, and whenever the TPM refuses, it asks for the
+  # passphrase.
   flake.modules.nixos.disk-layout =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       cfg = config.zep.disk;
 
@@ -81,6 +89,14 @@
               when the passphrase is forgotten.
             '';
           };
+          tpm2 = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              With encryption: let the TPM unlock the disk after a PIN, and
+              install `enroll-tpm-pin` to set that up on the machine.
+            '';
+          };
           swapSize = lib.mkOption {
             type = lib.types.str;
             default = "";
@@ -96,7 +112,20 @@
             assertion = cfg.options.device != "";
             message = "zep.disk.options.device must name the disk to install on.";
           }
+          {
+            assertion = cfg.options.tpm2 -> cfg.options.encrypt && config.boot.initrd.systemd.enable;
+            message = "zep.disk.options.tpm2 needs an encrypted disk and systemd in the initrd.";
+          }
         ];
+
+        boot.initrd.systemd.tpm2.enable = lib.mkIf cfg.options.tpm2 true;
+
+        environment.systemPackages = lib.optional cfg.options.tpm2 (
+          pkgs.writeShellApplication {
+            name = "enroll-tpm-pin";
+            text = builtins.readFile ./scripts/enroll-tpm-pin;
+          }
+        );
 
         disko.devices.disk.main = {
           type = "disk";
@@ -121,7 +150,12 @@
                     {
                       type = "luks";
                       name = "cryptroot";
-                      settings.allowDiscards = true;
+                      settings = {
+                        allowDiscards = true;
+                        # Try the TPM (with its PIN) first; without an
+                        # enrolled TPM key this falls back to the passphrase.
+                        crypttabExtraOpts = lib.optional cfg.options.tpm2 "tpm2-device=auto";
+                      };
                       enrollRecovery = cfg.options.recoveryKey;
                       content = btrfs;
                     }

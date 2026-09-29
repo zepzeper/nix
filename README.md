@@ -164,9 +164,31 @@ nixos-enter --root /mnt -c 'chown -R zepzeper:users /home/zepzeper/personal'
 reboot
 ```
 
-After the first boot, commit and push the host file and its hardware file
-from `~/personal/nix` the same day: a laptop's first automatic update looks
-for them on GitHub.
+Commit and push the host file and its hardware file the same day: a
+laptop's first automatic update looks for them on GitHub. A laptop has no
+GitHub access of its own, so fetch the hardware file to the desktop before
+the reboot (installer booted from my ISO, so SSH is on) and commit there:
+
+```sh
+scp root@<installer-address>:/root/nix/modules/hosts/laptops/_<name>-hardware.nix modules/hosts/laptops/
+git add -A && git commit -m "Add <name>" && git push
+```
+
+### Handing over a laptop
+
+With the colleague there, after its first boot (the disk still wants the
+install passphrase this once):
+
+1. Log in as `zepzeper` (a TTY is fine: Ctrl+Alt+F2).
+2. `sudo passwd <person>`: the colleague types their own password.
+3. `enroll-tpm-pin`: type the disk passphrase, then the colleague chooses
+   their PIN (twice). From now on the laptop asks only that PIN at boot.
+4. Store the disk passphrase and the recovery key in the password manager
+   under the laptop's name: with them the disk opens when the PIN is
+   forgotten or the TPM refuses after a firmware update (then run
+   `enroll-tpm-pin` again).
+5. Log out; the colleague logs in. Apps beyond the standard set come from
+   Discover (Flathub), no admin needed.
 
 ### Servers (unencrypted): from the desktop
 

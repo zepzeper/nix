@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Lets the TPM (the laptop's security chip) unlock the encrypted disk at
+# boot, after a short PIN, instead of the long passphrase. Run once after the
+# install, with the colleague there to choose the PIN:
+#
+#   enroll-tpm-pin
+#
+# It asks for the disk passphrase (or the recovery key) first, then the new
+# PIN twice. Running it again replaces the PIN. The passphrase and the
+# recovery key keep working, so keep them in the password manager.
+#
+# The key is tied to the Secure Boot state (PCR 7): after a firmware update
+# or a Secure Boot change the PIN stops working and the machine asks for the
+# passphrase instead; run this again to enroll anew.
+set -euo pipefail
+
+device=/dev/disk/by-partlabel/disk-main-root
+
+sudo systemd-cryptenroll --wipe-slot=tpm2 \
+    --tpm2-device=auto --tpm2-with-pin=yes --tpm2-pcrs=7 \
+    "$device"
+
+echo "Done: from the next boot the disk asks for the PIN."
