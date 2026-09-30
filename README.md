@@ -181,8 +181,10 @@ git add -A && git commit -m "Add <name>" && git push
 
 With the colleague there, after its first boot (the disk still wants the
 install passphrase this once). Its first boot also created its Secure Boot
-keys: reboot once more (the keys are enrolled then), switch Secure Boot on
-in the firmware if it is not, and check with `sbctl status`. Then:
+keys: reboot once more (the keys are enrolled then). Only when
+`sudo sbctl status` shows `Vendor Keys: microsoft` (not `builtin-PK`)
+switch Secure Boot on in the firmware; before that the laptop would go
+black after the logo (`modules/boot/boot.md`). Then:
 
 1. Log in as `zepzeper` (a TTY is fine: Ctrl+Alt+F2).
 2. `sudo passwd <person>`: the colleague types their own password.

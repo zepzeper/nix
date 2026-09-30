@@ -5,17 +5,19 @@
   #
   # options.secureBoot (on for workstations and laptops): Secure Boot with
   # the machine's own keys, through lanzaboote, which signs every boot entry
-  # (systemd-boot and a signed kernel+initrd image per generation). Nothing
-  # to prepare by hand:
+  # (systemd-boot and a signed kernel+initrd image per generation). Setting
+  # it up:
   # 1. The first switch (or first boot) with it creates the keys in
   #    /var/lib/sbctl (on the encrypted disk) and puts them, signed, on the
   #    boot partition. (A machine moving from plain systemd-boot: see
   #    boot.md for its old menu entries.)
-  # 2. In the firmware settings, put Secure Boot in Setup Mode (clear or
-  #    delete its keys). At the next boot systemd-boot enrolls the keys
-  #    itself - mine plus Microsoft's, which graphics cards' firmware needs -
-  #    and Secure Boot is on from then on (switch it on in the firmware if
-  #    it is not). `sbctl status` shows the state.
+  # 2. In the firmware settings, with Secure Boot still off, clear its keys
+  #    (Setup Mode). At the next boot systemd-boot enrolls the keys itself -
+  #    mine plus Microsoft's, which graphics cards' firmware needs.
+  # 3. Only when `sbctl status` shows them (Vendor Keys: microsoft, not
+  #    builtin-PK) turn Secure Boot on. Turned on before that, the firmware
+  #    refuses the boot loader: a black screen after the logo. boot.md has
+  #    the steps.
   # From then on the firmware only starts boot files signed with this
   # machine's key: a tampered boot partition does not boot.
   flake.modules.nixos.boot-loader =

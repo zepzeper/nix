@@ -8,13 +8,25 @@ deprecated), which TPM2 and FIDO2 disk unlock will need later.
 
 `options.secureBoot` (on for workstations and laptops, through lanzaboote):
 Secure Boot with the machine's own keys, which it creates and enrolls by
-itself (with Microsoft's, which graphics cards' firmware needs). The first
-switch with it creates the keys and signs the boot files; then put Secure
-Boot in Setup Mode in the firmware settings, and at the next boot the keys
-are enrolled (if the firmware already is in Setup Mode, that happens at the
-very next reboot, without asking). Check with `sbctl status` and
-`sbctl verify`. Servers do without (no one to watch the firmware, and
-Hetzner VMs have no Secure Boot).
+itself (with Microsoft's, which graphics cards' firmware needs). Servers do
+without (no one to watch the firmware, and Hetzner VMs have no Secure
+Boot).
+
+Setting it up, in this order. **Never turn Secure Boot on before step 3
+shows your keys**: the firmware then refuses the boot loader and the
+machine goes black after the logo (fix: turn Secure Boot off again).
+
+1. Switch with it (or install). This creates the keys and signs the boot
+   files; the machine still boots with Secure Boot off.
+2. In the firmware settings, with Secure Boot still off, clear its keys
+   (on ASRock: Security -> Secure Boot -> Secure Boot Mode: Custom -> Key
+   Management -> Clear Secure Boot Keys). That is Setup Mode. Reboot into
+   NixOS: systemd-boot enrolls the keys and restarts by itself.
+3. `sudo sbctl status` shows `Setup Mode: Disabled` and `Vendor Keys:
+   microsoft` (not `builtin-PK`, which are the factory keys).
+4. Now turn Secure Boot on in the firmware. `sbctl status` then shows
+   `Secure Boot: Enabled`, and `sbctl verify` that every boot file is
+   signed.
 
 Moving a machine that already booted with plain systemd-boot: lanzaboote
 removes the old generations' kernels but not their menu entries, which
