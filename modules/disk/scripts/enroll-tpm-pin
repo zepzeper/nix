@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Lets the TPM (the laptop's security chip) unlock the encrypted disk at
 # boot, after a short PIN, instead of the long passphrase. Run once after the
-# install, with the colleague there to choose the PIN:
+# install, with Secure Boot on and the colleague there to choose the PIN:
 #
 #   enroll-tpm-pin
 #
@@ -9,18 +9,28 @@
 # PIN twice. Running it again replaces the PIN. The passphrase and the
 # recovery key keep working, so keep them in the password manager.
 #
-# The key is sealed in this laptop's TPM and opens only with the PIN; the
-# TPM locks itself after repeated wrong PINs. It is deliberately not tied to
-# boot measurements (PCRs): those change with firmware and boot updates,
-# which would make the PIN stop working after an update. So nothing has to
-# be enrolled again after updates. The disk stays useless outside this
-# laptop, and without the PIN inside it.
+# The key is sealed in this laptop's TPM, opens only with the PIN (the TPM
+# locks itself after repeated wrong PINs), and only while Secure Boot is on
+# with this laptop's own keys (PCR 7). So a stolen laptop booted into
+# anything else - even a signed Linux with a fake PIN prompt - gets nothing
+# from the TPM. System updates do not touch PCR 7 (lanzaboote signs every
+# generation with the same key); a firmware or Secure Boot database
+# update that resets or changes its keys does: then the disk asks for the passphrase, and after
+# re-enrolling the keys (modules/boot/boot.md) this script is run again.
 set -euo pipefail
 
 device=/dev/disk/by-partlabel/disk-main-root
+secureboot=/sys/firmware/efi/efivars/SecureBoot-8be4df61-93ca-11d2-aa0d-00e098032b8c
+
+# PCR 7 records whether Secure Boot is on: sealed with it off, the key would
+# stop opening the moment it is turned on.
+if [[ "$(od -An -t u1 "$secureboot" 2>/dev/null | awk '{print $NF}')" != 1 ]]; then
+    echo "Secure Boot is not on. Turn it on first (sbctl status; modules/boot/boot.md), then run this again." >&2
+    exit 1
+fi
 
 sudo systemd-cryptenroll --wipe-slot=tpm2 \
-    --tpm2-device=auto --tpm2-with-pin=yes --tpm2-pcrs= \
+    --tpm2-device=auto --tpm2-with-pin=yes --tpm2-pcrs=7 \
     "$device"
 
 echo "Done: from the next boot the disk asks for the PIN."

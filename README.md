@@ -188,9 +188,12 @@ black after the logo (`modules/boot/boot.md`). Then:
 
 1. Log in as `zepzeper` (a TTY is fine: Ctrl+Alt+F2).
 2. `sudo passwd <person>`: the colleague types their own password.
-3. `enroll-tpm-pin`: type the disk passphrase, then the colleague chooses
-   their PIN (twice). From now on the laptop asks only that PIN at boot,
-   also after updates.
+3. `enroll-tpm-pin` (with Secure Boot on; it checks): type the disk
+   passphrase, then the colleague chooses their PIN (twice). From now on
+   the laptop asks only that PIN at boot, also after system updates. After
+   a firmware update that resets Secure Boot (or changes its keys) it asks
+   the passphrase instead: enroll the keys again (`modules/boot/boot.md`)
+   and run `enroll-tpm-pin` again.
 4. `tailscale up` and log in with my account: the laptop joins the tailnet,
    and from then on `ssh <name>` reaches it from anywhere (my keys only;
    SSH stays closed on the networks it roams on). In the Tailscale admin

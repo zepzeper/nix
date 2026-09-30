@@ -15,10 +15,14 @@ ESP 1G vfat /boot
   passphrase is forgotten.
 - `options.tpm2` (on for laptops): the disk unlocks through the TPM after a
   short PIN. Set up on the machine with `enroll-tpm-pin` (the script is
-  `scripts/enroll-tpm-pin`), once: the key is sealed in the TPM behind the
-  PIN, not tied to boot measurements, so firmware and system updates never
-  undo it. Until it is enrolled, or after too many wrong PINs, the
-  passphrase is asked.
+  `scripts/enroll-tpm-pin`), once, with Secure Boot on: the key is sealed in
+  the TPM behind the PIN and opens only while Secure Boot is on with the
+  laptop's own keys (PCR 7). A stolen laptop booted into anything else,
+  even a signed system with a fake PIN prompt, gets nothing. System updates
+  keep it working; a firmware update that resets Secure Boot or its keys
+  does not: then the passphrase is asked, and after enrolling the keys again
+  (`modules/boot/boot.md`) run `enroll-tpm-pin` again. Until it is
+  enrolled, or after too many wrong PINs, the passphrase is asked.
 - `options.swapSize`: a swap file on its own subvolume. Without it there is
   no hibernation (zram covers memory pressure).
 - The passphrase prompt at boot uses the keyboard layout of `zep.locale`.

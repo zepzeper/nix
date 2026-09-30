@@ -11,7 +11,9 @@
   # boot, typed with the keyboard layout of zep.locale (the installer's is
   # us). With options.tpm2 the disk can instead unlock through the TPM after
   # a short PIN, once `enroll-tpm-pin` (scripts/) has been run on the
-  # machine (once: updates do not undo it); until then, or after too many
+  # machine with Secure Boot on. The key only opens while Secure Boot is on
+  # with the machine's own keys (PCR 7): system updates keep it working, a
+  # firmware reset of Secure Boot does not. Until then, or after too many
   # wrong PINs, it asks for the passphrase.
   flake.modules.nixos.disk-layout =
     {
@@ -123,6 +125,10 @@
         environment.systemPackages = lib.optional cfg.options.tpm2 (
           pkgs.writeShellApplication {
             name = "enroll-tpm-pin";
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.gawk
+            ];
             text = builtins.readFile ./scripts/enroll-tpm-pin;
           }
         );
