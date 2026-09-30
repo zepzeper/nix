@@ -1,7 +1,8 @@
 { inputs, ... }:
 {
   # Boot loader. systemd-boot for UEFI machines (desktop, laptops, most
-  # servers); extlinux for ARM servers that boot through U-Boot.
+  # servers); GRUB for machines that may boot either UEFI or legacy BIOS
+  # (Hetzner Cloud VMs); extlinux for ARM servers that boot through U-Boot.
   #
   # options.secureBoot (on for workstations and laptops): Secure Boot with
   # the machine's own keys, through lanzaboote, which signs every boot entry
@@ -41,6 +42,7 @@
           loader = lib.mkOption {
             type = lib.types.enum [
               "systemd-boot"
+              "grub"
               "extlinux"
             ];
             default = "systemd-boot";
@@ -88,6 +90,21 @@
                 editor = false;
               };
               efi.canTouchEfiVariables = lib.mkDefault true;
+            };
+          })
+          # GRUB for machines that may boot either way, UEFI or legacy BIOS
+          # (Hetzner Cloud VMs): installed on the disk for BIOS (with the disk
+          # layout's biosBoot partition) and at the ESP's fallback path for
+          # UEFI, without firmware boot entries.
+          (lib.mkIf (cfg.options.loader == "grub") {
+            boot.loader = {
+              grub = {
+                enable = true;
+                efiSupport = true;
+                efiInstallAsRemovable = true;
+                configurationLimit = cfg.options.generations;
+              };
+              efi.canTouchEfiVariables = false;
             };
           })
           (lib.mkIf (cfg.options.loader == "extlinux") {

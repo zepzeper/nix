@@ -23,6 +23,9 @@ ESP 1G vfat /boot
   does not: then the passphrase is asked, and after enrolling the keys again
   (`modules/boot/boot.md`) run `enroll-tpm-pin` again. Until it is
   enrolled, or after too many wrong PINs, the passphrase is asked.
+- `options.biosBoot` (on for Hetzner Cloud servers): a 1M BIOS boot
+  partition in front of the ESP, so GRUB boots the disk on legacy BIOS as
+  well as UEFI.
 - `options.swapSize`: a swap file on its own subvolume. Without it there is
   no hibernation (zram covers memory pressure).
 - The passphrase prompt at boot uses the keyboard layout of `zep.locale`.

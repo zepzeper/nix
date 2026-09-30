@@ -58,12 +58,18 @@ configuration, which takes 1.5-2 GB of memory.
 
 Note its **IPv4 address** (below: `<ipv4>`) and its **IPv6 /64**.
 
-Check it booted in UEFI mode (the disk layout and boot loader assume it;
-new Hetzner x86 VMs do):
+Check you can log in with your key (no password asked):
 
 ```sh
-ssh root@<ipv4> ls /sys/firmware/efi     # lists files: good. "No such file": stop, ask.
+ssh root@<ipv4> true
 ```
+
+It asks for a password: the key was not selected at creation. Copy it with
+the root password Hetzner emailed (`ssh-copy-id -i ~/.ssh/id_ed25519.pub
+root@<ipv4>`), or rebuild the server with the key ticked.
+
+UEFI or legacy BIOS does not matter: Hetzner VMs differ (a CX in Helsinki
+boots BIOS), and the Hetzner block boots with GRUB, which does both.
 
 ## 3. Install NixOS
 
@@ -246,7 +252,7 @@ need its migration rolled back first, before switching:
 
 | Symptom | Cause, fix |
 | --- | --- |
-| `ls /sys/firmware/efi`: No such file | The VM booted legacy BIOS: the layout (systemd-boot) will not boot. Rebuild the server in the Console and check again; if it stays, stop and ask. |
+| `ssh root@<ipv4>` asks for a password | The SSH key was not on the server at creation: step 2. |
 | nixos-anywhere fails before "disko" | Nothing was wiped yet; fix and run it again (from `echo '{ }'` on). |
 | nixos-anywhere fails during the build | A build error in the config: the optional `nix build` of step 0 shows it without touching the server. |
 | `REMOTE HOST IDENTIFICATION HAS CHANGED` | The installer's host key: `ssh-keygen -R <ipv4>` (step 4). |

@@ -3,6 +3,7 @@
   # The standard disk layout, declared with disko so installing a machine is
   # one command and every machine is partitioned the same way:
   #
+  #   [BIOS boot (1M)]             when options.biosBoot is true (GRUB, legacy BIOS)
   #   ESP (1G, vfat, /boot)
   #   [LUKS "cryptroot"]           when options.encrypt is true
   #     BTRFS: @root /, @home /home, @nix /nix, @log /var/log, @swap
@@ -99,6 +100,14 @@
               install `enroll-tpm-pin` to set that up on the machine.
             '';
           };
+          biosBoot = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = ''
+              Also a 1M BIOS boot partition, so GRUB can boot the disk on a
+              machine without UEFI (a legacy-BIOS VM) as well as with it.
+            '';
+          };
           swapSize = lib.mkOption {
             type = lib.types.str;
             default = "";
@@ -139,6 +148,11 @@
           content = {
             type = "gpt";
             partitions = {
+              # disko creates it first and points GRUB at this disk.
+              bios = lib.mkIf cfg.options.biosBoot {
+                size = "1M";
+                type = "EF02";
+              };
               ESP = {
                 size = "1G";
                 type = "EF00";

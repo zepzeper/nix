@@ -2,8 +2,8 @@
   # A Hetzner Cloud server (x86 VM). What differs from a machine of our own:
   #
   # - The one disk is /dev/sda (virtio SCSI, no stable by-id name per model);
-  #   the standard layout goes on it. New x86 VMs boot UEFI only, which the
-  #   standard layout and systemd-boot already are.
+  #   the standard layout goes on it, plus a BIOS boot partition: some VMs
+  #   boot UEFI, others legacy BIOS, so it boots with GRUB, which does both.
   # - IPv4 comes from DHCP, but IPv6 does not: each server gets a /64, shown
   #   in the Cloud Console, and uses one address from it with fe80::1 as its
   #   gateway (options.ipv6).
@@ -44,10 +44,11 @@
 
         zep.disk.options.device = lib.mkDefault "/dev/sda";
 
-        # Boot from the disk's fallback path (EFI/BOOT/BOOTX64.EFI) rather
-        # than an entry in the VM's firmware: nothing depends on the firmware
-        # keeping boot entries written from the installer.
-        boot.loader.efi.canTouchEfiVariables = false;
+        # Hetzner VMs boot legacy BIOS or UEFI, depending on type and
+        # location (a CX in Helsinki: BIOS). GRUB on a disk with a BIOS boot
+        # partition and an ESP boots either way, from the disk alone.
+        zep.boot.options.loader = lib.mkDefault "grub";
+        zep.disk.options.biosBoot = lib.mkDefault true;
 
         boot.initrd.availableKernelModules = [
           "virtio_pci"

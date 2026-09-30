@@ -1,7 +1,9 @@
 # Boot
 
-`boot-loader` (`zep.boot`): systemd-boot for UEFI machines, or extlinux for
-ARM servers that boot through U-Boot (`options.loader`).
+`boot-loader` (`zep.boot`): systemd-boot for UEFI machines; GRUB for
+machines that may boot either UEFI or legacy BIOS (Hetzner Cloud VMs, with
+the disk layout's `biosBoot` partition); extlinux for ARM servers that boot
+through U-Boot (`options.loader`).
 Keeps 10 generations in the menu by default; the boot menu editor is off.
 systemd runs in the initrd for every loader (the scripted initrd is
 deprecated), which TPM2 and FIDO2 disk unlock will need later.
