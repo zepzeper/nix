@@ -20,7 +20,7 @@
       hetznerCloud = {
         enable = true;
         # Cloud Console -> the server -> Networking: its IPv6 /64, with ::1.
-        # options.ipv6 = "2a01:4f8:...::1/64";
+        options.ipv6 = "2a01:4f9:c015:8b63::1/64";
       };
 
       tailscale.enable = true;
