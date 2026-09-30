@@ -18,7 +18,7 @@ decrypts its secrets at boot with its own SSH host key, into `/run/agenix/`
 | `tailscale-authkey` | Tailscale logging in by itself, where a host sets `zep.tailscale.options.authKey` |
 | `intelephense` | the PHP language server's licence, linked to `~/intelephense/license.txt` |
 | `ansible-vault` | Ansible's vault password (`ANSIBLE_VAULT_PASSWORD_FILE`) |
-| `cloudflare-dns` | a Cloudflare API token (Zone -> DNS -> Edit, krugten.org only): staging's HTTPS certificate |
+| `cloudflare-dns` | the Cloudflare API token (the ansible vault's `vault_cloudflare_api_token`, DNS edit on krugten.org): staging's HTTPS certificate |
 
 A machine only uses a secret once the `.age` file is committed (flakes see
 only files git knows about) and the machine's host key is in `hosts/`. So the

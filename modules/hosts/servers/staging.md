@@ -172,8 +172,16 @@ certificate comes from Let's Encrypt through a Cloudflare DNS challenge
    (100.x.y.z). In Cloudflare -> krugten.org -> DNS add an **A** record
    `staging` -> that address, **DNS only** (grey cloud, not proxied).
    From the desktop `http://staging.krugten.org` now works.
-2. **API token.** Cloudflare -> My Profile -> API Tokens -> Create Token ->
-   "Edit zone DNS", zone `krugten.org` only. Copy the token.
+2. **API token.** The one the home cluster already uses for its
+   certificates and DNS records (`vault_cloudflare_api_token` in the
+   ansible vault; the desktop has the vault password):
+
+   ```sh
+   cd ~/personal/ansible
+   ansible-vault view inventories/prod/group_vars/all/vault.yml | grep vault_cloudflare_api_token
+   ```
+
+   Copy the token (the value only, without quotes).
 3. **The secret**, on the desktop in `~/personal/nix`:
 
    ```sh
