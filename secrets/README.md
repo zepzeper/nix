@@ -27,18 +27,6 @@ encrypted files and public keys be committed.
 Not brought over from zepzeper/dev: `sshkey` (each machine has its own SSH
 key now) and `restic-password` (comes with the backups).
 
-## First time: bring them over from zepzeper/dev
-
-```sh
-git clone https://github.com/zepzeper/dev ~/personal/dev   # if it is not there yet
-~/personal/nix/secrets/import-from-dev ~/personal/dev      # asks the passphrase once
-cd ~/personal/nix && git add secrets && git commit -m "Secrets" && git push
-nh os switch
-```
-
-The script adds this machine's host key, copies `identity.age`, and
-re-encrypts the three secrets to me and this machine.
-
 ## Everyday
 
 Run in this folder. The passphrase is asked each time a secret is opened
@@ -56,3 +44,5 @@ A new secret: add it to `agenix-rules.nix`, create it with `agenix -e`,
 A new machine: after its install, add its host key as `hosts/<machine>.pub`,
 list it on the secrets it needs in `agenix-rules.nix`, run
 `agenix -r -i identity.age`, commit, and switch the machine.
+`nix flake check` (and CI) fails if a machine is listed but the secret was
+not re-encrypted for it.
