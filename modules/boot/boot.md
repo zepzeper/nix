@@ -20,13 +20,17 @@ machine goes black after the logo (fix: turn Secure Boot off again).
    files; the machine still boots with Secure Boot off.
 2. In the firmware settings, with Secure Boot still off, clear its keys
    (on ASRock: Security -> Secure Boot -> Secure Boot Mode: Custom -> Key
-   Management -> Clear Secure Boot Keys). That is Setup Mode. Reboot into
-   NixOS: systemd-boot enrolls the keys and restarts by itself.
+   Management -> Clear Secure Boot Keys, and set Factory Key Provision to
+   Disabled, or the firmware puts its own keys back at the next boot). That
+   is Setup Mode. Reboot: systemd-boot shows "Enrolling secure boot keys
+   ... might soft-brick", counts down, enrolls the keys and restarts by
+   itself. Let it (Microsoft's keys are included).
 3. `sudo sbctl status` shows `Setup Mode: Disabled` and `Vendor Keys:
    microsoft` (not `builtin-PK`, which are the factory keys).
 4. Now turn Secure Boot on in the firmware. `sbctl status` then shows
-   `Secure Boot: Enabled`, and `sbctl verify` that every boot file is
-   signed.
+   `Secure Boot: Enabled`. `sbctl verify` lists the kernels in
+   `EFI/nixos/` as not signed: expected, the signed image of each
+   generation (`EFI/Linux/`) checks its kernel by hash.
 
 Moving a machine that already booted with plain systemd-boot: lanzaboote
 removes the old generations' kernels but not their menu entries, which
