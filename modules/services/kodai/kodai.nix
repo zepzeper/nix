@@ -52,6 +52,14 @@
         extraConfig = builtins.readFile ./php.ini;
       };
 
+      startsWithKeyType =
+        key:
+        lib.any (type: lib.hasPrefix type key) [
+          "ssh-"
+          "ecdsa-"
+          "sk-"
+        ];
+
       deployKeys = lib.filter (line: line != "" && !lib.hasPrefix "#" line) (
         lib.splitString "\n" (builtins.readFile ./deploy_keys)
       );
@@ -152,14 +160,10 @@
               home = "/var/lib/deploy";
               createHome = true;
               shell = pkgs.bashInteractive;
-              # Options are comma-separated: a key line with its own
-              # (from="...") gets restrict added to them.
+              # Options are comma-separated: a key line with options of its
+              # own (from="...") gets restrict added to them.
               openssh.authorizedKeys.keys = map (
-                key:
-                if lib.any (type: lib.hasPrefix type key) [ "ssh-" "ecdsa-" "sk-" ] then
-                  "restrict ${key}"
-                else
-                  "restrict,${key}"
+                key: if startsWithKeyType key then "restrict ${key}" else "restrict,${key}"
               ) deployKeys;
             };
           };
