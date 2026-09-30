@@ -11,8 +11,9 @@
   #   the hardware file nixos-anywhere generates: without them the server
   #   cannot find its disk at boot.
   #
-  # Installed from the desktop with nixos-anywhere, straight from the Ubuntu
-  # image Hetzner starts the server with (see the README).
+  # Installed from the desktop with nixos-anywhere, from Hetzner's Rescue
+  # system (Ubuntu's kernel refuses the installer's), step by step in
+  # modules/hosts/servers/staging.md.
   flake.modules.nixos.hardware-hetzner-cloud =
     { config, lib, ... }:
     let

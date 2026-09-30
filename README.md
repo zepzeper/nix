@@ -245,10 +245,12 @@ Step by step, with every check along the way: `modules/hosts/servers/staging.md`
 (the test server; the same steps for any Hetzner server). In short:
 
 1. In the Cloud Console create the server: x86 (CX, CPX or CCX; not the ARM
-   CAX types), at least 4 GB of memory, **Ubuntu** image (only used to
-   start nixos-anywhere), with IPv4 and IPv6, and my SSH key (the public key
-   from `modules/users/zepzeper/authorized_keys`, under Security -> SSH
-   keys).
+   CAX types), at least 4 GB of memory, any image (it is never used), with
+   IPv4 and IPv6, and my SSH key (the public key from
+   `modules/users/zepzeper/authorized_keys`, under Security -> SSH keys).
+   Then boot it into the **Rescue system** (Rescue -> linux64, my key,
+   Enable rescue & power cycle): nixos-anywhere cannot start its installer
+   from Ubuntu, whose kernel refuses the unsigned installer kernel.
 2. Host file: `templates/host-server-hetzner.nix` to
    `modules/hosts/servers/<name>.nix`, named by role; the IPv6 address (the
    /64 with `::1`) can be filled in now or later.

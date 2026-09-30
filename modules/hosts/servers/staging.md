@@ -45,7 +45,7 @@ cat ~/.ssh/kodai-deploy.pub
 | Setting | Choose |
 | --- | --- |
 | Location | Nuremberg or Falkenstein (closest) |
-| Image | **Ubuntu** (latest); only used to start the installer |
+| Image | any (Ubuntu is fine); it is never used: the install starts from Hetzner's Rescue system |
 | Type | x86: **CX, CPX or CCX** (AMD or Intel, both fine); **at least 4 GB memory**, 40 GB disk or more. Not the ARM **CAX** types. |
 | Networking | **IPv4 on** (GitHub has no IPv6: without it the server cannot fetch its own configuration); IPv6 on |
 | SSH keys | my desktop key: `cat ~/.ssh/id_ed25519.pub` (the line in `modules/users/zepzeper/authorized_keys`), added under Security -> SSH keys |
@@ -58,15 +58,24 @@ configuration, which takes 1.5-2 GB of memory.
 
 Note its **IPv4 address** (below: `<ipv4>`) and its **IPv6 /64**.
 
+Then boot it into the **Rescue system**: the server's page -> Rescue ->
+**linux64**, select **my SSH key**, **Enable rescue & power cycle**. A small
+Linux that runs from memory starts within a minute (once: the next reboot
+starts from the disk again).
+
+Why not straight from Ubuntu: its kernel refuses to start the NixOS
+installer's unsigned kernel (nixos-anywhere ends with `PEFILE: Unsigned PE
+binary` ... `Kexec failed`). The Rescue system does not.
+
 Check you can log in with your key (no password asked):
 
 ```sh
-ssh root@<ipv4> true
+ssh-keygen -R <ipv4>          # a key from an earlier try, if any
+ssh root@<ipv4> true          # type yes
 ```
 
-It asks for a password: the key was not selected at creation. Copy it with
-the root password Hetzner emailed (`ssh-copy-id -i ~/.ssh/id_ed25519.pub
-root@<ipv4>`), or rebuild the server with the key ticked.
+It asks for a password: the key was not selected when enabling Rescue.
+Enable it again with the key ticked.
 
 UEFI or legacy BIOS does not matter: Hetzner VMs differ (a CX in Helsinki
 boots BIOS), and the Hetzner block boots with GRUB, which does both.
@@ -86,7 +95,7 @@ nixos-anywhere --flake .#staging --target-host root@<ipv4> \
   --generate-hardware-config nixos-generate-config modules/hosts/servers/_staging-hardware.nix
 ```
 
-What happens: the server switches from Ubuntu into a NixOS installer
+What happens: the server switches from the Rescue system into a NixOS installer
 (kexec; the SSH connection drops and comes back), writes the hardware file
 on the desktop, builds staging on the desktop, wipes `/dev/sda`, partitions
 it and installs. It stops before rebooting.
@@ -253,6 +262,7 @@ need its migration rolled back first, before switching:
 | Symptom | Cause, fix |
 | --- | --- |
 | `ssh root@<ipv4>` asks for a password | The SSH key was not on the server at creation: step 2. |
+| nixos-anywhere: `PEFILE: Unsigned PE binary`, `Kexec failed` | Started from Ubuntu instead of the Rescue system (step 2). Nothing was wiped; enable Rescue and run it again. |
 | nixos-anywhere fails before "disko" | Nothing was wiped yet; fix and run it again (from `echo '{ }'` on). |
 | nixos-anywhere fails during the build | A build error in the config: the optional `nix build` of step 0 shows it without touching the server. |
 | `REMOTE HOST IDENTIFICATION HAS CHANGED` | The installer's host key: `ssh-keygen -R <ipv4>` (step 4). |
