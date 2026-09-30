@@ -1,4 +1,1 @@
-# Public SSH keys that may deploy Kodai (log in as `deploy`), one per line:
-# the public half of the key Kodai's Forgejo pipeline deploys with (its
-# private half is a Forgejo secret). They get no terminal and no forwarding.
-# To also tie a key to the runner's address, prefix it: from="203.0.113.7" ssh-ed25519 ...
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgZfW9inSQqE/EVIzOSLSw5LjP9gDxyvifto/wur4g8
