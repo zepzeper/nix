@@ -17,4 +17,5 @@ in
   "tailscale-authkey.age".publicKeys = for [ "zepzeper" ];
   "intelephense.age".publicKeys = for [ "zepzeper" ];
   "ansible-vault.age".publicKeys = for [ "zepzeper" ];
+  "cloudflare-dns.age".publicKeys = for [ "staging" ];
 }

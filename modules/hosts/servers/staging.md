@@ -38,7 +38,7 @@ cat ~/.ssh/kodai-deploy.pub
 - Commit and push:
   `git add modules/services/kodai/deploy_keys && git commit -m "Kodai deploy key" && git push`
 - Keep `~/.ssh/kodai-deploy` (the private half): it becomes a Forgejo secret
-  in step 7. Store a copy in Bitwarden.
+  in step 8. Store a copy in Bitwarden.
 
 ## 2. Create the server (Hetzner Cloud Console)
 
@@ -135,7 +135,7 @@ tailscale up                   # open the link it prints, log in
 In the Tailscale admin console (Machines -> staging):
 
 - **Disable key expiry**, so it never drops off the tailnet.
-- Access controls: limit who may reach `staging` on ports 80 and 8025
+- Access controls: limit who may reach `staging` on ports 80, 443 and 8025
   (Mailpit has no login). With the default "everyone can reach everything"
   policy, that is every device on the tailnet.
 
@@ -161,7 +161,41 @@ Optional, any time: its IPv6 address. Cloud Console -> staging ->
 Networking shows the /64; in `staging.nix` set
 `options.ipv6 = "<the /64 with ::1>/64";`, push, and it applies itself.
 
-## 7. Kodai's pipeline
+## 7. Its name and HTTPS: staging.krugten.org
+
+The name points at staging's **tailnet** address, so it still answers only
+over the tailnet, as the other `*.krugten.org` names at home do. The
+certificate comes from Let's Encrypt through a Cloudflare DNS challenge
+(the HTTP challenge cannot reach a tailnet-only site).
+
+1. **DNS record.** On staging, `tailscale ip -4` shows its tailnet address
+   (100.x.y.z). In Cloudflare -> krugten.org -> DNS add an **A** record
+   `staging` -> that address, **DNS only** (grey cloud, not proxied).
+   From the desktop `http://staging.krugten.org` now works.
+2. **API token.** Cloudflare -> My Profile -> API Tokens -> Create Token ->
+   "Edit zone DNS", zone `krugten.org` only. Copy the token.
+3. **The secret**, on the desktop in `~/personal/nix`:
+
+   ```sh
+   git pull
+   ssh staging cat /etc/ssh/ssh_host_ed25519_key.pub > secrets/hosts/staging.pub
+   cd secrets
+   agenix -e cloudflare-dns.age -i identity.age    # paste only the token, save
+   cd ..
+   git add secrets/hosts/staging.pub secrets/cloudflare-dns.age
+   git commit -m "staging: Cloudflare DNS token" && git push
+   ```
+
+   `agenix-rules.nix` already lists staging on `cloudflare-dns`; with its
+   host key in `secrets/hosts/` the secret is encrypted to it (CI checks
+   that).
+4. Within ~5 minutes staging picks it up, gets its certificate and answers
+   on `https://staging.krugten.org` (plain HTTP redirects there). Check:
+   `journalctl -u acme-staging.krugten.org -n 30` on staging.
+
+Then `APP_URL` in the `.env` below is `https://staging.krugten.org`.
+
+## 8. Kodai's pipeline
 
 In the Kodai repository on Forgejo: Settings -> Actions -> Secrets. Four
 secrets:
@@ -178,7 +212,7 @@ secrets:
 ```sh
 APP_ENV=prod
 APP_DEBUG=false
-APP_URL=http://staging
+APP_URL=https://staging.krugten.org
 APP_KEY=base64:<openssl rand -base64 32>
 APP_TIMEZONE=Europe/Amsterdam
 
@@ -210,7 +244,7 @@ API_HOST=
   front), keep it in Bitwarden, and never change it: what Kodai encrypted
   with it (its OAuth signing keys, for one) is unreadable with another key.
 - Mail goes to Mailpit: nothing leaves the server; read it at
-  `http://staging:8025`.
+  `http://staging.krugten.org:8025`.
 
 The workflow itself lives in Kodai (`.forgejo/workflows/deploy.yml` and
 `.forgejo/scripts/activate`, on the branch `deploy-staging` for now). It runs
@@ -218,13 +252,13 @@ on every push to Kodai's `staging` branch, so those two files have to be on
 that branch: merge them into `master`, and create `staging` from it if it
 does not exist yet.
 
-## 8. First deploy
+## 9. First deploy
 
 Push to `staging` (or Actions -> deploy -> Run workflow). The run builds the
 release, uploads it, migrates and switches. Then:
 
-- `http://staging`: the site.
-- `http://staging:8025`: the mail it sent.
+- `https://staging.krugten.org`: the site.
+- `http://staging.krugten.org:8025`: the mail it sent.
 - Once, the first OAuth signing key (Kodai's own command):
   `ssh staging`, then
   `cd /srv/kodai/current && sudo -u kodai bash -c 'umask 0007 && php bin/kodai oauth:keys rotate --in=now'`
@@ -268,9 +302,10 @@ need its migration rolled back first, before switching:
 | `REMOTE HOST IDENTIFICATION HAS CHANGED` | The installer's host key: `ssh-keygen -R <ipv4>` (step 4). |
 | `ssh <ipv4>`: Permission denied (publickey) | Not my key: the desktop's key must be in `modules/users/zepzeper/authorized_keys`. |
 | `sudo`: wrong password | The password from step 4. Forgotten: root is locked, so the Console's "reset root password" does not help; reinstall from step 3 (wipes the database too). |
-| `http://staging` does not load | Tailscale: `tailscale status` on the desktop shows staging? Access controls allow port 80? |
-| `http://staging` gives 404 | Nothing deployed yet (no `/srv/kodai/current`): run the deploy. |
-| `http://staging` gives 502 | PHP-FPM: `journalctl -u phpfpm-kodai -n 50`. |
+| `https://staging.krugten.org` does not load | Tailscale: `tailscale status` on the desktop shows staging? Access controls allow ports 80 and 443? The DNS record points at `tailscale ip -4`? |
+| The site has no valid certificate | The `cloudflare-dns` secret is missing or wrong: `journalctl -u acme-staging.krugten.org -n 30`. |
+| The site gives 404 | Nothing deployed yet (no `/srv/kodai/current`): run the deploy. |
+| The site gives 502 | PHP-FPM: `journalctl -u phpfpm-kodai -n 50`. |
 | CI: `Permission denied (publickey)` for deploy | The deploy key is not on the server yet: `cat /etc/ssh/authorized_keys.d/deploy` on the server. It arrives within 5 minutes of pushing `deploy_keys`. |
 | CI: `Host key verification failed` | `STAGING_KNOWN_HOSTS` holds an old key (e.g. the installer's): scan again after the reboot. |
 | CI: migration fails | Nothing was switched; the old release keeps running. The output shows the SQL error. |

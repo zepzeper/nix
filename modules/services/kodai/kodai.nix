@@ -4,7 +4,8 @@
   # Kodai's CI deploys the code and its .env; this only prepares where they
   # go and runs what is there.
   #
-  #   nginx        the site, on port 80, over the tailnet only
+  #   nginx        the site, over the tailnet only: port 80, or HTTPS on
+  #                options.domain once the cloudflare-dns secret exists
   #   PHP-FPM 8.5  the extensions Kodai needs (redis and mailparse added to
   #                the defaults),
   #                php.ini next to this file
@@ -42,10 +43,19 @@
       config,
       lib,
       pkgs,
+      secretFile,
       ...
     }:
     let
       cfg = config.zep.kodai;
+      inherit (cfg.options) domain;
+
+      # HTTPS for options.domain: a Let's Encrypt certificate through a
+      # Cloudflare DNS challenge (the name only points at the tailnet, so the
+      # usual HTTP challenge cannot reach it). Until the secret exists the
+      # site answers over plain HTTP.
+      dnsToken = secretFile "cloudflare-dns";
+      https = domain != null && dnsToken != null;
       dir = "/srv/kodai";
 
       php = pkgs.php85.buildEnv {
@@ -141,7 +151,20 @@
     in
     {
       key = "zep#services-kodai";
-      options.zep.kodai.enable = lib.mkEnableOption "the platform Kodai is deployed onto";
+      options.zep.kodai = {
+        enable = lib.mkEnableOption "the platform Kodai is deployed onto";
+        options.domain = lib.mkOption {
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+          example = "staging.krugten.org";
+          description = ''
+            The site's name. Its DNS record points at the machine's tailnet
+            address, so it still answers over the tailnet only. With the
+            cloudflare-dns secret (a Cloudflare API token that may edit the
+            zone's DNS) it gets a certificate and answers over HTTPS.
+          '';
+        };
+      };
 
       config = lib.mkIf cfg.enable {
         assertions = [
@@ -237,6 +260,9 @@
             recommendedProxySettings = true;
             virtualHosts.kodai = {
               default = true;
+              serverName = lib.mkIf (domain != null) domain;
+              useACMEHost = lib.mkIf https domain;
+              forceSSL = https;
               root = "${dir}/current/public";
               extraConfig = "index index.php;";
               locations = {
@@ -290,7 +316,22 @@
         networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
           80
           8025
-        ];
+        ]
+        ++ lib.optional https 443;
+
+        age.secrets.cloudflare-dns = lib.mkIf https { file = dnsToken; };
+
+        security.acme = lib.mkIf https {
+          acceptTerms = true;
+          certs.${domain} = {
+            dnsProvider = "cloudflare";
+            # Resolve the challenge record through Cloudflare itself, not the
+            # tailnet's DNS.
+            dnsResolver = "1.1.1.1:53";
+            credentialFiles.CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets.cloudflare-dns.path;
+            inherit (config.services.nginx) group;
+          };
+        };
 
         systemd = {
           targets.kodai = {

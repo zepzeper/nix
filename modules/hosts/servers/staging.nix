@@ -24,7 +24,12 @@
       };
 
       tailscale.enable = true;
-      kodai.enable = true;
+      kodai = {
+        enable = true;
+        # Points at its tailnet address (Cloudflare); HTTPS once the
+        # cloudflare-dns secret exists (staging.md, step 7).
+        options.domain = "staging.krugten.org";
+      };
 
       # Follow main: look every 5 minutes, rebuild only when it moved.
       autoUpdate = {
