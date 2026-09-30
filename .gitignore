@@ -10,6 +10,9 @@
 keys.txt
 id_*
 !id_*.pub
+# key pairs made for a CI deploy (e.g. kodai-deploy): keep them in ~/.ssh
+*-deploy
+*-deploy.pub
 
 # editors / OS
 .vscode/

@@ -1,9 +1,9 @@
 # staging: a Hetzner Cloud server (x86) to test Kodai on; the site over the
 # tailnet only. Its configuration follows main by itself (a merged change is
 # live within minutes); Kodai's own CI deploys the application onto it.
-# Not installed yet: create it in the Cloud Console, then install as in
-# modules/services/kodai/kodai.md. Until then its hardware file does not
-# exist and is simply not imported.
+# Creating and installing it, step by step: staging.md next to this file.
+# Until it is installed its hardware file does not exist and is simply not
+# imported.
 { config, lib, ... }:
 {
   flake.modules.nixos."hosts/staging" = {

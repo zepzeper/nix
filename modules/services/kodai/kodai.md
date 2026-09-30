@@ -52,43 +52,8 @@ runner's address); `restrict` is added to them.
 
 ## The test server: staging
 
-`modules/hosts/servers/staging.nix`, a Hetzner Cloud server. Its NixOS
-configuration follows `main`: it checks every 5 minutes and rebuilds only
-when `main` moved, so a merged change is live within minutes, with no key
-for this repository anywhere else.
-
-Once:
-
-1. **Create it** in the Cloud Console: x86, Ubuntu image, IPv4 and IPv6, my
-   SSH key. Optionally put its IPv6 /64 (with `::1`) in `staging.nix`.
-2. **Deploy key**: create a key pair for Kodai's pipeline
-   (`ssh-keygen -t ed25519 -f kodai-deploy -C kodai-ci`). The private half
-   becomes a Forgejo secret of the Kodai repository; the public half goes in
-   `deploy_keys`. Commit.
-3. **Install** from `~/personal/nix` on the desktop:
-
-   ```sh
-   nix develop
-   echo '{ }' > modules/hosts/servers/_staging-hardware.nix && git add -A
-   nixos-anywhere --flake .#staging --target-host root@<ipv4> --no-reboot \
-     --generate-hardware-config nixos-generate-config modules/hosts/servers/_staging-hardware.nix
-   ssh -t root@<ipv4> "nixos-enter --root /mnt -c 'passwd zepzeper'"
-   ssh root@<ipv4> reboot
-   git add -A && git commit -m "staging: installed" && git push
-   ```
-
-4. **Tailnet**, for the site and Mailpit: `ssh <ipv4>`, then `tailscale up`.
-   In the Tailscale admin console turn off key expiry for it, and limit who
-   may reach its ports 80 and 8025 (Mailpit has no login).
-5. **Kodai's pipeline** (`.forgejo/workflows/deploy.yml`: the `staging`
-   branch deploys here) needs four secrets in the Kodai repository:
-
-   | Secret | Is |
-   | --- | --- |
-   | `STAGING_HOST` | the server's IPv4 |
-   | `STAGING_SSH_KEY` | the private half of `kodai-deploy` |
-   | `STAGING_KNOWN_HOSTS` | `ssh-keyscan -t ed25519 <ipv4>` (compare with `ssh <ipv4> cat /etc/ssh/ssh_host_ed25519_key.pub`) |
-   | `STAGING_ENV` | the whole `.env` (`DB_HOST=localhost` for the socket, `DB_USERNAME=kodai`, `DB_PASSWORD=` empty, `MAIL_DSN=smtp://127.0.0.1:1025`) |
-
-Then: `http://staging` (the site), `http://staging:8025` (the mail). Logs:
-`journalctl -u phpfpm-kodai -u 'kodai-*'`.
+`modules/hosts/servers/staging.nix`, a Hetzner Cloud server whose NixOS
+configuration follows `main` (it checks every 5 minutes and rebuilds only
+when `main` moved). Creating and installing it, the deploy key, Tailscale,
+Kodai's CI secrets and its `.env`, the first deploy, everyday use and
+troubleshooting: `modules/hosts/servers/staging.md`.

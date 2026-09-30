@@ -5,9 +5,11 @@
 # The server profile: shell only, stable channel, unencrypted disk, no
 # automatic updates; deployed from the desktop:
 #   nixos-rebuild switch --flake .#<name> --target-host <name> --ask-sudo-password
-# Installed with nixos-anywhere (README, "Hetzner Cloud servers"), which also
-# writes the hardware file next to this one.
-{ config, ... }:
+# Installed with nixos-anywhere (README, "Hetzner Cloud servers"; step by
+# step: modules/hosts/servers/staging.md), which also writes the hardware
+# file next to this one. It is imported once it exists, so this file can be
+# pushed before the install.
+{ config, lib, ... }:
 {
   flake.modules.nixos."hosts/server-hetzner" = {
     imports = [
@@ -15,8 +17,8 @@
       # Me as admin (SSH keys from modules/users/zepzeper/authorized_keys),
       # with my Home Manager setup and secrets.
       config.flake.modules.nixos."users/zepzeper"
-      # ./_server-hetzner-hardware.nix
-    ];
+    ]
+    ++ lib.optional (builtins.pathExists ./_server-hetzner-hardware.nix) ./_server-hetzner-hardware.nix;
 
     nixpkgs.hostPlatform = "x86_64-linux";
     system.stateVersion = "26.05"; # the release it was installed with; never change

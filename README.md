@@ -131,6 +131,8 @@ rename it, fill in every CHANGE-ME, and uncomment the hardware import. The
 disk, as seen on the machine: `ls -l /dev/disk/by-id/` (the whole disk, not
 a `-part`; the NVMe or SSD it should run from). Push it only once the
 machine is installed: until its hardware file exists it does not build.
+(The Hetzner template imports its hardware file only once it exists, so a
+Hetzner host can be pushed before.)
 
 ### Desktops and laptops (encrypted): at the machine
 
@@ -215,28 +217,41 @@ and installs, all over SSH. The hardware file has to exist in git first
 
 ```sh
 nix develop
-echo '{ }' > modules/hosts/servers/_<name>-hardware.nix && git add -A   # host file included
-nixos-anywhere --flake .#<name> --target-host root@<address> --no-reboot \
+echo '{ }' > modules/hosts/servers/_<name>-hardware.nix
+git add modules/hosts/servers/<name>.nix modules/hosts/servers/_<name>-hardware.nix
+nixos-anywhere --flake .#<name> --target-host root@<address> \
+  --phases kexec,disko,install \
   --generate-hardware-config nixos-generate-config modules/hosts/servers/_<name>-hardware.nix
+
+# Commit and push the hardware file before the first boot: a server that
+# follows main would otherwise pull a version without it.
+git add modules/hosts/servers/_<name>-hardware.nix
+git commit -m "<name>: installed" && git push
 
 # My password (for sudo), set before the first boot, then reboot.
 ssh -t root@<address> "nixos-enter --root /mnt -c 'passwd zepzeper'"
 ssh root@<address> reboot
 
-git add -A && git commit -m "Add <name>" && git push
+# The installed system has new SSH host keys: forget the installer's.
+ssh-keygen -R <address>
 ```
 
-Afterwards the server is deployed from the desktop (see Everyday use).
+Afterwards the server is deployed from the desktop (see Everyday use), or
+follows main by itself (the test server).
 
 ### Hetzner Cloud servers
 
-1. In the Cloud Console create the server: x86, **Ubuntu** image (only used
-   to start nixos-anywhere), with IPv4 and IPv6, and my SSH key (add the
-   public key from `modules/users/zepzeper/authorized_keys` under
-   Security -> SSH keys). Note its IPv4 address and its IPv6 /64.
+Step by step, with every check along the way: `modules/hosts/servers/staging.md`
+(the test server; the same steps for any Hetzner server). In short:
+
+1. In the Cloud Console create the server: x86 (CX, CPX or CCX; not the ARM
+   CAX types), at least 4 GB of memory, **Ubuntu** image (only used to
+   start nixos-anywhere), with IPv4 and IPv6, and my SSH key (the public key
+   from `modules/users/zepzeper/authorized_keys`, under Security -> SSH
+   keys).
 2. Host file: `templates/host-server-hetzner.nix` to
-   `modules/hosts/servers/<name>.nix`, named by role; fill in the IPv6
-   address (the /64 with `::1`) and uncomment the hardware import.
+   `modules/hosts/servers/<name>.nix`, named by role; the IPv6 address (the
+   /64 with `::1`) can be filled in now or later.
 3. Install it as above, with `root@<ipv4>` as the target. The disk is
    `/dev/sda`, set by `zep.hetznerCloud`.
 4. After the reboot: `ssh <ipv4>`, then `tailscale up` once (open the link).
@@ -288,7 +303,8 @@ nh os switch .               # build, show the package diff, switch
 
 nix develop                  # nvd, nix-tree: look into generations and closures
 
-# Another machine (servers; they never update themselves):
+# Another machine (servers; they only update themselves when they follow
+# main, as the test server does):
 nixos-rebuild switch --flake .#<host> --target-host <host> --ask-sudo-password
 nh os build . -H <host>      # only build it, e.g. to check a change
 ```

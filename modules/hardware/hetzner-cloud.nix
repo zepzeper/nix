@@ -44,6 +44,11 @@
 
         zep.disk.options.device = lib.mkDefault "/dev/sda";
 
+        # Boot from the disk's fallback path (EFI/BOOT/BOOTX64.EFI) rather
+        # than an entry in the VM's firmware: nothing depends on the firmware
+        # keeping boot entries written from the installer.
+        boot.loader.efi.canTouchEfiVariables = false;
+
         boot.initrd.availableKernelModules = [
           "virtio_pci"
           "virtio_scsi"

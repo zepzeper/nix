@@ -20,9 +20,12 @@ which becomes `nixosConfigurations.<name>`.
    machine I work from).
 3. Pick its channel: stable is the default; for one of my own machines add
    `zep.hosts.<name>.channel = "unstable";` next to the host module.
-4. Generate its hardware configuration on the machine as
-   `_<name>-hardware.nix` next to the host file and import it.
+4. Its hardware configuration, `_<name>-hardware.nix` next to the host
+   file: generated on the machine for desktops and laptops; for servers
+   nixos-anywhere writes it during the install (the server templates import
+   it only once it exists, so the host can be pushed before).
 5. `nix flake check`, then install (see the README; servers can be
-   installed from the desktop with nixos-anywhere).
+   installed from the desktop with nixos-anywhere; a Hetzner server step
+   by step: `servers/staging.md`).
 6. After the install, give it its secrets: its host key in
    `secrets/hosts/<name>.pub` (see `secrets/README.md`).
