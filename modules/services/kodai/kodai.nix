@@ -5,7 +5,8 @@
   # go and runs what is there.
   #
   #   nginx        the site, on port 80, over the tailnet only
-  #   PHP-FPM 8.5  the extensions Kodai needs (redis added to the defaults),
+  #   PHP-FPM 8.5  the extensions Kodai needs (redis and mailparse added to
+  #                the defaults),
   #                php.ini next to this file
   #   MariaDB 11.8 database kodai; users log in over the socket as their
   #                system user (kodai runs the app, deploy migrates), so there
@@ -48,7 +49,16 @@
       dir = "/srv/kodai";
 
       php = pkgs.php85.buildEnv {
-        extensions = { enabled, all }: enabled ++ [ all.redis ];
+        # On top of the defaults: redis (sessions, cache, queues) and
+        # mailparse (reading incoming mail; composer refuses to install
+        # without it).
+        extensions =
+          { enabled, all }:
+          enabled
+          ++ [
+            all.redis
+            all.mailparse
+          ];
         extraConfig = builtins.readFile ./php.ini;
       };
 
