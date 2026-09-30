@@ -88,7 +88,9 @@ it and installs. It stops before rebooting.
 ## 4. Before the first boot
 
 In this order: the server starts following `main` within 5 minutes of
-booting, so `main` must have its hardware file first.
+booting, so `main` must have its hardware file first. (If `main` requires
+pull requests on GitHub, merge one here instead of pushing, and reboot only
+once it is merged; the same for the deploy key in step 1.)
 
 ```sh
 # 1. The hardware file to main.
@@ -133,7 +135,7 @@ built from a local tree, which has no commit to compare with). Then:
 ssh staging
 nixos-version --configuration-revision     # the commit it runs...
 git -C ~/personal/nix rev-parse origin/main   # (on the desktop) ...equals main
-systemctl list-timers nixos-upgrade        # next check within 5 minutes
+systemctl list-timers nixos-upgrade.timer  # next check within 5 minutes
 journalctl -u nixos-upgrade -n 30          # what the last check did
 ```
 
@@ -174,7 +176,7 @@ DB_PASSWORD=
 
 MAIL_DSN=smtp://127.0.0.1:1025
 MAIL_FROM_ADDRESS=kodai@staging
-MAIL_FROM_NAME=Kodai (staging)
+MAIL_FROM_NAME="Kodai (staging)"
 MAIL_REPLY_TO=
 
 CACHE_STORE=redis
@@ -184,6 +186,8 @@ REDIS_PORT=6379
 API_HOST=
 ```
 
+- A value with spaces needs quotes (`"Kodai (staging)"`): unquoted, Kodai
+  refuses the whole file, and the deploy stops at the migration.
 - `DB_HOST=localhost` (not 127.0.0.1) connects over the socket, where
   MariaDB knows the `kodai` user without a password. MariaDB does not
   listen on the network at all.
@@ -222,13 +226,13 @@ What a deploy does, and what the server allows it: `modules/services/kodai/kodai
 | deploy Kodai | push to Kodai's `staging` branch |
 | see logs | `ssh staging`, then `journalctl -u phpfpm-kodai -u 'kodai-*' -f` (app), `journalctl -u nginx`, `journalctl -u nixos-upgrade` (its own updates) |
 | roll back Kodai | point `current` at the previous release and restart (below) |
-| roll back the server | `sudo nixos-rebuild switch --rollback` (lasts until `main` moves; revert on `main` to make it stick) |
+| roll back the server | revert the change on `main` (live within ~5 minutes). A quick `sudo nixos-rebuild switch --rollback` is undone within the hour, because the server follows `main` again; `sudo systemctl stop nixos-upgrade.timer` as well holds it until the next reboot |
 | start over | install again from step 3: it wipes the disk (the database too) |
 
 Rolling back Kodai by hand, on the server:
 
 ```sh
-ls /srv/kodai/releases                              # newest last
+sudo -u deploy ls /srv/kodai/releases               # newest last
 sudo -u deploy ln -sfn releases/<previous-id> /srv/kodai/current.new
 sudo -u deploy mv -T /srv/kodai/current.new /srv/kodai/current
 sudo systemctl reload phpfpm-kodai.service && sudo systemctl restart kodai.target
