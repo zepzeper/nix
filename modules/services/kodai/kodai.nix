@@ -18,19 +18,24 @@
   #
   # What the deploy finds (all under /srv/kodai):
   #
-  #   releases/<id>/  one directory per release, uploaded by CI
+  #   releases/<id>/  one directory per release, uploaded by CI, with its
+  #                   own .env (written by CI, never by this repository)
   #   current         symlink to the live release (nginx, PHP and the workers
   #                   run from here)
-  #   shared/.env     Kodai's .env: written by CI, never by this repository
-  #   shared/var/     Kodai's var/ (its cache), writable by the app; each
-  #                   release links its var/ here
+  #   shared/var/<id>/ each release's var/ (its cache), the only place the
+  #                   app can write; the release's var/ links here, so a
+  #                   release never sees another release's cache
   #
   # CI logs in as `deploy` with the key(s) in deploy_keys (restricted: no
   # terminal, no forwarding), owns releases/ and shared/, runs the
   # migrations, switches current, and may do exactly two things as root:
   # `systemctl reload phpfpm-kodai.service` and `systemctl restart
   # kodai.target` (allowed by polkit, no sudo). The app runs as `kodai`,
-  # which can read the code and write only shared/var.
+  # which can read the code and write only shared/var. nginx is in no Kodai
+  # group: it passes through the directories and reads public/ only (made
+  # world-readable by the deploy), so it can neither read .env nor write the
+  # cache. The database user kodai reads and writes rows; only deploy
+  # changes the schema.
   flake.modules.nixos.services-kodai =
     {
       config,
@@ -78,7 +83,7 @@
         ];
         SystemCallArchitectures = "native";
         CapabilityBoundingSet = "";
-        # Group-writable: deploy (in the kodai group) clears the cache.
+        # Group-writable: deploy (in the kodai group) removes old caches.
         UMask = "0007";
       };
 
@@ -147,10 +152,16 @@
               home = "/var/lib/deploy";
               createHome = true;
               shell = pkgs.bashInteractive;
-              openssh.authorizedKeys.keys = map (key: "restrict ${key}") deployKeys;
+              # Options are comma-separated: a key line with its own
+              # (from="...") gets restrict added to them.
+              openssh.authorizedKeys.keys = map (
+                key:
+                if lib.any (type: lib.hasPrefix type key) [ "ssh-" "ecdsa-" "sk-" ] then
+                  "restrict ${key}"
+                else
+                  "restrict,${key}"
+              ) deployKeys;
             };
-            # nginx serves public/ and reaches the PHP-FPM socket.
-            ${config.services.nginx.user}.extraGroups = [ "kodai" ];
           };
         };
 
@@ -159,8 +170,9 @@
         # setgid directories: whatever deploy puts in them belongs to the
         # kodai group, so the app can read it.
         systemd.tmpfiles.rules = [
-          "d ${dir} 0750 deploy kodai -"
-          "d ${dir}/releases 2750 deploy kodai -"
+          # o+x: nginx may pass through, not list.
+          "d ${dir} 0751 deploy kodai -"
+          "d ${dir}/releases 2751 deploy kodai -"
           "d ${dir}/shared 2750 deploy kodai -"
           "d ${dir}/shared/var 2770 kodai kodai -"
         ];
@@ -180,6 +192,9 @@
         '';
 
         services = {
+          # A deploy's reload lets running requests finish (up to 10s)
+          # instead of cutting them off (a global setting, not the pool's).
+          phpfpm.settings.process_control_timeout = "10s";
           phpfpm.pools.kodai = {
             user = "kodai";
             group = "kodai";
@@ -231,18 +246,18 @@
             enable = true;
             package = pkgs.mariadb_118;
             # Everything uses the socket; nothing listens on the network.
-            settings.mysqld.bind-address = "127.0.0.1";
+            settings.mysqld.skip-networking = true;
             ensureDatabases = [ "kodai" ];
-            ensureUsers =
-              map
-                (name: {
-                  inherit name;
-                  ensurePermissions."kodai.*" = "ALL PRIVILEGES";
-                })
-                [
-                  "kodai"
-                  "deploy"
-                ];
+            ensureUsers = [
+              {
+                name = "kodai";
+                ensurePermissions."kodai.*" = "SELECT, INSERT, UPDATE, DELETE";
+              }
+              {
+                name = "deploy";
+                ensurePermissions."kodai.*" = "ALL PRIVILEGES";
+              }
+            ];
           };
 
           redis.servers."" = {

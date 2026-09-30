@@ -47,7 +47,10 @@
               "nix-command"
               "flakes"
             ];
-            trusted-users = lib.mkIf cfg.options.trustAdmins [ "@wheel" ];
+            trusted-users = lib.mkIf cfg.options.trustAdmins [
+              "root"
+              "@wheel"
+            ];
           };
 
           gc = {

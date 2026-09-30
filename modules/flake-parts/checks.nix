@@ -68,6 +68,25 @@ let
       }
     ) variants;
 
+  # Every (secret, machine key) pair agenix-rules.nix promises, for secrets
+  # that exist: "<file.age> <key>" lines for check-secret-recipients.
+  secretsDir = ../../secrets;
+  secretRecipients = lib.concatLines (
+    lib.concatLists (
+      lib.mapAttrsToList (
+        name: rule:
+        let
+          file = secretsDir + "/${name}";
+        in
+        lib.optionals (builtins.pathExists file) (
+          map (key: "${file} ${lib.elemAt (lib.splitString " " key) 1}") (
+            lib.filter (lib.hasPrefix "ssh-ed25519 ") rule.publicKeys
+          )
+        )
+      ) (import (secretsDir + "/agenix-rules.nix"))
+    )
+  );
+
   # zep.hosts.<name> for a name with no host module is a typo.
   hostNames = lib.attrNames nixosConfigurations;
   unknown = lib.subtractLists hostNames (lib.attrNames config.zep.hosts);
@@ -107,6 +126,21 @@ in
             path = files."noctalia/config.toml".source;
           }
         ];
+
+      # A machine the rules name for a secret must be among the secret's
+      # recipients, or its activation fails decrypting it (a host key added
+      # to secrets/hosts/ without re-encrypting).
+      checks.secrets-recipients =
+        pkgs.runCommand "secrets-recipients"
+          {
+            nativeBuildInputs = [ pkgs.coreutils ];
+            passAsFile = [ "pairs" ];
+            pairs = secretRecipients;
+          }
+          ''
+            bash ${./scripts/check-secret-recipients} < "$pairsPath"
+            touch $out
+          '';
 
       checks.hosts-evaluate = pkgs.writeText "hosts-evaluate" (
         lib.throwIf (unknown != [ ])

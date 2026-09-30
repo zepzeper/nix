@@ -18,6 +18,20 @@
       config = lib.mkIf config.zep.flatpak.enable {
         services.flatpak.enable = true;
 
+        # Flatpak's own policy asks an admin to install or remove apps
+        # (updates are free); people at the machine may do it themselves.
+        # Removing runtimes stays with admins: other apps may need them.
+        security.polkit.extraConfig = ''
+          polkit.addRule(function (action, subject) {
+            if ((action.id == "org.freedesktop.Flatpak.app-install" ||
+                 action.id == "org.freedesktop.Flatpak.runtime-install" ||
+                 action.id == "org.freedesktop.Flatpak.app-uninstall") &&
+                subject.local && subject.active) {
+              return polkit.Result.YES;
+            }
+          });
+        '';
+
         systemd.services.flatpak-flathub = {
           description = "Add the Flathub repository to Flatpak";
           wantedBy = [ "multi-user.target" ];

@@ -81,7 +81,14 @@
         };
 
         virtualisation = {
-          docker.enable = true;
+          docker = {
+            enable = true;
+            # Docker writes its own iptables rules, past the firewall: a
+            # published port (-p 8080:80) would answer the whole network.
+            # Bind published ports to localhost unless a run says otherwise
+            # (-p 0.0.0.0:8080:80).
+            daemon.settings.ip = "127.0.0.1";
+          };
           libvirtd.enable = true;
         };
 

@@ -84,7 +84,7 @@
           pipewire = {
             enable = true;
             alsa.enable = true;
-            # 32-bit ALSA is for Steam/Wine; a host that games turns it on.
+            # 32-bit ALSA is for Steam/Wine; the Steam module turns it on.
             alsa.support32Bit = lib.mkDefault false;
             pulse.enable = true;
           };

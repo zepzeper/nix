@@ -1,0 +1,9 @@
+# The workflows pin their actions to a commit (a tag can be moved to other
+# code; update-inputs runs with write access). Dependabot opens a pull
+# request when an action has a new release, with the new commit and tag.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

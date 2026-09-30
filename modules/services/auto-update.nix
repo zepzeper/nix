@@ -31,6 +31,8 @@
         runtimeInputs = [
           config.nix.package
           pkgs.jq
+          pkgs.coreutils
+          pkgs.findutils
         ];
         text = builtins.readFile ./scripts/update-available;
       };
@@ -62,6 +64,9 @@
             description = ''
               Build only when the flake has a newer commit than the running
               system, so a frequent schedule costs a quick check, not a build.
+              A commit that fails is tried again after an hour, not on every
+              run; a switch to anything else (a local build) is replaced by
+              the flake's commit at the next run.
             '';
           };
           allowReboot = lib.mkOption {
@@ -103,9 +108,13 @@
           };
         };
 
-        # Exit status 1 skips the run without counting as a failure.
-        systemd.services.nixos-upgrade.serviceConfig.ExecCondition =
-          lib.mkIf cfg.options.onlyWhenChanged "${lib.getExe updateAvailable} ${cfg.options.flake}";
+        # Exit status 1 skips the run without counting as a failure. The
+        # commit last tried is kept in /var/lib/nixos-upgrade/tried, so a
+        # commit that does not build is retried hourly, not on every run.
+        systemd.services.nixos-upgrade.serviceConfig = lib.mkIf cfg.options.onlyWhenChanged {
+          StateDirectory = "nixos-upgrade";
+          ExecCondition = "${lib.getExe updateAvailable} ${cfg.options.flake} /var/lib/nixos-upgrade/tried";
+        };
       };
     };
 }

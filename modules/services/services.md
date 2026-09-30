@@ -1,10 +1,11 @@
 # Services
 
 `services-auto-update` (`zep.autoUpdate`): the machine pulls
-`github:zepzeper/nix#<hostname>` on a schedule, builds it and switches.
+`github:zepzeper/nix#<host>` (its name in this flake) on a schedule, builds it and switches.
 
 - Employee laptops: on, daily, never reboots by itself.
-- Servers: off, forced. They change only when an admin deploys to them.
+- Servers: off by default. They change when an admin deploys to them; a
+  server can follow main instead (the test server does, see below).
 - My own machines: off unless a host turns it on.
 
 What a machine updates *to* is pinned by `flake.lock`: bump it and push to
@@ -30,3 +31,6 @@ tailnet only. Kodai's CI deploys the code and its `.env`. See
 `services-auto-update` can also make a server follow main
 (`options.onlyWhenChanged` with a short schedule): it checks every few
 minutes and rebuilds only when main moved. The test server does this.
+A commit that fails to build is retried hourly, not every few minutes. A
+switch to anything that is not main (a local build) lasts until the next
+check: main replaces it.

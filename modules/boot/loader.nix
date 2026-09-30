@@ -7,9 +7,10 @@
   # the machine's own keys, through lanzaboote, which signs every boot entry
   # (systemd-boot and a signed kernel+initrd image per generation). Nothing
   # to prepare by hand:
-  # 1. After the first switch (or first boot) with it, a service creates the
-  #    keys in /var/lib/sbctl (on the encrypted disk) and puts them, signed,
-  #    on the boot partition. Reboot once.
+  # 1. The first switch (or first boot) with it creates the keys in
+  #    /var/lib/sbctl (on the encrypted disk) and puts them, signed, on the
+  #    boot partition. (A machine moving from plain systemd-boot: see
+  #    boot.md for its old menu entries.)
   # 2. In the firmware settings, put Secure Boot in Setup Mode (clear or
   #    delete its keys). At the next boot systemd-boot enrolls the keys
   #    itself - mine plus Microsoft's, which graphics cards' firmware needs -
