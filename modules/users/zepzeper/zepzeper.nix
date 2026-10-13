@@ -85,6 +85,11 @@ in
           "$HOME/ansible-env/bin"
         ];
 
+        # tea, the CLI for my Forgejo (Kodai's repositories). Logins hold an
+        # API token, so they stay out of the store: `tea login add` once per
+        # machine writes ~/.config/tea/config.yml.
+        packages = [ pkgs.tea ];
+
         file = {
           # tmux-sessionizer: what every new session starts with (a file next
           # to this one).
